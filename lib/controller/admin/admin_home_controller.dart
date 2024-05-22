@@ -1,27 +1,118 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
+import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:get/get.dart';
+
+import '../../SQL/sql.dart';
 
 class AdminHomeController extends GetxController {
   static AdminHomeController get to => Get.find();
 
+  List<AppointmentModel> allAppointment = [];
+  bool loadingapp = false;
+  List<AppointmentModel> requested = [];
+  List<AppointmentModel> confirmed = [];
+  List<AppointmentModel> cencal = [];
+  seperatedata() {
+    if (allAppointment.isNotEmpty) {
+      requested.addAll(allAppointment.where((element) => element.status == 1));
+      confirmed.addAll(allAppointment.where((element) => element.status == 2));
+      cencal.addAll(allAppointment.where((element) => element.status == 0));
+      update();
+    }
+  }
 
+  String? patienttokken;
+  Future<String> getpatienttokken(String id) async {
+    try {
+      var snapshot = SQL
+          .get("SELECT * FROM PatientModel where id='${id}'")
+          .then((value) async {
+        print("snaaaaaap    ${value}");
 
+        print("get data");
+        try {
+          var model = PatientModel.fromMap(value[0]);
+          patienttokken = model.token;
+          return model.token;
+        } catch (e) {
+          return " ";
+        }
+      });
+      return " ";
+    } catch (e) {
+      print("errrrrrrror    $e");
+      return "";
+    }
+  }
 
-
-
-
-  
-  int schedule = 0;
-  Future<int> getSchedule() async {
-    QuerySnapshot snapshot = await StaticData.firebase
-        .collection("slots")
-        .doc(StaticData.doctorModel!.id.toString())
-        .collection("slots")
-        .where("isAvailable", isEqualTo: true)
-        .get();
-    schedule = snapshot.docs.length;
+  getAllAppointment() {
+    allAppointment.clear();
+    requested.clear();
+    confirmed.clear();
+    cencal.clear();
     update();
+    print("dadada");
+    loadingapp = true;
+    SQL
+        .get(
+            "select * from dbo.AppointmentModel where doctorid='${StaticData.doctorModel!.id}'")
+        .then((value) {
+      List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        allAppointment.add(AppointmentModel.fromMap(element));
+      }
+      print("allAppointment${allAppointment}");
+      print("allAppointment${allAppointment.length}");
+      loadingapp = false;
+      seperatedata();
+      update();
+    });
+  }
+
+  List<PatientModel> allPatients = [];
+  bool loading = false;
+  getAllPatient() {
+    loading = true;
+    allPatients.clear();
+    if (StaticData.doctorModel!.patientList!.isNotEmpty) {
+      for (var element in StaticData.doctorModel!.patientList!) {
+        SQL
+            .get("select * from dbo.PatientModel where id='${element}'")
+            .then((value) {
+          try {
+            allPatients.add(PatientModel.fromMap(value[0]));
+          } catch (e) {}
+          update();
+        });
+      }
+      loading = false;
+      update();
+    } else {}
+  }
+
+  String? schedule = '0';
+  Future<String?> getSchedule() async {
+    String id1 = StaticData.doctorModel!.id
+        .substring(0, 10)
+        .replaceAll(RegExp(r'[^a-zA-Z]'), '');
+    SQL
+        .get(
+            "select count(isAvailable) as data from dbo.${id1} where isAvailable=1")
+        .then((value) {
+      try {
+        if (value != "" && value != null) {
+          schedule = value[0]["data"].toString();
+          print("qwer${schedule}");
+          update();
+        }
+      } catch (e) {
+        print("EEEEEEEE${e}");
+      }
+    });
+
     return schedule;
   }
 }

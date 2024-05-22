@@ -1,11 +1,14 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:convert';
+
 import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/screens/massage/chat_screen.dart';
 import 'package:doctor_appointment_app/screens/massage/m_date_util.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
+import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,209 +33,225 @@ class _MessagesScreenState extends State<MessagesScreen> {
     width = MediaQuery.of(context).size.width;
 
     return GetBuilder<PatientChatController>(builder: (obj) {
-      return SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
-                child: Center(
-                  child: Text(
-                    "Chat Us",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
+      return Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                  child: Center(
+                    child: Text(
+                      "Messages",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: obj.doctorlist.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return StreamBuilder(
-                      stream: StaticData.firebase
-                          .collection('chatroom')
-                          .doc(StaticData.chatRoomId(obj.doctorlist[index].id,
-                              StaticData.patientmodel!.id))
-                          .collection("chats")
-                          .orderBy("sent", descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-
-                        if (snapshot.hasError) {
-                          print("Error: /${snapshot.error}");
-                          return Text('Error: /${snapshot.error}');
-                        }
-                        Message? message;
-                        if (snapshot.data!.docs.length != 0) {
-                          message =
-                              Message.fromJson(snapshot.data!.docs[0].data());
-                        }
-
-                        List<Message> unread = snapshot.data!.docs
-                            .map((doc) => Message.fromJson(doc.data()))
-                            .where((message) => message.read == "")
-                            .where((element) =>
-                                message!.toId != StaticData.patientmodel!.id)
-                            .toList();
-
-                        if (snapshot.data!.docs.length != 0)
-                          print(
-                              'snapshot.data!.docs.length/${snapshot.data!.docs.length}');
-                        return snapshot.data!.docs.length == 0 &&
-                                snapshot.data!.docs.isEmpty &&
-                                message == null
-                            ? Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ChatScreen(
-                                            image: obj.doctorlist[index].image!,
-                                            name:
-                                                obj.doctorlist[index].fullname,
-                                            id: obj.doctorlist[index].id,
-                                            current:
-                                                StaticData.patientmodel!.id,
-                                            currentimage:
-                                                StaticData.patientmodel!.image,
-                                            currentname: StaticData
-                                                .patientmodel!.fullname,
-                                            tokken: obj.doctorlist[index].token,
-                                          ),
-                                        ));
-                                  },
-                                  leading: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(
-                                        "${obj.doctorlist[index].image}"),
-                                  ),
-                                  title: Text(
-                                    "${obj.doctorlist[index].fullname}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    "Hello, Doctor are your there?",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: ListTile(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ChatScreen(
-                                            image: obj.doctorlist[index].image!,
-                                            name:
-                                                obj.doctorlist[index].fullname,
-                                            id: obj.doctorlist[index].id,
-                                            current:
-                                                StaticData.patientmodel!.id,
-                                            currentimage:
-                                                StaticData.patientmodel!.image,
-                                            currentname: StaticData
-                                                .patientmodel!.fullname,
-                                            tokken: obj.doctorlist[index].token,
-                                          ),
-                                        ));
-                                  },
-                                  leading: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(
-                                        "${obj.doctorlist[index].image}"),
-                                  ),
-                                  title: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: width * 0.45,
-                                        child: Text(
-                                          "${obj.doctorlist[index].fullname}",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontSize: 18,
-                                            color: Colors.black54,
-                                          ),
+                SizedBox(
+                  height: 20,
+                ),
+                obj.doctorlist.length == 0
+                    ? SizedBox(
+                        height: height * 0.8,
+                        child: Center(
+                          child: CustomWidget.largeText('No Doctor !'),
+                        ),
+                      )
+                    : ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: obj.doctorlist.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          var message;
+                          List<Message> unread = [];
+                          if (obj.messageList.isNotEmpty &&
+                              obj.messageList[index]![0] != null) {
+                            message = obj.messageList[index]!.last!;
+                            // unread!.clear();
+                            // unread = obj.messageList[index]!
+                            //     .map((doc) => Message.fromJson(doc))
+                            //     .where((message) => message.readS == "")
+                            //     .where((element) =>
+                            //         message!.fromId !=
+                            //         StaticData.patientmodel!.id)
+                            //     .toList();
+                          } else {}
+                          if (obj.doctorlist.isEmpty) {
+                            return SizedBox(
+                              height: height * 0.8,
+                              child: Center(
+                                child: CustomWidget.largeText('No Patient !'),
+                              ),
+                            );
+                          } else {
+                            return obj.messageList.isEmpty
+                                ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: ListTile(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ChatScreen(
+                                                image: obj
+                                                    .doctorlist[index].image!,
+                                                name: obj
+                                                    .doctorlist[index].fullname,
+                                                id: obj.doctorlist[index].id,
+                                                current:
+                                                    StaticData.patientmodel!.id,
+                                                currentimage: StaticData
+                                                    .patientmodel!.image,
+                                                currentname: StaticData
+                                                    .patientmodel!.fullname,
+                                                tokken:
+                                                    obj.doctorlist[index].token,
+                                              ),
+                                            ));
+                                      },
+                                      leading: CircleAvatar(
+                                        radius: 30,
+                                        backgroundImage: MemoryImage(base64Decode(
+                                            "${obj.doctorlist[index].image}")),
+                                      ),
+                                      title: Text(
+                                        "${obj.doctorlist[index].fullname}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.black54,
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: width * 0.2,
-                                        child: Text(
-                                          "${MyDateUtil.getMessageTime(context: context, time: message!.sent!)}",
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            overflow: TextOverflow.ellipsis,
-                                            color: Colors.black54,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  subtitle: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: width * 0.5,
-                                        child: Text(
-                                          "${message.msg}",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black54,
-                                          ),
+                                      subtitle: Text(
+                                        "Hello, Doctor are your there?",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black54,
                                         ),
                                       ),
-                                      if (unread.length != 0)
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 25),
-                                          child: CircleAvatar(
-                                            backgroundColor: Apptheme.primary,
+                                      trailing: Text(
+                                        "12:30 pm",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 2, right: 5),
+                                    child: ListTile(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ChatScreen(
+                                                image: obj
+                                                    .doctorlist[index].image!,
+                                                name: obj
+                                                    .doctorlist[index].fullname,
+                                                id: obj.doctorlist[index].id,
+                                                current:
+                                                    StaticData.patientmodel!.id,
+                                                currentimage: StaticData
+                                                    .patientmodel!.image,
+                                                currentname: StaticData
+                                                    .patientmodel!.fullname,
+                                                tokken:
+                                                    obj.doctorlist[index].token,
+                                              ),
+                                            ));
+                                      },
+                                      leading: CircleAvatar(
+                                        radius: 30,
+                                        backgroundImage: MemoryImage(base64Decode(
+                                            "${obj.doctorlist[index].image}")),
+                                      ),
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.30,
                                             child: Text(
-                                              unread.length < 99
-                                                  ? "${unread.length}"
-                                                  : "99+",
+                                              "${obj.doctorlist[index].fullname}",
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.black54,
+                                              ),
                                             ),
-                                            radius: 15,
                                           ),
-                                        )
-                                    ],
-                                  ),
-                                ),
-                              );
-                      });
-                },
-              ),
-            ],
+                                          SizedBox(
+                                            width: width * 0.30,
+                                            child: Text(
+                                              "${MyDateUtil.getMessageTime(context: context, time: message!.sent!)}",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      subtitle: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: width * 0.25,
+                                            child: Text(
+                                              "${message.msg}",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                          ),
+                                          if (unread.length != 0)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 40),
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    Apptheme.primary,
+                                                child: Text(
+                                                  unread.length < 99
+                                                      ? "${unread.length}"
+                                                      : "99+",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                radius: 15,
+                                              ),
+                                            )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                          }
+                        },
+                      ),
+              ],
+            ),
           ),
-        ),
+          if (obj.loading == true)
+            Center(
+              child: CircularProgressIndicator(),
+            )
+        ],
       );
     });
   }

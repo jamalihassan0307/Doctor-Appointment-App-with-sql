@@ -1,4 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,21 +38,16 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     Get.put(ChatController());
+    ChatController.my.getAllMessages(StaticData.chatRoomId(
+      widget.current,
+      widget.id,
+    ));
     super.initState();
   }
 
   var height, width;
   @override
   Widget build(BuildContext context) {
-    String chatRoomId(String user1, String user2) {
-      if (user1[0].toLowerCase().codeUnits[0] >
-          user2.toLowerCase().codeUnits[0]) {
-        return "$user1$user2";
-      } else {
-        return "$user2$user1";
-      }
-    }
-
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
@@ -93,7 +91,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     children: [
                       CircleAvatar(
                         radius: 25,
-                        backgroundImage: NetworkImage(widget.image),
+                        backgroundImage:
+                            MemoryImage(base64Decode(widget.image)),
                       ),
                       SizedBox(
                         width: width * 0.01,
@@ -135,72 +134,41 @@ class _ChatScreenState extends State<ChatScreen> {
                 // ],
               ),
             ),
-            body: Container(
-              height: height,
-              width: width,
-              child: Column(children: [
-                Expanded(
-                  child: Container(
+            body: GetBuilder<ChatController>(
+                id: "sms",
+                builder: (obj1) {
+                  return Container(
                     height: height,
                     width: width,
-                    child: StreamBuilder(
-                      stream: obj.getAllMessages(
-                          chatRoomId(widget.id, widget.current)),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                          case ConnectionState.none:
-                            return const SizedBox();
-                          case ConnectionState.active:
-                          case ConnectionState.done:
-                            final data = snapshot.data?.docs;
-                            obj.list = data
-                                    ?.map((e) => Message.fromJson(e.data()))
-                                    .toList() ??
-                                [];
-
-                            print("obj.list.length ${obj.list.length}");
-                            if (obj.list.isNotEmpty) {
-                              return ListView.builder(
-                                  reverse: true,
-                                  itemCount: obj.list.length,
-                                  padding: EdgeInsets.only(top: height * .01),
-                                  physics: const BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return MessageCard(
-                                      message: obj.list[index],
-                                      current: widget.current,
-                                      chatID:
-                                          chatRoomId(widget.id, widget.current),
-                                    );
-                                  });
-                            } else {
-                              return Center(
-                                child: Text("HEELOW THERE! 👋",
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.black)),
-                              );
-                            }
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                _chatInput(obj),
-                // if (obj.showEmoji)
-                //   SizedBox(
-                //     height: height * .35,
-                //     child: EmojiPicker(
-                //       textEditingController: obj.textController,
-                //       config: Config(
-                //         bgColor: const Color.fromARGB(255, 234, 248, 255),
-                //         columns: 8,
-                //         emojiSizeMax: 32 * (1.0),
-                //       ),
-                //     ),
-                //   ),
-              ]),
-            ));
+                    child: Column(children: [
+                      Expanded(
+                        child: Container(
+                            height: height,
+                            width: width,
+                            child: obj1.list.isNotEmpty
+                                ? ListView.builder(
+                                    reverse: true,
+                                    itemCount: obj1.list.length,
+                                    padding: EdgeInsets.only(top: height * .01),
+                                    physics: const BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return MessageCard(
+                                        message: obj1.list[index],
+                                        current: widget.current,
+                                        chatID: StaticData.chatRoomId(
+                                            widget.id, widget.current),
+                                      );
+                                    })
+                                : Center(
+                                    child: Text("HEELOW THERE! 👋",
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.black)),
+                                  )),
+                      ),
+                      _chatInput(obj1),
+                    ]),
+                  );
+                }));
       }),
     );
   }

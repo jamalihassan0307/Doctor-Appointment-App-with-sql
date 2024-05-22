@@ -25,6 +25,69 @@ class LoginController extends GetxController {
     update();
   }
 
+  PatientModel? getpatient;
+
+  Future<PatientModel?> getPatientId(String id) async {
+    try {
+      await SQL
+          .get("SELECT * FROM PatientModel where id='${id}'")
+          .then((value) async {
+        print("snaaaaaap    ${value}");
+
+        print("get data");
+        try {
+          getpatient = await PatientModel.fromMap(value[0]);
+          update();
+          return getpatient;
+        } catch (e) {
+          return null;
+        }
+      });
+    } catch (e) {
+      print("errrrrrrror    $e");
+      Fluttertoast.showToast(
+        msg: "${e.toString()} !",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 17,
+        timeInSecForIosWeb: 1,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+    return null;
+  }
+
+  DoctorModel? getdoctor;
+  Future<DoctorModel?> getDoctorId(String id) async {
+    try {
+      await SQL
+          .get("SELECT * FROM DoctorModel where id='${id}'")
+          .then((value) async {
+        try {
+          getdoctor = await DoctorModel.fromMap(value[0]);
+          print("modelasdsdf${getdoctor}");
+          update();
+          return getdoctor;
+        } catch (e) {
+          return null;
+        }
+      });
+    } catch (e) {
+      print("errrrrrrror    $e");
+      Fluttertoast.showToast(
+        msg: "${e.toString()} !",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 17,
+        timeInSecForIosWeb: 1,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+    return null;
+  }
+
   TextEditingController password = TextEditingController();
   bool passToggle = true;
 
@@ -60,6 +123,7 @@ class LoginController extends GetxController {
             textColor: Colors.white,
             fontSize: 16.0);
         SharedPreferences prefs = await SharedPreferences.getInstance();
+
         StaticData.cleardata(context).then((value) {
           prefs.setString("doctor", model.id);
           clearForm();
@@ -153,6 +217,8 @@ class LoginController extends GetxController {
       for (var element in tempResult) {
         alldoctor.add(DoctorModel.fromMap(element));
       }
+      print("alldoctor${alldoctor}");
+      print("alldoctor${alldoctor.length}");
       update();
     });
   }

@@ -1,35 +1,35 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Message {
   String? toId;
   String? msg;
-  String? read;
+  String? readS;
   String? fromId;
   String? sent;
 
   Message({
     this.toId,
     this.msg,
-    this.read,
+    this.readS,
     this.fromId,
     this.sent,
   });
 
-  factory Message.fromJson(Map<String, dynamic> json) {
+  factory Message.fromJson(json) {
     return Message(
       toId: json['toId'],
       msg: json['msg'],
-      read: json['read'],
+      readS: json['readS'],
       fromId: json['fromId'],
       sent: json['sent'],
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'toId': toId,
-      'msg': msg,
-      'read': read,
-      'fromId': fromId,
-      'sent': sent,
-    };
+  toJson() {
+    return "'$toId','$msg','$readS','$fromId','$sent'";
+  }
+
+  @override
+  String toString() {
+    return 'Message(toId: $toId, msg: $msg, readS: $readS, fromId: $fromId, sent: $sent)';
   }
 }

@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
+import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorSlot.dart';
@@ -33,7 +36,12 @@ class _CalenderState extends State<Calender> {
   DateTime date = DateTime.now();
   var height, width;
   DoctorSlot? slots;
+
   @override
+  void initState() {
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
@@ -187,9 +195,10 @@ class _CalenderState extends State<Calender> {
                 onTap: () async {
                   if (index != -1 && slots != null) {
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     var uuid = const Uuid();
                     var id = uuid.v4();
-                    AppointmentModel model = AppointmentModel(
+                    AppointmentModel model12 = AppointmentModel(
                         bio: widget.model.bio,
                         id: id,
                         patientid: StaticData.patientmodel!.id,
@@ -201,30 +210,51 @@ class _CalenderState extends State<Calender> {
                         slotsid: slots!.id,
                         time: slots!.startTime,
                         createdtime: DateTime.now().microsecondsSinceEpoch,
-                        status: 1);
-                    await StaticData.firebase
-                        .collection("appointment")
-                        .doc(id)
-                        .set(model.toMap());
-                    await StaticData.firebase
-                        .collection("slots")
-                        .doc(widget.model.id)
-                        .collection("slots")
-                        .doc(slots!.id)
-                        .update({"isAvailable": false});
+                        status: 1,
+                        rating: 0.0);
 
-                    await StaticData.firebase
-                        .collection("doctor")
-                        .doc(widget.model.id)
-                        .update({
-                      "patientList":
-                          FieldValue.arrayUnion([StaticData.patientmodel!.id])
+                    LoginController.to.getdoctorSlotes(widget.model.id);
+                    await LoginController.to
+                        .getDoctorId(widget.model.id)
+                        .then((model) {
+                      if (LoginController.to.getdoctor != null) {
+                        print(
+                            "model234${LoginController.to.getdoctor.toString()}");
+                        print(
+                            "model23424${LoginController.to.getdoctor!.patientList!.contains(
+                          StaticData.patientmodel!.id,
+                        )}");
+                        if (LoginController.to.getdoctor!.patientList!.contains(
+                              StaticData.patientmodel!.id,
+                            ) ==
+                            false) {
+                          widget.model.patientList!
+                              .add(StaticData.patientmodel!.id);
+                          String query = "UPDATE dbo.DoctorModel SET ";
+                          query +=
+                              "patientList = '${json.encode(widget.model.patientList)}'";
+
+                          query += " WHERE id = '${widget.model.id}'";
+                          SQL.Update(query);
+                        } else {
+                          print("id presnt");
+                        }
+                      } else {
+                        print("null");
+                      }
                     });
-                    StaticData.sendNotifcation(
-                      "Appointment",
-                      "Send appointment request from ${StaticData.patientmodel!.fullname} at ${model.time}",
-                      widget.model.token,
-                    );
+
+                    SQL.post(
+                        "INSERT INTO dbo.AppointmentModel VALUES (${model12.toMap()})");
+
+                    await StaticData.updateSlotsStatus(
+                        widget.model.id, slots!.id, 0);
+
+                    // StaticData.sendNotifcation(
+                    //   "Appointment",
+                    //   "Send appointment request from ${StaticData.patientmodel!.fullname} at ${model.time}",
+                    //   widget.model.token,
+                    // );
 
                     Fluttertoast.showToast(
                       msg: "Appointment request send sucessfuly !",

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
+import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/screens/patient/appointment_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -17,6 +18,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var height, width;
   @override
+  void initState() {
+    Get.put(PatientController());
+
+    PatientController.to.getAllAppointment();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
@@ -105,7 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    StaticData.openWhatsAppChat();
+                    String user1 = "1fd0278c-d841-4a1e-8ea2-b7e874237569";
+                    String user2 = "15617030-613d-497a-944b-9810bec14c4c";
+                    String a = StaticData.chatRoomId(user1, user2);
+                    String id1 =
+                        a.substring(0, 20).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+                    print("data1${a}  sdsf${id1}");
+                    print("2qweqweqeqeqwe        ${a}");
+                    // StaticData.openWhatsAppChat();
                   },
                   child: Container(
                     padding: EdgeInsets.all(20),

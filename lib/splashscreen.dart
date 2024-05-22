@@ -1,4 +1,5 @@
 import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/screens/massage/notification_service.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/admin/adminHome.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -22,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     SQL.connection();
     getDataFromSF();
+    Get.put(LoginController());
     getToken();
     super.initState();
     FirebaseMessaging.instance.getInitialMessage().then(
@@ -141,18 +144,27 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> fetchdoctorByUUID(String uuid, context) async {
     DoctorModel? users;
     print("get data");
+
     try {
-      var snapshot =
-          await StaticData.firebase.collection("doctor").doc(uuid).get();
-      if (snapshot.exists) {
+      var snapshot = SQL
+          .get("SELECT * FROM DoctorModel where id='${uuid}'")
+          .then((value) async {
+        print("snaaaaaap    ${value}");
+
         print("get data");
-        users = DoctorModel.fromMap(snapshot.data()!);
+        try {
+          users = DoctorModel.fromMap(value[0]);
+        } catch (e) {
+          print('Document with UUID $uuid does not exist.');
+          return;
+        }
+
         isLoggedIn = true;
-        StaticData.doctor = users.id;
+        StaticData.doctor = users!.id;
         StaticData.doctorModel = users;
 
         StaticData.updatetokken(
-            StaticData.token, users.id.toString(), "doctor");
+            StaticData.token, users!.id.toString(), "doctor");
         Future.delayed(const Duration(milliseconds: 1000), () {
           Navigator.pushAndRemoveUntil(
             context,
@@ -162,21 +174,10 @@ class _SplashScreenState extends State<SplashScreen> {
             (route) => true,
           );
         });
-
-        print("Current user: $users");
-      } else {
-        print('Document with UUID $uuid does not exist.');
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const WelcomeScreen(),
-            ),
-            (route) => true,
-          );
-        });
-      }
+      });
+      print("Current user: $users");
     } catch (e) {
+      print('Document with UUID $uuid does not exist.');
       Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.pushAndRemoveUntil(
           context,
@@ -186,7 +187,6 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => true,
         );
       });
-
       print('Error fetching user data: $e');
     }
   }
@@ -194,16 +194,26 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> fetchpatientByUUID(String uuid, context) async {
     PatientModel? users;
     try {
-      var snapshot =
-          await StaticData.firebase.collection("patient").doc(uuid).get();
-      if (snapshot.exists) {
-        users = PatientModel.fromMap(snapshot.data()!);
+      var snapshot = SQL
+          .get("SELECT * FROM PatientModel where id='${uuid}'")
+          .then((value) async {
+        print("snaaaaaap    ${value}");
+
+        print("get data");
+        try {
+          users = PatientModel.fromMap(value[0]);
+          LoginController.to.getAllDoctor();
+        } catch (e) {
+          print('Document with UUID $uuid does not exist.');
+          return;
+        }
+
         isLoggedIn = true;
-        StaticData.patient = users.id;
+        StaticData.patient = users!.id;
         StaticData.patientmodel = users;
 
         StaticData.updatetokken(
-            StaticData.token, users.id.toString(), "patient");
+            StaticData.token, users!.id.toString(), "patient");
         Future.delayed(const Duration(milliseconds: 2000), () {
           Navigator.pushAndRemoveUntil(
             context,
@@ -215,19 +225,9 @@ class _SplashScreenState extends State<SplashScreen> {
         });
 
         print("Current user: $users");
-      } else {
-        print('Document with UUID $uuid does not exist.');
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const WelcomeScreen(),
-            ),
-            (route) => true,
-          );
-        });
-      }
+      });
     } catch (e) {
+      print('Document with UUID $uuid does not exist.');
       Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.pushAndRemoveUntil(
           context,

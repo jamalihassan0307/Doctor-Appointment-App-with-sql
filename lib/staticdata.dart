@@ -1,8 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
@@ -28,6 +31,35 @@ class StaticData {
   static FirebaseAuth auth = FirebaseAuth.instance;
   static FirebaseStorage storage = FirebaseStorage.instance;
 
+  static Future<bool> updateSlotsStatus(
+      String database, String id, int status) async {
+    try {
+      String id1 =
+          database.substring(0, 10).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      String query = "UPDATE dbo.${id1} SET ";
+      query += "isAvailable = $status";
+
+      query += " WHERE id = '${id}'";
+      SQL.Update(query);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> updateAppointmentStatus(String id, int status) async {
+    try {
+      String query = "UPDATE dbo.AppointmentModel SET ";
+      query += "status = $status";
+
+      query += " WHERE id = '${id}'";
+      SQL.Update(query);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   static logout(BuildContext context) async {
     SharedPreferences a = await SharedPreferences.getInstance();
     a.getKeys();
@@ -47,20 +79,31 @@ class StaticData {
 
   static updatetokken(String tokken, String id, String collectionname) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(collectionname, id);
-    StaticData.firebase
-        .collection(collectionname)
-        .doc(id)
-        .update({"token": tokken});
+    prefs.setString(
+        collectionname == "PatientModel" ? "patient" : "doctor", id);
+    String query =
+        "UPDATE dbo.${collectionname == 'patient' ? "PatientModel" : 'DoctorModel'} SET ";
+    query += "token = '${token}'";
+
+    query += " WHERE id = '${id}'";
+    SQL.Update(query);
   }
 
   static Future<void> updatepatientprofile() async {
     try {
-      DocumentSnapshot snapshot =
-          await firebase.collection("patient").doc(patientmodel!.id).get();
-      PatientModel model =
-          PatientModel.fromMap(snapshot.data() as Map<String, dynamic>);
-      patientmodel = model;
+      await SQL
+          .get("SELECT * FROM PatientModel where id='${patientmodel!.id}'")
+          .then((value) async {
+        print("snaaaaaap    ${value}");
+
+        print("get data");
+        try {
+          var model = await PatientModel.fromMap(value[0]);
+          patientmodel = model;
+        } catch (e) {
+          return;
+        }
+      });
     } catch (e) {
       print("errrrrrrror    $e");
       Fluttertoast.showToast(
@@ -75,27 +118,23 @@ class StaticData {
     }
   }
 
-  static Future<String> getpatienttokken(String id) async {
-    try {
-      DocumentSnapshot snapshot =
-          await firebase.collection("patient").doc(id).get();
-      PatientModel model =
-          PatientModel.fromMap(snapshot.data() as Map<String, dynamic>);
-      patientmodel = model;
-      return model.token;
-    } catch (e) {
-      print("errrrrrrror    $e");
-      return "";
-    }
-  }
-
   static Future<String> getdoctortokken(String id) async {
     try {
-      DocumentSnapshot snapshot =
-          await firebase.collection("doctor").doc(id).get();
-      DoctorModel model =
-          DoctorModel.fromMap(snapshot.data() as Map<String, dynamic>);
-      return model.token;
+      var snapshot = SQL
+          .get("SELECT * FROM DoctorModel where id='${id}'")
+          .then((value) async {
+        print("snaaaaaap    ${value}");
+
+        print("get data");
+        try {
+          var model = DoctorModel.fromMap(value[0]);
+          doctorModel = model;
+          return model.token;
+        } catch (e) {
+          return " ";
+        }
+      });
+      return " ";
     } catch (e) {
       print("errrrrrrror    $e");
       return "";
@@ -104,12 +143,19 @@ class StaticData {
 
   static Future<void> updatedoctorprofile() async {
     try {
-      DocumentSnapshot snapshot =
-          await firebase.collection("doctor").doc(doctorModel!.id).get();
-      DoctorModel model =
-          DoctorModel.fromMap(snapshot.data() as Map<String, dynamic>);
-      doctorModel = model;
-      print(doctorModel!.image);
+      var snapshot = SQL
+          .get("SELECT * FROM DoctorModel where id='${doctorModel!.id}'")
+          .then((value) async {
+        print("snaaaaaap    ${value}");
+
+        print("get data");
+        try {
+          var model = DoctorModel.fromMap(value[0]);
+          doctorModel = model;
+        } catch (e) {
+          return;
+        }
+      });
     } catch (e) {
       print("errrrrrrror    $e");
       Fluttertoast.showToast(
@@ -134,8 +180,7 @@ class StaticData {
   }
 
   static String chatRoomId(String user1, String user2) {
-    if (user1[0].toLowerCase().codeUnits[0] >
-        user2.toLowerCase().codeUnits[0]) {
+    if (user1.compareTo(user2) < 0) {
       return "$user1$user2";
     } else {
       return "$user2$user1";

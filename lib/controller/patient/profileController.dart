@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,17 +45,19 @@ class ProfileController extends GetxController {
 
   Future<void> updateprofile(BuildContext context) async {
     if (hpickedFile != null) {
-      await uploadImage(StaticData.patientmodel!.id.toString()).then((value) {
-          StaticData.firebase
-              .collection("patient")
-              .doc(StaticData.patientmodel!.id.toString())
-              .update({
-            "fullname": name.text,
-            "email": email.text,
-            "password": password.text,
-            "image": value
-          });
-          Fluttertoast.showToast(
+      Uint8List imageBytes = await hpickedFile!.readAsBytes();
+      String base64Image = base64Encode(imageBytes);
+
+      String query = "UPDATE dbo.PatientModel SET ";
+      query += "fullname = '${name.text}',";
+      query += "email =' ${email.text}',";
+      query += "password = '${password.text}',";
+      query += "image = '$base64Image'";
+
+      query += " WHERE id = '${StaticData.patientmodel!.id}'";
+      await SQL.Update(query);
+
+      Fluttertoast.showToast(
           msg: "Update Succssfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
@@ -61,30 +65,24 @@ class ProfileController extends GetxController {
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0);
- StaticData.updatepatientprofile().then((value) {
-            initalizedata();
-             Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavBarRoots(),
-              ));
-          
-          });
-          
-
-       
+      StaticData.updatepatientprofile().then((value) {
+        initalizedata();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NavBarRoots(),
+            ));
       });
     } else {
-      StaticData.firebase
-            .collection("patient")
-            .doc(StaticData.patientmodel!.id.toString())
-            .update({
-          "fullname": name.text,
-          "email": email.text,
-          "password": password.text,
-           "image": StaticData.patientmodel!.image,
-        });
-Fluttertoast.showToast(
+      String query = "UPDATE dbo.PatientModel SET ";
+      query += "fullname = ${name.text}";
+      query += "email = ${email.text}";
+      query += "password = ${password.text}";
+
+      query += " WHERE id = '${StaticData.patientmodel!.id}'";
+      await SQL.Update(query);
+
+      Fluttertoast.showToast(
           msg: "Update Succssfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
@@ -92,86 +90,14 @@ Fluttertoast.showToast(
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0);
- StaticData.updatepatientprofile().then((value) {
-          initalizedata();
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NavBarRoots(),
-              ));
-       
-        });
-         
-     
-    }
-  }
-
-  Future<String> uploadImage(String id) async {
-    try {
-      Reference ref = FirebaseStorage.instance.ref().child("patient").child(id);
-
-      UploadTask uploadTask;
-      if (kIsWeb) {
-        uploadTask = ref.putData(
-            await hpickedFile!.readAsBytes(),
-            SettableMetadata(
-              contentType: 'image/jpeg',
+     await StaticData.updatepatientprofile().then((value) {
+        initalizedata();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const NavBarRoots(),
             ));
-      } else {
-        uploadTask = ref.putData(
-          await hpickedFile!.readAsBytes(),
-          SettableMetadata(contentType: 'image/jpeg'),
-        );
-      }
-
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
-
-      if (taskSnapshot.state == TaskState.success) {
-        var url = await ref.getDownloadURL();
-        print("3333333333333/link");
-        link = url;
-      } else {
-        Fluttertoast.showToast(
-          msg: "Image upload failed!",
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          gravity: ToastGravity.BOTTOM,
-          fontSize: 17,
-          timeInSecForIosWeb: 1,
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
-    } catch (e) {
-      print("error/${e.toString()}");
-      Fluttertoast.showToast(
-        msg: "Image upload error: /e",
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        gravity: ToastGravity.BOTTOM,
-        fontSize: 17,
-        timeInSecForIosWeb: 1,
-        toastLength: Toast.LENGTH_LONG,
-      );
-    }
-    return link;
-  }
-
-  Future<void> changeEmailAndPassword(
-      String newEmail, String newPassword) async {
-    try {
-      User? user = StaticData.auth.currentUser;
-
-      if (user != null) {
-        await user.updateEmail(newEmail);
-        print("Email updated successfully to $newEmail");
-
-        await user.updatePassword(newPassword);
-        print("Password updated successfully");
-      } else {
-        print("User not signed in.");
-      }
-    } catch (error) {
-      print("Error updating email and password: $error");
+      });
     }
   }
 }

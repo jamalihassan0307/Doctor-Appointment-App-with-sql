@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +90,8 @@ class _PatientProfileState extends State<PatientProfile> {
                                     alignment: Alignment.center,
                                     child: CircleAvatar(
                                       radius: 75,
-                                      backgroundImage: NetworkImage(
-                                          obj.patientimage.toString()),
+                                      backgroundImage: MemoryImage(base64Decode(
+                                          obj.patientimage.toString())),
                                     ),
                                   ),
                                 ),

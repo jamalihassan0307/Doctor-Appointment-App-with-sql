@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/admin/adminHome.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -24,11 +27,6 @@ class AdminProfileController extends GetxController {
   TextEditingController patientemail = TextEditingController();
   TextEditingController patientphonenumber = TextEditingController();
   TextEditingController fee = TextEditingController();
-
-
-
-
-
 
   patientDprofile(PatientModel model) {
     patientimage = model.image;
@@ -93,30 +91,30 @@ class AdminProfileController extends GetxController {
   }
 
   Future<void> updateprofile(BuildContext context) async {
-     StaticData.updatedoctorprofile();
+    StaticData.updatedoctorprofile();
     if (hpickedFile != null) {
-      await uploadImage(StaticData.doctorModel!.id.toString()).then((value) {
+      Uint8List imageBytes = await hpickedFile!.readAsBytes();
+      String base64Image = base64Encode(imageBytes);
 
-  StaticData.firebase
-              .collection("doctor")
-              .doc(StaticData.doctorModel!.id.toString())
-              .update({
-            "fullname": name.text,
-            "email": email.text,
-            "phonenumber": phonenumber.text,
-            "address": address.text,
-            "specialty": specilest.text,
-            "bio": bio.text,
-            "fee": double.tryParse(fee.text) ?? 0.0,
-            "about": about.text,
-            "starttime": startTime,
-            "endtime": endTime,
-            "maxAppointmentDuration": maxAppointmentDuration,
-            "password": password.text,
-            "image": value
-          });
+      String query = "UPDATE dbo.DoctorModel SET ";
+      query += "fullname = '${name.text}',";
+      query += "email =' ${email.text}',";
+      query += "password = '${password.text}',";
+      query += "address = '${address.text}',";
+      query += "specialty = '${specilest.text}',";
+      query += "bio = '${bio.text}',";
+      query += "fee = '${double.tryParse(fee.text) ?? 0.0}',";
+      query += "about = '${about.text}',";
+      query += "starttime = '${startTime}',";
+      query += "endtime = '${endTime}',";
+      query += "maxAppointmentDuration = '${maxAppointmentDuration}',";
 
- Fluttertoast.showToast(
+      query += "image = '$base64Image'";
+
+      query += " WHERE id = '${StaticData.doctorModel!.id}'";
+      await SQL.Update(query);
+
+      Fluttertoast.showToast(
           msg: "Update Succssfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
@@ -124,37 +122,33 @@ class AdminProfileController extends GetxController {
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0);
-        StaticData.updatedoctorprofile().then((value) {
-          initalizedata();
-          Future.delayed( Duration(seconds: 2),(){
- Navigator.push(
+      StaticData.updatedoctorprofile().then((value) {
+        initalizedata();
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const AdminNavBarRoots(),
               ));
-          });
         });
-        
       });
     } else {
-      StaticData.firebase
-          .collection("doctor")
-          .doc(StaticData.doctorModel!.id.toString())
-          .update({
-        "fullname": name.text,
-        "email": email.text,
-        "phonenumber": phonenumber.text,
-        "address": address.text,
-        "specialty": specilest.text,
-        "bio": bio.text,
-        "about": about.text,
-        "starttime": startTime,
-        "fee": double.tryParse(fee.text) ?? 0.0,
-        "endtime": endTime,
-        "maxAppointmentDuration": maxAppointmentDuration,
-        "password": password.text,
-         "image": StaticData.doctorModel!.image,
-      });
+      String query = "UPDATE dbo.DoctorModel SET ";
+      query += "fullname = '${name.text}',";
+      query += "email =' ${email.text}',";
+      query += "password = '${password.text}',";
+      query += "address = '${address.text}',";
+      query += "specialty = '${specilest.text}',";
+      query += "bio = '${bio.text}',";
+      query += "fee = '${double.tryParse(fee.text) ?? 0.0}',";
+      query += "about = '${about.text}',";
+      query += "starttime = '${startTime}',";
+      query += "endtime = '${endTime}',";
+      query += "maxAppointmentDuration = '${maxAppointmentDuration}',";
+
+      query += " WHERE id = '${StaticData.doctorModel!.id}'";
+      await SQL.Update(query);
+
       Fluttertoast.showToast(
           msg: "Update Succssfully",
           toastLength: Toast.LENGTH_SHORT,
@@ -163,87 +157,16 @@ class AdminProfileController extends GetxController {
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0);
-        StaticData.updatedoctorprofile().then((value) {
-          initalizedata();
-          Future.delayed( Duration(seconds: 2),(){
- Navigator.push(
+      StaticData.updatedoctorprofile().then((value) {
+        initalizedata();
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const AdminNavBarRoots(),
               ));
-          });
         });
-
-      
-    }
-  }
-
-  Future<String> uploadImage(String id) async {
-    try {
-      Reference ref = FirebaseStorage.instance.ref().child("doctor").child(id);
-
-      UploadTask uploadTask;
-      if (kIsWeb) {
-        uploadTask = ref.putData(
-            await hpickedFile!.readAsBytes(),
-            SettableMetadata(
-              contentType: 'image/jpeg',
-            ));
-      } else {
-        uploadTask = ref.putData(
-          await hpickedFile!.readAsBytes(),
-          SettableMetadata(contentType: 'image/jpeg'),
-        );
-      }
-
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
-
-      if (taskSnapshot.state == TaskState.success) {
-        var url = await ref.getDownloadURL();
-        print("3333333333333/link$url");
-        link = url;
-      } else {
-        Fluttertoast.showToast(
-          msg: "Image upload failed!",
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          gravity: ToastGravity.BOTTOM,
-          fontSize: 17,
-          timeInSecForIosWeb: 1,
-          toastLength: Toast.LENGTH_LONG,
-        );
-      }
-    } catch (e) {
-      print("error/${e.toString()}");
-      Fluttertoast.showToast(
-        msg: "Image upload error: /e",
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        gravity: ToastGravity.BOTTOM,
-        fontSize: 17,
-        timeInSecForIosWeb: 1,
-        toastLength: Toast.LENGTH_LONG,
-      );
-    }
-    return link;
-  }
-
-  Future<void> changeEmailAndPassword(
-      String newEmail, String newPassword) async {
-    try {
-      User? user = StaticData.auth.currentUser;
-
-      if (user != null) {
-        await user.updateEmail(newEmail);
-        print("Email updated successfully to $newEmail");
-
-        await user.updatePassword(newPassword);
-        print("Password updated successfully");
-      } else {
-        print("User not signed in.");
-      }
-    } catch (error) {
-      print("Error updating email and password: $error");
+      });
     }
   }
 }

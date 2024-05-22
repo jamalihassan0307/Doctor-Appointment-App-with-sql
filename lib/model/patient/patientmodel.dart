@@ -95,7 +95,7 @@ class PatientModel {
 
   @override
   String toString() {
-    return 'PatientModel(id: $id, fullname: $fullname, phonenumber: $phonenumber, password: $password, email: $email, token: $token, image: $image, audiocallStatus: $audiocallStatus, callStatus: $callStatus, type: $type, status: $status, roomId: $roomId, doctorList: $doctorList)';
+    return 'PatientModel(id: $id, fullname: $fullname, phonenumber: $phonenumber, password: $password, email: $email, token: $token, audiocallStatus: $audiocallStatus, callStatus: $callStatus, type: $type, status: $status, roomId: $roomId, doctorList: $doctorList, image: $image)';
   }
 
   @override

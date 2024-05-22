@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/patient/profileController.dart';
@@ -20,7 +21,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   void initState() {
- 
     super.initState();
   }
 
@@ -82,7 +82,7 @@ class _ProfileState extends State<Profile> {
                                 child: Center(
                                   child: Stack(
                                     children: [
-                                            Align(
+                                      Align(
                                         alignment: Alignment.center,
                                         child: obj.hpickedFile != null
                                             ? Container(
@@ -97,40 +97,24 @@ class _ProfileState extends State<Profile> {
                                                         fit: BoxFit.fill)),
                                                 // radius: 75,
                                               )
-                                            :StaticData.patientmodel!.image!=null?
-                                            CircleAvatar(
-                                                radius: 75,
-                                                backgroundImage: NetworkImage(
-                                                   StaticData.patientmodel!.image),
-                                              )
-                                            
-                                            : CircleAvatar(
-                                                radius: 75,
-                                                backgroundImage: NetworkImage(
-                                                    obj.image.toString()),
-                                              ),
+                                            : StaticData.patientmodel!.image !=
+                                                    null
+                                                ? CircleAvatar(
+                                                    radius: 75,
+                                                    backgroundImage: MemoryImage(
+                                                        base64Decode(StaticData
+                                                            .patientmodel!
+                                                            .image)),
+                                                  )
+                                                : CircleAvatar(
+                                                    radius: 75,
+                                                    backgroundImage:
+                                                        MemoryImage(
+                                                            base64Decode(obj
+                                                                .image
+                                                                .toString())),
+                                                  ),
                                       ),
-                                      // Align(
-                                      //   alignment: Alignment.center,
-                                      //   child: obj.hpickedFile != null
-                                      //       ? Container(
-                                      //           height: height * 0.15,
-                                      //           width: width * 0.3,
-                                      //           decoration: BoxDecoration(
-                                      //               shape: BoxShape.circle,
-                                      //               image: DecorationImage(
-                                      //                   image: FileImage(File(
-                                      //                       obj.hpickedFile!
-                                      //                           .path)),
-                                      //                   fit: BoxFit.fill)),
-                                      //           // radius: 75,
-                                      //         )
-                                      //       : CircleAvatar(
-                                      //           radius: 75,
-                                      //           backgroundImage: NetworkImage(
-                                      //               obj.image.toString()),
-                                      //         ),
-                                      // ),
                                       Align(
                                         alignment: Alignment.bottomRight,
                                         child: InkWell(

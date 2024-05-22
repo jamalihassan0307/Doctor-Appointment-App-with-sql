@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
@@ -29,7 +30,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   var height, width;
   @override
   void initState() {
-    LoginController.to.getdoctorSlotes(widget.model.id);
     super.initState();
   }
 
@@ -37,6 +37,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
+    LoginController.to.getdoctorSlotes(widget.model.id);
     return Scaffold(
       backgroundColor: Color(0xFF7165D6),
       body: SingleChildScrollView(
@@ -127,47 +128,65 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                 .patientmodel!.fullname),
                                       ));
                                   try {
-                                    DocumentSnapshot doctorSnapshot =
-                                        await StaticData.firebase
-                                            .collection("doctor")
-                                            .doc(widget.model.id)
-                                            .get();
-                                    DoctorModel model = DoctorModel.fromMap(
-                                        doctorSnapshot.data()
-                                            as Map<String, dynamic>);
-                                    if (!model.patientList!.contains(
-                                      StaticData.patientmodel!.id,
-                                    )) {
-                                      StaticData.firebase
-                                          .collection("doctor")
-                                          .doc(widget.model.id)
-                                          .update({
-                                        "patientList": FieldValue.arrayUnion(
-                                            [StaticData.patientmodel!.id])
-                                      });
-                                    } else {
-                                      print("id presnt");
-                                    }
-                                    DocumentSnapshot snapshot = await StaticData
-                                        .firebase
-                                        .collection("patient")
-                                        .doc(StaticData.patientmodel!.id)
-                                        .get();
-                                    PatientModel model1 = PatientModel.fromMap(
-                                        snapshot.data()
-                                            as Map<String, dynamic>);
-                                    if (!model1.doctorList
-                                        .contains(widget.model.id)) {
-                                      StaticData.firebase
-                                          .collection("patient")
-                                          .doc(StaticData.patientmodel!.id)
-                                          .update({
-                                        "doctorList": FieldValue.arrayUnion(
-                                            [widget.model.id])
-                                      });
-                                    } else {
-                                      print("id presnt");
-                                    }
+                                    await LoginController.to
+                                        .getDoctorId(widget.model.id)
+                                        .then((model) {
+                                      if (LoginController.to.getdoctor !=
+                                          null) {
+                                        print(
+                                            "model234${LoginController.to.getdoctor.toString()}");
+                                        print(
+                                            "model23424${LoginController.to.getdoctor!.patientList!.contains(
+                                          StaticData.patientmodel!.id,
+                                        )}");
+                                        if (LoginController
+                                                .to.getdoctor!.patientList!
+                                                .contains(
+                                              StaticData.patientmodel!.id,
+                                            ) ==
+                                            false) {
+                                          widget.model.patientList!
+                                              .add(StaticData.patientmodel!.id);
+                                          String query =
+                                              "UPDATE dbo.DoctorModel SET ";
+                                          query +=
+                                              "patientList = '${json.encode(widget.model.patientList)}'";
+
+                                          query +=
+                                              " WHERE id = '${widget.model.id}'";
+                                          SQL.Update(query);
+                                        } else {
+                                          print("id presnt");
+                                        }
+                                      } else {
+                                        print("null");
+                                      }
+                                    });
+                                    LoginController.to
+                                        .getPatientId(
+                                            StaticData.patientmodel!.id)
+                                        .then((model1) {
+                                      print(
+                                          "model${LoginController.to.getpatient.toString()}");
+                                      if (!LoginController
+                                          .to.getpatient!.doctorList
+                                          .contains(widget.model.id)) {
+                                        LoginController
+                                            .to.getpatient!.doctorList
+                                            .add(widget.model.id);
+
+                                        String query =
+                                            "UPDATE dbo.PatientModel SET ";
+                                        query +=
+                                            "doctorList = '${json.encode(LoginController.to.getpatient!.doctorList)}'";
+
+                                        query +=
+                                            " WHERE id = '${StaticData.patientmodel!.id}'";
+                                        SQL.Update(query);
+                                      } else {
+                                        print("id presnt");
+                                      }
+                                    });
                                   } catch (e) {}
                                 },
                                 child: Container(
@@ -246,121 +265,122 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    SizedBox(
-                        height: height * 0.25,
-                        child: StreamBuilder(
-                            stream: StaticData.firebase
-                                .collection('appointment')
-                                .where("doctorid", isEqualTo: widget.model.id)
-                                .snapshots(),
-                            builder: (BuildContext context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
+                    // SizedBox(
+                    //     height: height * 0.25,
+                    //     child: StreamBuilder(
+                    //         stream: StaticData.firebase
+                    //             .collection('appointment')
+                    //             .where("doctorid", isEqualTo: widget.model.id)
+                    //             .snapshots(),
+                    //         builder: (BuildContext context, snapshot) {
+                    //           if (snapshot.connectionState ==
+                    //               ConnectionState.waiting) {
+                    //             return Center(
+                    //                 child: CircularProgressIndicator());
+                    //           }
 
-                              if (snapshot.hasError) {
-                                print("Error: /${snapshot.error}");
-                                return Text('Error: /${snapshot.error}');
-                              }
+                    //           if (snapshot.hasError) {
+                    //             print("Error: /${snapshot.error}");
+                    //             return Text('Error: /${snapshot.error}');
+                    //           }
 
-                              AppointmentModel? appointmentModel;
-                              if (snapshot.data!.docs.length != 0)
-                                print(
-                                    'snapshot.data!.docs.length/${snapshot.data!.docs.length}');
-                              return snapshot.data!.docs.length == 0 &&
-                                      snapshot.data!.docs.isEmpty
-                                  ? Center(
-                                      child: CustomWidget.largeText(
-                                          'Data not found !'),
-                                    )
-                                  : ListView.builder(
-                                      itemCount: snapshot.data!.docs.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        appointmentModel =
-                                            AppointmentModel.fromMap(snapshot
-                                                .data!.docs[index]
-                                                .data());
-                                        return Container(
-                                          width: width * 0.7,
-                                          margin: EdgeInsets.all(10),
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(40),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black12,
-                                                blurRadius: 4,
-                                                spreadRadius: 2,
-                                              ),
-                                            ],
-                                          ),
-                                          child: SizedBox(
-                                            child: Column(
-                                              children: [
-                                                ListTile(
-                                                  leading: CircleAvatar(
-                                                    radius: 30,
-                                                    backgroundImage: NetworkImage(
-                                                        "${appointmentModel!.patientimage}"),
-                                                  ),
-                                                  title: Text(
-                                                    " ${appointmentModel!.patientname}",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  subtitle: Text(GetTimeAgo.parse(
-                                                          microsecondsSinceEpochToDateTime(
-                                                              appointmentModel!
-                                                                  .createdtime))
-                                                      .toString()),
-                                                ),
-                                                SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                                  child: Text(
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "${appointmentModel!.time}",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                                  child: Text(
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    "${appointmentModel!.rating}",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                            })),
+                    //           AppointmentModel? appointmentModel;
+                    //           if (snapshot.data!.docs.length != 0)
+                    //             print(
+                    //                 'snapshot.data!.docs.length/${snapshot.data!.docs.length}');
+                    //           return snapshot.data!.docs.length == 0 &&
+                    //                   snapshot.data!.docs.isEmpty
+                    //               ? Center(
+                    //                   child: CustomWidget.largeText(
+                    //                       'Data not found !'),
+                    //                 )
+                    //               : ListView.builder(
+                    //                   itemCount: snapshot.data!.docs.length,
+                    //                   scrollDirection: Axis.horizontal,
+                    //                   itemBuilder:
+                    //                       (BuildContext context, int index) {
+                    //                     appointmentModel =
+                    //                         AppointmentModel.fromMap(snapshot
+                    //                             .data!.docs[index]
+                    //                             .data());
+                    //                     return Container(
+                    //                       width: width * 0.7,
+                    //                       margin: EdgeInsets.all(10),
+                    //                       padding:
+                    //                           EdgeInsets.symmetric(vertical: 5),
+                    //                       decoration: BoxDecoration(
+                    //                         color: Colors.white,
+                    //                         borderRadius:
+                    //                             BorderRadius.circular(40),
+                    //                         boxShadow: [
+                    //                           BoxShadow(
+                    //                             color: Colors.black12,
+                    //                             blurRadius: 4,
+                    //                             spreadRadius: 2,
+                    //                           ),
+                    //                         ],
+                    //                       ),
+                    //                       child: SizedBox(
+                    //                         child: Column(
+                    //                           children: [
+                    //                             ListTile(
+                    //                               leading: CircleAvatar(
+                    //                                 radius: 30,
+                    //                                 backgroundImage: NetworkImage(
+                    //                                     "${appointmentModel!.patientimage}"),
+                    //                               ),
+                    //                               title: Text(
+                    //                                 " ${appointmentModel!.patientname}",
+                    //                                 style: TextStyle(
+                    //                                   fontWeight:
+                    //                                       FontWeight.bold,
+                    //                                 ),
+                    //                               ),
+                    //                               subtitle: Text(GetTimeAgo.parse(
+                    //                                       microsecondsSinceEpochToDateTime(
+                    //                                           appointmentModel!
+                    //                                               .createdtime))
+                    //                                   .toString()),
+                    //                             ),
+                    //                             SizedBox(
+                    //                               height: 5,
+                    //                             ),
+                    //                             Padding(
+                    //                               padding: EdgeInsets.symmetric(
+                    //                                   horizontal: 10),
+                    //                               child: Text(
+                    //                                 maxLines: 2,
+                    //                                 overflow:
+                    //                                     TextOverflow.ellipsis,
+                    //                                 "${appointmentModel!.time}",
+                    //                                 style: TextStyle(
+                    //                                   color: Colors.black,
+                    //                                   fontSize: 13,
+                    //                                 ),
+                    //                               ),
+                    //                             ),
+                    //                             Padding(
+                    //                               padding: EdgeInsets.symmetric(
+                    //                                   horizontal: 10),
+                    //                               child: Text(
+                    //                                 maxLines: 2,
+                    //                                 overflow:
+                    //                                     TextOverflow.ellipsis,
+                    //                                 "${appointmentModel!.rating}",
+                    //                                 style: TextStyle(
+                    //                                   color: Colors.black,
+                    //                                   fontSize: 13,
+                    //                                 ),
+                    //                               ),
+                    //                             ),
+                    //                           ],
+                    //                         ),
+                    //                       ),
+                    //                     );
+                    //                   },
+                    //                 );
+                    //         })),
+
                     SizedBox(
                       height: 10,
                     ),

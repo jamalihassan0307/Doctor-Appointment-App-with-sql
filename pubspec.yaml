@@ -60,6 +60,8 @@ dependencies:
   cron: 
   flutter_spinkit:
   cached_network_image: ^3.2.3
+  logging: 
+  signalr_netcore: ^1.3.7
   
 dev_dependencies:
   flutter_test:
