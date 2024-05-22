@@ -78,17 +78,17 @@ class StaticData {
     a.clear();
   }
 
-  static updatetokken(String tokken, String id, String collectionname) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(
-        collectionname == "PatientModel" ? "patient" : "doctor", id);
-    String query =
-        "UPDATE dbo.${collectionname == 'patient' ? "PatientModel" : 'DoctorModel'} SET ";
-    query += "token = '${token}'";
+  // static updatetokken(String tokken, String id, String collectionname) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setString(
+  //       collectionname == "PatientModel" ? "patient" : "doctor", id);
+  //   String query =
+  //       "UPDATE dbo.${collectionname == 'patient' ? "PatientModel" : 'DoctorModel'} SET ";
+  //   query += "token = '${token}'";
 
-    query += " WHERE id = '${id}'";
-    SQL.Update(query);
-  }
+  //   query += " WHERE id = '${id}'";
+  //   SQL.Update(query);
+  // }
 
   static Future<void> updatepatientprofile() async {
     try {
@@ -254,3 +254,17 @@ class StaticData {
     return TimeOfDay(hour: roundedHour, minute: roundedMinute);
   }
 }
+double kDefaultPadding = 16.0;
+const kTitleTextStyle = TextStyle(
+  color: Colors.black,
+  fontSize: 25,
+  letterSpacing: 1,
+  fontWeight: FontWeight.w500,
+);
+
+const kSubtitleTextStyle = TextStyle(
+  color: Colors.black38,
+  fontSize: 16,
+  letterSpacing: 1,
+  fontWeight: FontWeight.w500,
+);

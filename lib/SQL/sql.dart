@@ -1,21 +1,29 @@
 import 'package:connect_to_sql_server_directly/connect_to_sql_server_directly.dart';
+import 'package:flutter/material.dart';
 
 class SQL {
   static var database = "DOASQL";
-  static var ip = "192.168.100.7";
-  
+  // static var ip = "192.168.100.7";
   // static var ip = "192.168.188.235";
-  // static var ip = "192.168.137.205";
+  static var ip = "192.168.137.205";
   static final connectToSqlServerDirectlyPlugin = ConnectToSqlServerDirectly();
-  static Future<void> connection() {
-    return connectToSqlServerDirectlyPlugin.initializeConnection(
+  static Future connection() async {
+   
+     await connectToSqlServerDirectlyPlugin.initializeConnection(
       ip,
       // '192.168.1.48',
       database,
       'ali',   
       '12345',
       instance: 'node',
-    );
+    ).onError((error, stackTrace){
+          
+    print("errrrrrrorrrrrrrr${error}");  
+    return Future(() => true);
+    });
+ 
+  
+    return ;
   }
 
   static Future post(String query) {
@@ -26,17 +34,17 @@ class SQL {
 static Future get(String query) async {
   print("query: $query");
   await connection();
-  return await connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query);
-  // try {
-  //   var result =
+  // return await connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query);
+  try {
+    var result =await connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query);
        
-  //   if (result == null || result.isEmpty) {
-  //     return Exception("No data returned or query failed");
-  //   }
-  //   return result;
-  // } catch (e) 
-  //   print("Error occurred: $e");
-  // }
+    if (result == null || result.isEmpty) {
+      return Exception("No data returned or query failed");
+    }
+    return result;
+  } catch (e) {
+    print("Error occurred: $e");
+  }
 }
 
 

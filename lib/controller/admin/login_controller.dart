@@ -103,11 +103,11 @@ class LoginController extends GetxController {
         StaticData.doctorModel = model;
         StaticData.doctor = model.id;
         update();
-        String query = "UPDATE dbo.DoctorModel SET ";
-        query += "token = '${StaticData.token}', ";
+        // String query = "UPDATE dbo.DoctorModel SET ";
+        // query += "token = '${StaticData.token}', ";
 
-        query += " WHERE id = '${model.id}'";
-        SQL.Update(query);
+        // query += " WHERE id = '${model.id}'";
+        // SQL.Update(query);
 
         Navigator.push(
             context,
@@ -172,11 +172,11 @@ class LoginController extends GetxController {
         StaticData.patientmodel = model;
         StaticData.patient = model.id;
         update();
-        String query = "UPDATE dbo.PatientModel SET ";
-        query += "token = '${StaticData.token}', ";
+        // String query = "UPDATE dbo.PatientModel SET ";
+        // query += "token = '${StaticData.token}', ";
 
-        query += " WHERE id = '${model.id}'";
-        SQL.Update(query);
+        // query += " WHERE id = '${model.id}'";
+        // SQL.Update(query);
 
         Navigator.push(
             context,

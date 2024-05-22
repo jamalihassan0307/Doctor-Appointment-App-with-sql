@@ -35,16 +35,17 @@ class PatientController extends GetxController {
         .get(
             "select * from dbo.AppointmentModel where patientid='${StaticData.patientmodel!.id}'")
         .then((value) {
-      List<Map<String, dynamic>> tempResult =
-          value.cast<Map<String, dynamic>>();
-      for (var element in tempResult) {
-        allAppointment.add(AppointmentModel.fromMap(element));
-      }
-      print("alldoctor${allAppointment}");
-      print("alldoctor${allAppointment.length}");
-      loading = false;
-      seperatedata();
-      update();
+          print("valueeeeeeeeeeeeeeee${value}");
+      // List<Map<String, dynamic>> tempResult =
+      //     value.cast<Map<String, dynamic>>();
+      // for (var element in tempResult) {
+      //   allAppointment.add(AppointmentModel.fromMap(element));
+      // }
+      // print("alldoctor${allAppointment}");
+      // print("alldoctor${allAppointment.length}");
+      // loading = false;
+      // seperatedata();
+      // update();
     });
   }
 

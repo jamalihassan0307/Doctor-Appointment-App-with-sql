@@ -1,5 +1,6 @@
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
+import 'package:doctor_appointment_app/screens/error_screen/connection_failed.dart';
 import 'package:doctor_appointment_app/screens/massage/notification_service.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    SQL.connection();
+    getaccessToSql();
     getDataFromSF();
     Get.put(LoginController());
     getToken();
@@ -52,6 +53,27 @@ class _SplashScreenState extends State<SplashScreen> {
         if (message.notification != null) {}
       },
     );
+  }
+  getaccessToSql() async {
+    try {
+      
+   var data=await  SQL.connection();
+   print("errrrrrrorrrrrrrr1${data.toString()}");
+   if (data==null) {
+     Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ConnectionFailed(),
+          ),
+          (route) => true,
+        );
+     
+   } else {
+     
+   }
+    } catch (e) {
+     print("error$e"); 
+    }
   }
 
   late FirebaseMessaging messaging;
@@ -125,7 +147,6 @@ class _SplashScreenState extends State<SplashScreen> {
         print("error");
       }
     } else {
-      Future.delayed(const Duration(milliseconds: 2000), () {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -133,7 +154,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           (route) => true,
         );
-      });
       return false;
     }
 
@@ -156,6 +176,14 @@ class _SplashScreenState extends State<SplashScreen> {
           users = DoctorModel.fromMap(value[0]);
         } catch (e) {
           print('Document with UUID $uuid does not exist.');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WelcomeScreen(),
+          ),
+          (route) => true,
+        );
+   
           return;
         }
 
@@ -163,9 +191,8 @@ class _SplashScreenState extends State<SplashScreen> {
         StaticData.doctor = users!.id;
         StaticData.doctorModel = users;
 
-        StaticData.updatetokken(
-            StaticData.token, users!.id.toString(), "doctor");
-        Future.delayed(const Duration(milliseconds: 1000), () {
+        // StaticData.updatetokken(
+        //     StaticData.token, users!.id.toString(), "doctor");
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -174,11 +201,9 @@ class _SplashScreenState extends State<SplashScreen> {
             (route) => true,
           );
         });
-      });
       print("Current user: $users");
     } catch (e) {
       print('Document with UUID $uuid does not exist.');
-      Future.delayed(const Duration(milliseconds: 1000), () {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -186,7 +211,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           (route) => true,
         );
-      });
+    
       print('Error fetching user data: $e');
     }
   }
@@ -205,6 +230,14 @@ class _SplashScreenState extends State<SplashScreen> {
           LoginController.to.getAllDoctor();
         } catch (e) {
           print('Document with UUID $uuid does not exist.');
+           Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WelcomeScreen(),
+          ),
+          (route) => true,
+        );
+    
           return;
         }
 
@@ -212,8 +245,8 @@ class _SplashScreenState extends State<SplashScreen> {
         StaticData.patient = users!.id;
         StaticData.patientmodel = users;
 
-        StaticData.updatetokken(
-            StaticData.token, users!.id.toString(), "patient");
+        // StaticData.updatetokken(
+        //     StaticData.token, users!.id.toString(), "patient");
         Future.delayed(const Duration(milliseconds: 2000), () {
           Navigator.pushAndRemoveUntil(
             context,
@@ -228,7 +261,7 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     } catch (e) {
       print('Document with UUID $uuid does not exist.');
-      Future.delayed(const Duration(milliseconds: 1000), () {
+    
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -236,7 +269,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           (route) => true,
         );
-      });
+      
 
       print('Error fetching user data: $e');
     }
