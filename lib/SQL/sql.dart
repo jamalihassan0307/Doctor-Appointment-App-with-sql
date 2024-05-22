@@ -2,9 +2,10 @@ import 'package:connect_to_sql_server_directly/connect_to_sql_server_directly.da
 
 class SQL {
   static var database = "DOASQL";
-  // static var ip = "192.168.100.7";
+  static var ip = "192.168.100.7";
+  
   // static var ip = "192.168.188.235";
-  static var ip = "192.168.137.205";
+  // static var ip = "192.168.137.205";
   static final connectToSqlServerDirectlyPlugin = ConnectToSqlServerDirectly();
   static Future<void> connection() {
     return connectToSqlServerDirectlyPlugin.initializeConnection(
