@@ -27,6 +27,8 @@ class StaticData {
   static PatientModel? patientmodel;
   static String token = "";
   static http.Response? response;
+
+
   static FirebaseFirestore firebase = FirebaseFirestore.instance;
   static FirebaseAuth auth = FirebaseAuth.instance;
   static FirebaseStorage storage = FirebaseStorage.instance;
@@ -34,8 +36,7 @@ class StaticData {
   static Future<bool> updateSlotsStatus(
       String database, String id, int status) async {
     try {
-      String id1 =
-          database.substring(0, 10).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      String id1 =database.substring(0, 10).replaceAll(RegExp(r'[^a-zA-Z]'), '');
       String query = "UPDATE dbo.${id1} SET ";
       query += "isAvailable = $status";
 

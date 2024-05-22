@@ -153,10 +153,11 @@ class LoginController extends GetxController {
         print("snaaaaaap    ${value}");
         PatientModel? model;
         try {
-          model = PatientModel.fromMap(value[0]);
+          model =await PatientModel.fromMap(value[0]);
           print("model doctor list${model.doctorList}");
           print("model doctor list${model.doctorList.length}");
         } catch (e) {
+          print("lsdfgjd${e}");
           Fluttertoast.showToast(
               msg: "User Not Found !",
               toastLength: Toast.LENGTH_SHORT,
