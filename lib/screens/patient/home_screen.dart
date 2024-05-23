@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
-import 'package:doctor_appointment_app/controller/patient/patientController.dart';
+// import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/screens/patient/appointment_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';

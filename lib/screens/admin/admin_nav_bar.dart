@@ -3,7 +3,7 @@ import 'package:doctor_appointment_app/screens/admin/admin_massage.dart';
 import 'package:doctor_appointment_app/screens/admin/AdminHomeScreen.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_schedule.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_setting.dart';
-import 'package:doctor_appointment_app/staticdata.dart';
+// import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';

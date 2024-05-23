@@ -4,7 +4,6 @@ import 'package:doctor_appointment_app/screens/patient/home_screen.dart';
 import 'package:doctor_appointment_app/screens/patient/messages_screen.dart';
 import 'package:doctor_appointment_app/screens/patient/schedule_screen.dart';
 import 'package:doctor_appointment_app/screens/patient/settings_screen.dart';
-import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
