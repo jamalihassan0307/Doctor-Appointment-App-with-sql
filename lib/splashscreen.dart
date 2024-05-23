@@ -13,6 +13,7 @@ import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart'as aaa;
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,10 +26,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2),(){  
+   SQL.connection(); 
       getDataFromSF();
-       getaccessToSql();
-    });
+   
  
     Get.put(LoginController());
     getToken();
@@ -59,27 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
       },
     );
   }
-  getaccessToSql() async {
-    try {
-      
-   var data=await  SQL.connection();
-   print("errrrrrrorrrrrrrr1${data.toString()}");
-   if (data==null) {
-    print("data6868");
-     Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const NoConnection(),
-          ),
-        );
-     
-   } else {
-       print("data686823");
-   }
-    } catch (e) {
-     print("error23423$e"); 
-    }
-  }
+   var data;
 
   late FirebaseMessaging messaging;
 
@@ -162,11 +142,16 @@ class _SplashScreenState extends State<SplashScreen> {
       var snapshot = SQL
           .get("SELECT * FROM DoctorModel where id='${uuid}'")
           .then((value) async {
-        print("snaaaaaap    ${value}");
+       print("snaaaaaap    ${value}");
 
-        print("get data");
+        print("get data$value");
         try {
-          users = DoctorModel.fromMap(value[0]);
+          if (value=="Error: java.sql.SQLException: Network error IOException: Connection timed out"||value.lenght==0) {
+             Navigator.push(context,MaterialPageRoute(builder: (context) => ConnectionFailed(),));
+            
+         }else{
+           users = DoctorModel.fromMap(value[0]);
+         }
         } catch (e) {
           print('Document with UUID $uuid does not exist.');
         Navigator.pushAndRemoveUntil(
@@ -214,13 +199,30 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       var snapshot = SQL
           .get("SELECT * FROM PatientModel where id='${uuid}'")
-          .then((value) async {
+          .then(( value) async {
         print("snaaaaaap    ${value}");
 
-        print("get data");
+        print("get data$value");
         try {
-          users = PatientModel.fromMap(value[0]);
+            if (value=="Error: java.sql.SQLException: Network error IOException: Connection timed out") {
+              print("aaasdadddasdadad");
+             Navigator.push(context,MaterialPageRoute(builder: (context) => ConnectionFailed(),));
+            
+         }else if(value.lenght==0){
+          
+          Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WelcomeScreen(),
+          ),
+          (route) => true,
+        );
+         }else{
+            users = PatientModel.fromMap(value[0]);
           LoginController.to.getAllDoctor();
+         }
+         
+         
         } catch (e) {
           print('Document with UUID $uuid does not exist.$e');
            Navigator.pushAndRemoveUntil(
