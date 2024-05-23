@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
-import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
@@ -62,13 +61,7 @@ class _AdminUpcomingScheduleState extends State<AdminUpcomingSchedule> {
                                         ),
                                       ),
                                       // subtitle: Text("${model!.bio}"),
-                                      trailing: model.patientimage == null
-                                          ? CircleAvatar(
-                                              radius: 25,
-                                              backgroundImage: AssetImage(
-                                                  "images/doctor1.png"),
-                                            )
-                                          : CircleAvatar(
+                                      trailing: CircleAvatar(
                                               radius: 25,
                                               backgroundImage: MemoryImage(
                                                   base64Decode(

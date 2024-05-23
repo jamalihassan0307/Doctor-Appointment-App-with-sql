@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
@@ -236,8 +235,24 @@ class _CalenderState extends State<Calender> {
 
                           query += " WHERE id = '${widget.model.id}'";
                           SQL.Update(query);
+                        
                         } else {
                           print("id presnt");
+                        }
+                        if (StaticData.patientmodel!.doctorList.contains(
+                              widget.model.id
+                            ) ==
+                            false) {
+                            StaticData.patientmodel!.doctorList
+                              .add(widget.model.id);
+                          String query1 = "UPDATE dbo.PatientModel SET ";
+                          query1 +=
+                              "doctorList = '${json.encode( StaticData.patientmodel!.doctorList)}'";
+
+                          query1 += " WHERE id = '${widget.model.id}'";
+                          SQL.Update(query1);
+                        } else {
+                            print("id presnt");
                         }
                       } else {
                         print("null");

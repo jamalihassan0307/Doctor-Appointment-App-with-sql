@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
-import 'package:doctor_appointment_app/screens/admin/adminHome.dart';
+import 'package:doctor_appointment_app/screens/admin/admin_nav_bar.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';

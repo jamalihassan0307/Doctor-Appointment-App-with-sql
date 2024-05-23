@@ -66,7 +66,7 @@ class PatientController extends GetxController {
 
   Future<DoctorModel?> getdoctorF(String id) async {
     try {
-      var snapshot = await SQL
+      await SQL
           .get("SELECT * FROM DoctorModel where id='${id}'")
           .then((value) async {
         print("snaaaaaap    ${value}");

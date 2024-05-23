@@ -46,14 +46,14 @@ class PatientModel {
       phonenumber: map['phonenumber'],
       password: map['password'],
       email: map['email'],
-      token: map['Token'],
+      token: map['token'],
       image: map['image'],
       audiocallStatus: (map['audiocallStatus']) == 1 ? true : false,
       callStatus: (map['callStatus']) == 1 ? true : false,
       type: map['type']??null,
       status: map['status'],
-      roomId: map['roomid']??null,
-      doctorList: List<String>.from(json.decode(map['doctorlist'])),
+      roomId: map['roomId']??null,
+      doctorList: List<String>.from(json.decode(map['doctorList'])),
     );
   }
 

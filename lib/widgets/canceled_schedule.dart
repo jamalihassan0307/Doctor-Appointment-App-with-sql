@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
-import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
@@ -61,13 +60,7 @@ class _CanceledScheduleState extends State<CanceledSchedule> {
                                       ),
                                     ),
                                     subtitle: Text("${model.bio}"),
-                                    trailing: model.docImage == null
-                                        ? CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage: AssetImage(
-                                                "images/doctor1.png"),
-                                          )
-                                        : CircleAvatar(
+                                    trailing:  CircleAvatar(
                                             radius: 25,
                                             backgroundImage: MemoryImage(
                                                 base64Decode(model.docImage)),

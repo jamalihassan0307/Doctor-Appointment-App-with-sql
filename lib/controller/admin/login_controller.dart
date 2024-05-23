@@ -1,15 +1,12 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
-import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorSlot.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
-import 'package:doctor_appointment_app/screens/admin/adminHome.dart';
+import 'package:doctor_appointment_app/screens/admin/admin_nav_bar.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -93,7 +90,7 @@ class LoginController extends GetxController {
 
   void signInWithEmailAndPassword(BuildContext context) async {
     try {
-      var snapshot = SQL
+      await SQL
           .get(
               "SELECT * FROM DoctorModel where email='${email.text}' AND password='${password.text}'")
           .then((value) async {
@@ -146,7 +143,7 @@ class LoginController extends GetxController {
 
   void signInWithEmailAndPassword1(BuildContext context) async {
     try {
-      var snapshot = SQL
+      await SQL
           .get(
               "SELECT * FROM PatientModel where email='${email.text}' AND password='${password.text}'")
           .then((value) async {

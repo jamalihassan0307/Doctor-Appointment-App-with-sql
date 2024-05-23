@@ -1,20 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
-import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
-import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/massage/chat_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
-import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/screens/patient/bookappointment.dart';
-import 'package:get_time_ago/get_time_ago.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final DoctorModel model;

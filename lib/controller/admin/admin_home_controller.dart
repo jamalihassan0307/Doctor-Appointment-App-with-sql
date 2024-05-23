@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -26,7 +25,7 @@ class AdminHomeController extends GetxController {
   String? patienttokken;
   Future<String> getpatienttokken(String id) async {
     try {
-      var snapshot = SQL
+      await SQL
           .get("SELECT * FROM PatientModel where id='${id}'")
           .then((value) async {
         print("snaaaaaap    ${value}");

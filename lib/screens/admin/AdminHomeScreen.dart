@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
-import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/admin/patient_profile.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
@@ -18,10 +17,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   var height, width;
   @override
   void initState() {
-    Get.put(AdminHomeController());
-    // StaticData.updatedoctorprofile();
-    AdminHomeController.to.getSchedule();
-    AdminHomeController.to.getAllPatient();
     super.initState();
   }
 

@@ -8,7 +8,7 @@ import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
-import 'package:doctor_appointment_app/screens/admin/adminHome.dart';
+import 'package:doctor_appointment_app/screens/admin/admin_nav_bar.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
 import 'package:get/get.dart';
@@ -139,21 +139,34 @@ class _SplashScreenState extends State<SplashScreen> {
     print("get data");
 
     try {
-      var snapshot = SQL
+      var snapshot =await SQL
           .get("SELECT * FROM DoctorModel where id='${uuid}'")
-          .then((value) async {
+          .then(( value) async {
        print("snaaaaaap    ${value}");
 
         print("get data$value");
         try {
-          if (value=="Error: java.sql.SQLException: Network error IOException: Connection timed out"||value.lenght==0) {
+         if (value=="Error: java.sql.SQLException: Network error IOException: Connection timed out") {
+              print("aaasdadddasdadad");
              Navigator.push(context,MaterialPageRoute(builder: (context) => ConnectionFailed(),));
             
-         }else{
-           users = DoctorModel.fromMap(value[0]);
          }
+        //  else if(value.isBlank){
+          
+        //   Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const WelcomeScreen(),
+        //   ),
+        //   (route) => true,
+        // );
+        //  }
+         else{
+          users = DoctorModel.fromMap(value[0]);
+         }
+         
         } catch (e) {
-          print('Document with UUID $uuid does not exist.');
+          print('Document with UUID $uuid does not exist.$e');
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -208,17 +221,19 @@ class _SplashScreenState extends State<SplashScreen> {
               print("aaasdadddasdadad");
              Navigator.push(context,MaterialPageRoute(builder: (context) => ConnectionFailed(),));
             
-         }else if(value.lenght==0){
+         }
+        //  else if(value.lenght==0){
           
-          Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
-          ),
-          (route) => true,
-        );
-         }else{
-            users = PatientModel.fromMap(value[0]);
+        //   Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const WelcomeScreen(),
+        //   ),
+        //   (route) => true,
+        // );
+        //  }
+         else{
+          users = PatientModel.fromMap(value[0]);
           LoginController.to.getAllDoctor();
          }
          

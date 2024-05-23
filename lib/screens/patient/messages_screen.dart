@@ -20,9 +20,7 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   @override
   void initState() {
-    Get.put(PatientChatController());
-    StaticData.updatepatientprofile()
-        .then((value) => PatientChatController.to.getdoctor());
+   
     super.initState();
   }
 

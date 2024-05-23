@@ -1,9 +1,13 @@
+import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
+import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/screens/patient/home_screen.dart';
 import 'package:doctor_appointment_app/screens/patient/messages_screen.dart';
 import 'package:doctor_appointment_app/screens/patient/schedule_screen.dart';
 import 'package:doctor_appointment_app/screens/patient/settings_screen.dart';
+import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NavBarRoots extends StatefulWidget {
   const NavBarRoots({Key? key}) : super(key: key);
@@ -22,6 +26,15 @@ class _NavBarRootsState extends State<NavBarRoots> {
   ];
 
   @override
+  void initState() {
+    
+    Get.put(PatientController());
+
+     Get.put(PatientChatController());
+    PatientController.to.getAllAppointment();
+    PatientChatController.to.getdoctor();
+    super.initState();
+  }
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

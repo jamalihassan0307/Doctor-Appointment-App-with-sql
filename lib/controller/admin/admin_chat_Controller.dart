@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';

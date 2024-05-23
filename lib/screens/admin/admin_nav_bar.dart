@@ -1,9 +1,15 @@
+import 'package:doctor_appointment_app/controller/admin/admin_chat_Controller.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_massage.dart';
 import 'package:doctor_appointment_app/screens/admin/AdminHomeScreen.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_schedule.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_setting.dart';
+import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
+
+
+import 'package:get/get.dart';
 
 class AdminNavBarRoots extends StatefulWidget {
   const AdminNavBarRoots({Key? key}) : super(key: key);
@@ -22,6 +28,19 @@ class _AdminNavBarRootsState extends State<AdminNavBarRoots> {
   ];
 
   @override
+  void initState() {
+    
+    Get.put(AdminHomeController());
+    Get.put(AdminHomeController());
+     Get.put(AdminChatController());
+    // StaticData.updatedoctorprofile();
+    AdminHomeController.to.getSchedule();
+    AdminHomeController.to.getAllPatient();
+    AdminChatController.to.getpatient();
+        
+    AdminHomeController.to.getAllAppointment();
+    super.initState();
+  }
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

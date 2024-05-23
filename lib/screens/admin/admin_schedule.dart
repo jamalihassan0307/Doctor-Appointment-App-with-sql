@@ -20,8 +20,6 @@ class _AdminScheduleState extends State<AdminSchedule> {
 
   @override
   void initState() {
-    Get.put(AdminHomeController());
-    AdminHomeController.to.getAllAppointment();
 
     super.initState();
   }

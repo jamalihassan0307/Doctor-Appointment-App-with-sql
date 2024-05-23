@@ -24,9 +24,7 @@ class AdminMessagesScreen extends StatefulWidget {
 class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
   @override
   void initState() {
-    Get.put(AdminChatController());
-    StaticData.updatedoctorprofile()
-        .then((value) => AdminChatController.to.getpatient());
+   
     super.initState();
   }
 
