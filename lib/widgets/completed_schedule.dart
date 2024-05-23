@@ -2,9 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
-import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
@@ -69,17 +67,11 @@ class _CompletedScheduleState extends State<CompletedSchedule> {
                                           ),
                                         ),
                                         subtitle: Text("${model.bio}"),
-                                        trailing: model.docImage == null
-                                            ? CircleAvatar(
-                                                radius: 25,
-                                                backgroundImage: AssetImage(
-                                                    "images/doctor1.png"),
-                                              )
-                                            : CircleAvatar(
+                                        trailing:  CircleAvatar(
                                                 radius: 25,
                                                 backgroundImage: MemoryImage(
                                                     base64Decode(
-                                                        model.docImage)),
+                                                        model.docimage)),
                                               )),
                                     Row(
                                       children: [

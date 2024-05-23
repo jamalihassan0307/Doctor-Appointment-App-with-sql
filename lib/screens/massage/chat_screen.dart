@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, deprecated_member_use
 import 'dart:convert';
 
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:doctor_appointment_app/controller/chatController.dart';
-import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/screens/massage/massagecard.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -109,29 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ],
                   ),
                 ),
-                // actions: [
-                //   Icon(
-                //     Icons.call,
-                //     color: Colors.white,
-                //     size: 25,
-                //   ),
-                //   SizedBox(
-                //     width: 8,
-                //   ),
-                //   Icon(
-                //     Icons.video_call,
-                //     color: Colors.white,
-                //     size: 25,
-                //   ),
-                //   SizedBox(
-                //     width: 8,
-                //   ),
-                //   Icon(
-                //     Icons.more_vert,
-                //     color: Colors.white,
-                //     size: 25,
-                //   ),
-                // ],
+              
               ),
             ),
             body: GetBuilder<ChatController>(

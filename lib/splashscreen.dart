@@ -1,7 +1,6 @@
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/screens/error_screen/connection_failed.dart';
-import 'package:doctor_appointment_app/screens/error_screen/no_connection.dart';
 import 'package:doctor_appointment_app/screens/massage/notification_service.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
@@ -13,7 +12,6 @@ import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path/path.dart'as aaa;
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -139,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print("get data");
 
     try {
-      var snapshot =await SQL
+      await SQL
           .get("SELECT * FROM DoctorModel where id='${uuid}'")
           .then(( value) async {
        print("snaaaaaap    ${value}");
@@ -210,7 +208,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> fetchpatientByUUID(String uuid, context) async {
     PatientModel? users;
     try {
-      var snapshot = SQL
+      SQL
           .get("SELECT * FROM PatientModel where id='${uuid}'")
           .then(( value) async {
         print("snaaaaaap    ${value}");

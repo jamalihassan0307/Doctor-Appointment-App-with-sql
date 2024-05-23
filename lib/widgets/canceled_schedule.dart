@@ -63,7 +63,7 @@ class _CanceledScheduleState extends State<CanceledSchedule> {
                                     trailing:  CircleAvatar(
                                             radius: 25,
                                             backgroundImage: MemoryImage(
-                                                base64Decode(model.docImage)),
+                                                base64Decode(model.docimage)),
                                           )),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 15),

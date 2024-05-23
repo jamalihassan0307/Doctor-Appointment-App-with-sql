@@ -1,11 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
-import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
@@ -121,7 +119,7 @@ class StaticData {
 
   static Future<String> getdoctortokken(String id) async {
     try {
-      var snapshot = SQL
+       SQL
           .get("SELECT * FROM DoctorModel where id='${id}'")
           .then((value) async {
         print("snaaaaaap    ${value}");
@@ -144,7 +142,7 @@ class StaticData {
 
   static Future<void> updatedoctorprofile() async {
     try {
-      var snapshot = SQL
+ SQL
           .get("SELECT * FROM DoctorModel where id='${doctorModel!.id}'")
           .then((value) async {
         print("snaaaaaap    ${value}");

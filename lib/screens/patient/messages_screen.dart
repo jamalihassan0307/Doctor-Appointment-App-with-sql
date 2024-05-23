@@ -37,19 +37,36 @@ class _MessagesScreenState extends State<MessagesScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                  child: Center(
-                    child: Text(
-                      "Messages",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                        child: Center(
+                          child: Text(
+                            "Messages",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      InkWell(
+                        onTap: (){
+                          PatientChatController.to.getdoctor().then((value) {
+                            setState(() {
+                              
+                            });
+                          });
+                        },
+                        child: Icon(Icons.refresh))
+                    ],
                   ),
                 ),
+
                 SizedBox(
                   height: 20,
                 ),

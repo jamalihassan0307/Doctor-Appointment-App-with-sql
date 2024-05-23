@@ -3,14 +3,15 @@ import 'package:connect_to_sql_server_directly/connect_to_sql_server_directly.da
 
 class SQL {
   static var database = "DOASQL";
-  static var ip = "192.168.100.7";
+  static var ip = "192.168.117.235";
+  // static var ip = "192.168.100.7";
   // static var ip = "192.168.188.235";
   // static var ip = "192.168.137.205";
   static final connectToSqlServerDirectlyPlugin = ConnectToSqlServerDirectly();
-  static Future connection() async {
+  static Future connection()  {
    
  
-    return await connectToSqlServerDirectlyPlugin.initializeConnection(
+    return  connectToSqlServerDirectlyPlugin.initializeConnection(
       ip,
       database,
       'ali',   
@@ -26,16 +27,9 @@ class SQL {
   }
 static Future get(String query) async {
   print("query: $query");
-  await connection();
-  // return await connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query);
+   connection();
   try {
-    // var result =await connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query).onError((error, stackTrace) {
-    //   print("error${error}");
-    // });
-       
-    // if (result == null || result.isEmpty) {
-    //   return Exception("No data returned or query failed");
-    // }
+  
     return connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query);
   } catch (e) {
     print("Error occurred: $e");

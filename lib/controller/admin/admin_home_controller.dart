@@ -54,14 +54,21 @@ class AdminHomeController extends GetxController {
     update();
     print("dadada");
     loadingapp = true;
-    SQL
+    try {
+        SQL
         .get(
             "select * from dbo.AppointmentModel where doctorid='${StaticData.doctorModel!.id}'")
         .then((value) {
+          print("aefwserftetwerta${value}");
       List<Map<String, dynamic>> tempResult =
           value.cast<Map<String, dynamic>>();
       for (var element in tempResult) {
-        allAppointment.add(AppointmentModel.fromMap(element));
+        try {
+           allAppointment.add(AppointmentModel.fromMap(element));
+        } catch (e) {
+          print("werwer1234$e");
+        }
+       
       }
       print("allAppointment${allAppointment}");
       print("allAppointment${allAppointment.length}");
@@ -69,6 +76,10 @@ class AdminHomeController extends GetxController {
       seperatedata();
       update();
     });
+    } catch (e) {
+      print("werwer$e");
+    }
+  
   }
 
   List<PatientModel> allPatients = [];

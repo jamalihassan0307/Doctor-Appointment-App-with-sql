@@ -94,14 +94,20 @@ class ChatController extends GetxController {
           }
         } catch (e) {
           print("asddafdsf${value[0]}");
-          if (value[0] == "E") {
+          if (value[0] == "E") { 
+            var a=await SQL.get(
+                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
+if (a=="Error: java.sql.SQLException: There is already an object named '$id1' in the database.") {
+  print("table exist already");
+}else{ await SQL
+                .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
+print("gdgdggi76786868");
+}
+           
+          
           } else {
             print("errrrrrrrrrrrrror");
-            await SQL.get(
-                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
-            await SQL
-                .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
-          }
+           }
 
           // print("errrrrrrrrrrrrror");
           // await SQL.get(

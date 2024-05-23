@@ -202,7 +202,7 @@ class _CalenderState extends State<Calender> {
                         id: id,
                         patientid: StaticData.patientmodel!.id,
                         doctorid: widget.model.id,
-                        docImage: widget.model.image!,
+                        docimage: widget.model.image!,
                         doctername: widget.model.fullname,
                         patientname: StaticData.patientmodel!.fullname,
                         patientimage: StaticData.patientmodel!.image,
@@ -271,7 +271,7 @@ class _CalenderState extends State<Calender> {
                     //   "Appointment",
                     //   "Send appointment request from ${StaticData.patientmodel!.fullname} at ${model.time}",
                     //   widget.model.token,
-                    // );
+                    // ); 
 
                     Fluttertoast.showToast(
                       msg: "Appointment request send sucessfuly !",

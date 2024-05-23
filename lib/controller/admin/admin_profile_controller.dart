@@ -96,7 +96,7 @@ class AdminProfileController extends GetxController {
 
       String query = "UPDATE dbo.DoctorModel SET ";
       query += "fullname = '${name.text}',";
-      query += "email =' ${email.text}',";
+      query += "email ='${email.text}',";
       query += "password = '${password.text}',";
       query += "address = '${address.text}',";
       query += "specialty = '${specilest.text}',";

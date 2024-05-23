@@ -61,16 +61,10 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                       ),
                                     ),
                                     subtitle: Text("${model.bio}"),
-                                    trailing: model.docImage == null
-                                        ? CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage: AssetImage(
-                                                "images/doctor1.png"),
-                                          )
-                                        : CircleAvatar(
+                                    trailing:CircleAvatar(
                                             radius: 25,
                                             backgroundImage: MemoryImage(
-                                                base64Decode(model.docImage))),
+                                                base64Decode(model.docimage))),
                                   ),
                                   Padding(
                                     padding:
