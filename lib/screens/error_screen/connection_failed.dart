@@ -1,4 +1,5 @@
 import 'package:doctor_appointment_app/screens/error_screen/primaryButton.dart';
+import 'package:doctor_appointment_app/splashscreen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,11 @@ class _ConnectionFailedState extends State<ConnectionFailed> {
               childText: 'Retry',
               buttonColor: Apptheme.primary,
               childTextColor: Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                print("dfsdf");
+                 Navigator.push(context,MaterialPageRoute(builder: (context) => SplashScreen(),));
+                
+              },
             ),
           ),
         ],
