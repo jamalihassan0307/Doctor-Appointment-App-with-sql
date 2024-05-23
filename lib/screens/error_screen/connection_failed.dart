@@ -1,13 +1,20 @@
 import 'package:doctor_appointment_app/screens/error_screen/primaryButton.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
+import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:flutter/material.dart';
 
 
-class ConnectionFailed extends StatelessWidget {
+class ConnectionFailed extends StatefulWidget {
   const ConnectionFailed({Key? key}) : super(key: key);
 
   @override
+  State<ConnectionFailed> createState() => _ConnectionFailedState();
+}
+
+class _ConnectionFailedState extends State<ConnectionFailed> {
+  @override
   Widget build(BuildContext context) {
+    print("data68681111");
     return Scaffold(
       body: Stack(
         children: [
@@ -40,7 +47,7 @@ class ConnectionFailed extends StatelessWidget {
             right: 130,
             child: ReusablePrimaryButton(
               childText: 'Retry',
-              buttonColor: Colors.green,
+              buttonColor: Apptheme.primary,
               childTextColor: Colors.white,
               onPressed: () {},
             ),

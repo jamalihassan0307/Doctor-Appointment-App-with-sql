@@ -16,9 +16,13 @@ class SQL {
       'ali',   
       '12345',
       instance: 'node',
-    ).onError((error, stackTrace){
-          
-    print("errrrrrrorrrrrrrr${error}");  
+    ).then(( a){
+        //  if (a==null) {
+           
+        //  } else {
+           
+        //  } 
+    print("errrrrrrorrrrrrrr${a}");  
     return Future(() => true);
     });
  

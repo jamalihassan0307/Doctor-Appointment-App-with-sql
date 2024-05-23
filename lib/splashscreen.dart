@@ -1,8 +1,10 @@
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/screens/error_screen/connection_failed.dart';
+import 'package:doctor_appointment_app/screens/error_screen/no_connection.dart';
 import 'package:doctor_appointment_app/screens/massage/notification_service.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
+import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
@@ -23,8 +25,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    getaccessToSql();
-    getDataFromSF();
+    Future.delayed(Duration(seconds: 2),(){  
+      getDataFromSF();
+       getaccessToSql();
+    });
+ 
     Get.put(LoginController());
     getToken();
     super.initState();
@@ -60,19 +65,19 @@ class _SplashScreenState extends State<SplashScreen> {
    var data=await  SQL.connection();
    print("errrrrrrorrrrrrrr1${data.toString()}");
    if (data==null) {
-     Navigator.pushAndRemoveUntil(
+    print("data6868");
+     Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ConnectionFailed(),
+            builder: (context) => const NoConnection(),
           ),
-          (route) => true,
         );
      
    } else {
-     
+       print("data686823");
    }
     } catch (e) {
-     print("error$e"); 
+     print("error23423$e"); 
     }
   }
 
@@ -85,27 +90,15 @@ class _SplashScreenState extends State<SplashScreen> {
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Apptheme.primary ,
       body: Center(
         child: Container(
           height: height,
           width: width,
-          child: Stack(
-            children: [
-              Positioned(
-                left: 20,
-                bottom: 680,
-                child: Text(
-                  "We Make Easy to Appointment",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 21, 43, 56),
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              Center(child: Image(image: AssetImage("images/splash.gif"))),
-            ],
-          ),
+          child: Center(child:  Image.asset(
+            "images/well.gif",
+            color:Colors.white
+          )),
         ),
       ),
     );
@@ -203,7 +196,7 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       print("Current user: $users");
     } catch (e) {
-      print('Document with UUID $uuid does not exist.');
+      print('Document with UUID $uuid does not exist.$e');
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -229,7 +222,7 @@ class _SplashScreenState extends State<SplashScreen> {
           users = PatientModel.fromMap(value[0]);
           LoginController.to.getAllDoctor();
         } catch (e) {
-          print('Document with UUID $uuid does not exist.');
+          print('Document with UUID $uuid does not exist.$e');
            Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
