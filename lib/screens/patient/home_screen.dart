@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     String user2 = "15617030-613d-497a-944b-9810bec14c4c";
                     String a = StaticData.chatRoomId(user1, user2);
                     String id1 =
-                        a.substring(0, 20).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+                        a.replaceAll(RegExp(r'[^a-zA-Z]'), '');
                     print("data1${a}  sdsf${id1}");
                     print("2qweqweqeqeqwe        ${a}");
                     // StaticData.openWhatsAppChat();

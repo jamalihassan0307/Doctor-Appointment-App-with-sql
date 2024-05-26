@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/admin_chat_Controller.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/screens/massage/m_date_util.dart';
@@ -41,18 +42,39 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                  child: Center(
-                    child: Text(
-                      "Messages1",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                      child: Center(
+                        child: Text(
+                          "Messages1",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+
+                    SizedBox(width:width*0.02),
+                     InkWell(
+                        onTap: (){
+
+                         obj.getpatientmessageRead(false);
+                        },
+                        child: Icon(Icons.done_all)),
+                        SizedBox(width:width*0.02),
+                     InkWell(
+                        onTap: (){
+                         obj.getpatientmessageRead(true);
+                       
+                        },
+                        child: Icon(Icons.done_all,color: Colors.blue,),),
+                            SizedBox(width:width*0.02),
+                  ],
                 ),
                 SizedBox(
                   height: 20,
@@ -69,11 +91,11 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                         itemCount: obj.patientList.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          var message = obj.messageList[index]![0];
-                          List<Message> unread = [];
-                          if (obj.messageList.isNotEmpty &&
-                              obj.messageList[index]![0] != null) {
-                            message = obj.messageList[index]!.last!;
+                          // var message = obj.messageList[index]![0];
+                          // List<Message> unread = [];
+                          // if (obj.messageList.isNotEmpty &&
+                          //     obj.messageList[index]![0] != null) {
+                          //   message = obj.messageList[index]!.last!;
                             // unread!.clear();
                             // unread = obj.messageList[index]!
                             //     .map((doc) => Message.fromJson(doc))
@@ -82,7 +104,7 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                             //         message!.fromId !=
                             //         StaticData.doctorModel!.id)
                             //     .toList();
-                          } else {}
+                          // } else {}
                           if (obj.patientList.isEmpty) {
                             return SizedBox(
                               height: height * 0.8,
@@ -91,8 +113,10 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                               ),
                             );
                           } else {
-                            return obj.messageList[index]!.isEmpty
-                                ? Padding(
+                            return
+                            //  obj.messageList[index]!.isEmpty
+                            //     ?
+                                 Padding(
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: ListTile(
                                       onTap: () {
@@ -139,110 +163,111 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                                         ),
                                       ),
                                       trailing: Text(
-                                        "12:30 pm",
+                                        "----- pm",
                                         style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.black54,
                                         ),
                                       ),
                                     ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 2, right: 5),
-                                    child: ListTile(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ChatScreen(
-                                                image: obj
-                                                    .patientList[index].image,
-                                                name: obj.patientList[index]
-                                                    .fullname,
-                                                id: obj.patientList[index].id,
-                                                current:
-                                                    StaticData.doctorModel!.id,
-                                                currentimage: StaticData
-                                                    .doctorModel!.image!,
-                                                currentname: StaticData
-                                                    .doctorModel!.fullname,
-                                                tokken: obj
-                                                    .patientList[index].token,
-                                              ),
-                                            ));
-                                      },
-                                      leading: CircleAvatar(
-                                        radius: 30,
-                                        backgroundImage: MemoryImage(base64Decode(
-                                            "${obj.patientList[index].image}")),
-                                      ),
-                                      title: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: width * 0.30,
-                                            child: Text(
-                                              "${obj.patientList[index].fullname}",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                                overflow: TextOverflow.ellipsis,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: width * 0.30,
-                                            child: Text(
-                                              "${MyDateUtil.getMessageTime(context: context, time: message!.sent!)}",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                overflow: TextOverflow.ellipsis,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      subtitle: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: width * 0.25,
-                                            child: Text(
-                                              "${message.msg}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ),
-                                          if (unread.length != 0)
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 40),
-                                              child: CircleAvatar(
-                                                backgroundColor:
-                                                    Apptheme.primary,
-                                                child: Text(
-                                                  unread.length < 99
-                                                      ? "${unread.length}"
-                                                      : "99+",
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                radius: 15,
-                                              ),
-                                            )
-                                        ],
-                                      ),
-                                    ),
                                   );
+                                // : Padding(
+                                //     padding: const EdgeInsets.only(
+                                //         bottom: 2, right: 5),
+                                //     child: ListTile(
+                                //       onTap: () {
+                                //         Navigator.push(
+                                //             context,
+                                //             MaterialPageRoute(
+                                //               builder: (context) => ChatScreen(
+                                //                 image: obj
+                                //                     .patientList[index].image,
+                                //                 name: obj.patientList[index]
+                                //                     .fullname,
+                                //                 id: obj.patientList[index].id,
+                                //                 current:
+                                //                     StaticData.doctorModel!.id,
+                                //                 currentimage: StaticData
+                                //                     .doctorModel!.image!,
+                                //                 currentname: StaticData
+                                //                     .doctorModel!.fullname,
+                                //                 tokken: obj
+                                //                     .patientList[index].token,
+                                //               ),
+                                //             ));
+                                //       },
+                                //       leading: CircleAvatar(
+                                //         radius: 30,
+                                //         backgroundImage: MemoryImage(base64Decode(
+                                //             "${obj.patientList[index].image}")),
+                                //       ),
+                                //       title: Row(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.spaceBetween,
+                                //         children: [
+                                //           SizedBox(
+                                //             width: width * 0.30,
+                                //             child: Text(
+                                //               "${obj.patientList[index].fullname}",
+                                //               style: TextStyle(
+                                //                 fontWeight: FontWeight.bold,
+                                //                 fontSize: 16,
+                                //                 overflow: TextOverflow.ellipsis,
+                                //                 color: Colors.black54,
+                                //               ),
+                                //             ),
+                                //           ),
+                                //           SizedBox(
+                                //             width: width * 0.30,
+                                //             child: Text(
+                                //               "${MyDateUtil.getMessageTime(context: context, time: message!.sent!)}",
+                                //               style: TextStyle(
+                                //                 fontSize: 14,
+                                //                 overflow: TextOverflow.ellipsis,
+                                //                 color: Colors.black54,
+                                //               ),
+                                //             ),
+                                //           )
+                                //         ],
+                                //       ),
+                                //       subtitle: Row(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.spaceBetween,
+                                //         children: [
+                                //           SizedBox(
+                                //             width: width * 0.25,
+                                //             child: Text(
+                                //               "${message.msg}",
+                                //               maxLines: 1,
+                                //               overflow: TextOverflow.ellipsis,
+                                //               style: TextStyle(
+                                //                 fontSize: 16,
+                                //                 color: Colors.black54,
+                                //               ),
+                                //             ),
+                                //           ),
+                                //           if (unread.length != 0)
+                                //             Padding(
+                                //               padding: const EdgeInsets.only(
+                                //                   right: 40),
+                                //               child: CircleAvatar(
+                                //                 backgroundColor:
+                                //                     Apptheme.primary,
+                                //                 child: Text(
+                                //                   unread.length < 99
+                                //                       ? "${unread.length}"
+                                //                       : "99+",
+                                //                   style: TextStyle(
+                                //                       color: Colors.white),
+                                //                 ),
+                                //                 radius: 15,
+                                //               ),
+                                //             )
+                                //         ],
+                                //       ),
+                                //     ),
+                                //   );
+                          
                           }
                         },
                       ),

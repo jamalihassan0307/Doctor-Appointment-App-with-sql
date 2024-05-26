@@ -14,6 +14,30 @@ class PatientController extends GetxController {
   List<AppointmentModel> requested = [];
   List<AppointmentModel> confirmed = [];
   List<AppointmentModel> cencal = [];
+  updateList(String id,int status,AppointmentModel model){
+if (requested.any((element) => element.id==id)) {
+  requested.removeWhere((element) =>  element.id==id);
+} else if(confirmed.any((element) => element.id==id)){
+   confirmed.removeWhere((element) =>  element.id==id);
+}else if(cencal.any((element) => element.id==id)){
+ cencal.removeWhere((element) =>  element.id==id);
+}else{
+  print("skip");
+}
+if (status==1) {
+  model.status=1;
+  requested.add(model);
+} else if(status==2){
+   model.status=1;
+  confirmed.add(model);
+}else if(status==0){ 
+ model.status=1;
+  cencal.add(model);
+}else{
+print("skip21");
+}
+update();
+  }
   seperatedata() {
     if (allAppointment.isNotEmpty) {
       requested.addAll(allAppointment.where((element) => element.status == 1));
@@ -36,16 +60,16 @@ class PatientController extends GetxController {
             "select * from dbo.AppointmentModel where patientid='${StaticData.patientmodel!.id}'")
         .then((value) {
           print("valueeeeeeeeeeeeeeee${value}");
-      // List<Map<String, dynamic>> tempResult =
-      //     value.cast<Map<String, dynamic>>();
-      // for (var element in tempResult) {
-      //   allAppointment.add(AppointmentModel.fromMap(element));
-      // }
-      // print("alldoctor${allAppointment}");
-      // print("alldoctor${allAppointment.length}");
-      // loading = false;
-      // seperatedata();
-      // update();
+      List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        allAppointment.add(AppointmentModel.fromMap(element));
+      }
+      print("alldoctor${allAppointment}");
+      print("alldoctor${allAppointment.length}");
+      loading = false;
+      seperatedata();
+      update();
     });
   }
 

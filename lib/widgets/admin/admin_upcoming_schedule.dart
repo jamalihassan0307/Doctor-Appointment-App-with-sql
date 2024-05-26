@@ -20,7 +20,9 @@ class _AdminUpcomingScheduleState extends State<AdminUpcomingSchedule> {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    return GetBuilder<AdminHomeController>(builder: (obj) {
+    return GetBuilder<AdminHomeController>(
+      id: "AppointmentModel",
+      builder: (obj) {
       return SizedBox(
           height: height * 0.65,
           width: width,
@@ -149,22 +151,16 @@ class _AdminUpcomingScheduleState extends State<AdminUpcomingSchedule> {
                                         onTap: () {
                                           model = obj.requested[index];
 
-                                          StaticData.updateAppointmentStatus(
+                                          obj.updateAppointmentStatus(
                                               model.id, 0);
-                                          obj.getSchedule();
+                                          obj.updateList(
+                                              model.id, 0,model);
+                                          // obj.getSchedule();
 
-                                          // obj.getpatienttokken(
-                                          //         model.patientid)
-                                          //     .then((value) {
-                                          //   StaticData.sendNotifcation(
-                                          //       "Appointment cencal",
-                                          //       "${model.doctername} cencal your appointment at ${model.time}",
-                                          //       obj.patienttokken!);
-                                          // });
-
-                                          StaticData.updateSlotsStatus(
+                                       
+                                          obj.updateSlotsStatus(
                                               model.doctorid, model.slotsid, 1);
-                                          obj.getAllAppointment();
+                                          // obj.getAllAppointment();
                                         },
                                         child: Container(
                                           width: 150,
@@ -191,8 +187,10 @@ class _AdminUpcomingScheduleState extends State<AdminUpcomingSchedule> {
                                         onTap: () {
                                           model = obj.requested[index];
 
-                                          StaticData.updateAppointmentStatus(
+                                          obj.updateAppointmentStatus(
                                               model.id, 2);
+                                          obj.updateList(
+                                              model.id, 2,model);
 
                                           // obj
                                           //     .getpatienttokken(model.patientid)

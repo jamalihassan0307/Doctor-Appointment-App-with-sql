@@ -204,7 +204,7 @@ class SignupController extends GetxController {
       SQL
           .post("INSERT INTO dbo.PatientModel VALUES (${model.toMap()})")
           .then((value) {
-        clearForm();
+        // clearForm();
         Fluttertoast.showToast(
           msg: "Signup Successful",
           toastLength: Toast.LENGTH_SHORT,
@@ -214,11 +214,11 @@ class SignupController extends GetxController {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(),
-            ));
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => LoginScreen(),
+        //     ));
       });
     } catch (e) {
       print("eror${e.toString()}");

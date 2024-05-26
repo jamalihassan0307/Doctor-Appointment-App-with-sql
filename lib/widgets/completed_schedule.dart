@@ -61,7 +61,7 @@ class _CompletedScheduleState extends State<CompletedSchedule> {
                                   children: [
                                     ListTile(
                                         title: Text(
-                                          "Dr.${model.doctername}",
+                                          "Dr.${model.doctorname}",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),

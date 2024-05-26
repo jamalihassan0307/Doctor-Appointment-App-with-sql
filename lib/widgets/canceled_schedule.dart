@@ -54,7 +54,7 @@ class _CanceledScheduleState extends State<CanceledSchedule> {
                               children: [
                                 ListTile(
                                     title: Text(
-                                      "Dr.${model.doctername}",
+                                      "Dr.${model.doctorname}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),

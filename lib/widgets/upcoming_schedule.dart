@@ -55,7 +55,7 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                 children: [
                                   ListTile(
                                     title: Text(
-                                      "Dr.${model.doctername}",
+                                      "Dr.${model.doctorname}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -146,18 +146,16 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                     children: [
                                       InkWell(
                                         onTap: () async {
+
                                           model = obj.requested[index];
                                           await StaticData
                                               .updateAppointmentStatus(
                                                   model.id, 0);
+                                                  obj.updateList(model.id, 0 ,model);
                                           StaticData.getdoctortokken(
                                                   model.doctorid)
                                               .then((value) {
-                                            // StaticData.sendNotifcation(
-                                            //     "Appointment cencal",
-                                            //     "${model.patientname} cencal appointment at ${model.time}",
-                                            //     value);
-                                            // });
+                                           
                                           });
 
                                           await StaticData.updateSlotsStatus(

@@ -40,7 +40,7 @@ class _MessageCardState extends State<MessageCard> {
   }
 
   Widget _blueMessage() {
-    if (widget.message.readS == "") {
+    if (widget.message.readn == "") {
       ChatController.my.updateMessageReadStatus(widget.message, widget.chatID);
     }
 
@@ -160,9 +160,9 @@ class _MessageCardState extends State<MessageCard> {
                     Icons.remove_red_eye,
                     color: Colors.black,
                   ),
-                  name: widget.message.readS == null
+                  name: widget.message.readn == null ||widget.message.readn==''
                       ? 'Read At: Not seen yet'
-                      : 'Read At: ${MyDateUtil.getMessageTime(context: context, time: widget.message.readS!)}',
+                      : 'Read At: ${MyDateUtil.getMessageTime(context: context, time: widget.message.readn!)}',
                   onTap: () {}),
             ],
           );

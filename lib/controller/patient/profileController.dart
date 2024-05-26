@@ -73,9 +73,9 @@ class ProfileController extends GetxController {
       });
     } else {
       String query = "UPDATE dbo.PatientModel SET ";
-      query += "fullname = ${name.text}";
-      query += "email = ${email.text}";
-      query += "password = ${password.text}";
+      query += "fullname = '${name.text}'";
+      query += "email = '${email.text}'";
+      query += "password = '${password.text}'";
 
       query += " WHERE id = '${StaticData.patientmodel!.id}'";
       await SQL.Update(query);

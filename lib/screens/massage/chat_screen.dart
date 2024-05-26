@@ -36,12 +36,12 @@ class _ChatScreenState extends State<ChatScreen> {
   final FocusNode _textFocusNode = FocusNode();
   @override
   void initState() {
+    super.initState();
     Get.put(ChatController());
     ChatController.my.getAllMessages(StaticData.chatRoomId(
       widget.current,
       widget.id,
     ));
-    super.initState();
   }
 
   var height, width;
@@ -195,7 +195,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             widget.tokken,
                             widget.currentname);
 
-                        obj.textController.text = '';
                       }
                     },
                     decoration: InputDecoration(

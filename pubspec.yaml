@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   custom_clippers: ^2.0.0
   connect_to_sql_server_directly: 
+  mysql1:
   email_validator: 
   firebase_messaging: ^14.7.4
   get: 

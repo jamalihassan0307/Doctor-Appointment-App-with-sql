@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
+import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorSlot.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -203,7 +204,7 @@ class _CalenderState extends State<Calender> {
                         patientid: StaticData.patientmodel!.id,
                         doctorid: widget.model.id,
                         docimage: widget.model.image!,
-                        doctername: widget.model.fullname,
+                        doctorname: widget.model.fullname,
                         patientname: StaticData.patientmodel!.fullname,
                         patientimage: StaticData.patientmodel!.image,
                         slotsid: slots!.id,
@@ -211,8 +212,8 @@ class _CalenderState extends State<Calender> {
                         createdtime: DateTime.now().microsecondsSinceEpoch,
                         status: 1,
                         rating: 0.0);
-
-                    LoginController.to.getdoctorSlotes(widget.model.id);
+PatientController.to.requested.add(model12);
+                    // LoginController.to.getdoctorSlotes(widget.model.id);
                     await LoginController.to
                         .getDoctorId(widget.model.id)
                         .then((model) {

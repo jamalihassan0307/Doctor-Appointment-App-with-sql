@@ -13,6 +13,63 @@ class AdminHomeController extends GetxController {
   List<AppointmentModel> requested = [];
   List<AppointmentModel> confirmed = [];
   List<AppointmentModel> cencal = [];
+
+   Future<bool> updateSlotsStatus(
+      String database, String id, int status) async {
+    try {
+      String id1 =database.substring(0, 10).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      String query = "UPDATE dbo.${id1} SET ";
+      query += "isAvailable = $status";
+
+      query += " WHERE id = '${id}'";
+      SQL.Update(query);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  updateList(String id,int status,AppointmentModel model){
+if (requested.any((element) => element.id==id)) {
+  requested.removeWhere((element) =>  element.id==id);
+} else if(confirmed.any((element) => element.id==id)){
+   confirmed.removeWhere((element) =>  element.id==id);
+}else if(cencal.any((element) => element.id==id)){
+ cencal.removeWhere((element) =>  element.id==id);
+}else{
+  print("skip");
+}
+if (status==1) {
+  model.status=1;
+  requested.add(model);
+} else if(status==2){
+   model.status=1;
+  confirmed.add(model);
+}else if(status==0){ 
+ model.status=1;
+  cencal.add(model);
+}else{
+print("skip21");
+}
+update(["AppointmentModel"]);
+  }
+
+   Future<bool> updateAppointmentStatus(String id, int status) async {
+    
+    
+    
+    try {
+      String query = "UPDATE dbo.AppointmentModel SET ";
+      query += "status = $status";
+
+      query += " WHERE id = '${id}'";
+      SQL.Update(query);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+
   seperatedata() {
     if (allAppointment.isNotEmpty) {
       requested.addAll(allAppointment.where((element) => element.status == 1));
@@ -92,9 +149,12 @@ class AdminHomeController extends GetxController {
         SQL
             .get("select * from dbo.PatientModel where id='${element}'")
             .then((value) {
+              print("value$value");
           try {
             allPatients.add(PatientModel.fromMap(value[0]));
-          } catch (e) {}
+          } catch (e) {
+            print("errrrr${e}");
+          }
           update();
         });
       }

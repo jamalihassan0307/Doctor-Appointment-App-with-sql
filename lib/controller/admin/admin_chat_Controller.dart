@@ -39,7 +39,7 @@ class AdminChatController extends GetxController {
         String name = StaticData.chatRoomId(
             patientList[index].id, StaticData.doctorModel!.id);
 
-        String id1 = name.substring(0, 20).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+        String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
         print("data1${name}  sdsf${id1}");
         try {
           SQL.get("select * from dbo.${id1}").then((value) {
@@ -77,4 +77,78 @@ class AdminChatController extends GetxController {
       update();
     } else {}
   }
+  List<Message> read=[];
+Future<void> getpatientmessageRead(bool readr) async {
+  print("data");
+
+  this.read.clear(); 
+   if (patientList.isNotEmpty) {
+    String query = '';
+    String old = '';
+
+    for (var index = 0; index < patientList.length; index++) {
+      
+      String name = StaticData.chatRoomId(
+          patientList[index].id, StaticData.doctorModel!.id);
+
+      // Create a unique identifier by removing non-alphabetic characters
+      String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      print("data1$name  sdsf$id1");
+
+      if (index == 0) {
+        query += 'SELECT $id1.toId, $id1.msg, $id1.readn, $id1.fromId, $id1.sent FROM dbo.$id1 AS $id1';
+      } else {
+        query += ' INNER JOIN dbo.$id1 AS $id1';  
+        if (readr) 
+        query += ' ON $id1.readn = \'\'';
+        else
+        query += ' ON $id1.readn !=$old.readn';
+      }
+      old=id1;
+    }
+
+    // Add where clause to ensure all selected rows have readn based on the read parameter
+    query += ' WHERE ' + patientList.map((patient) {
+      String name = StaticData.chatRoomId(
+          patient.id, StaticData.doctorModel!.id);
+      String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      return readr ? '$id1.readn = \'\'': '$id1.readn IS NOT NULL';
+    }).join(' AND ');
+
+    print("query45667567$query");
+    try {
+      await SQL.get(query).then((value) {
+        try {
+          List<Map<String, dynamic>> tempResult =
+              value.cast<Map<String, dynamic>>();
+          List<Message> list = [];
+
+          for (var e in tempResult) {
+            list.add(Message.fromJson(e));
+          }
+          this.read.addAll(list);
+          print("aadadadd${this.read}");
+        } catch (e) {
+          print("Error while parsing the result: $e");
+        }
+        update();
+      }).catchError((error) {
+        print("Error while executing the query: $error");
+      });
+    } catch (e) {
+      print("Exception: $e");
+    }
+
+    this.read.sort(
+      (a, b) => a.sent!.compareTo(b.sent!),
+    );
+
+    print("read${this.read}");
+    loading = false;
+    update();
+  } else {
+    print("patientList is empty");
+  }
+}
+
 }

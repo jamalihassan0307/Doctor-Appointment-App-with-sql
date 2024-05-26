@@ -3,15 +3,14 @@ import 'package:connect_to_sql_server_directly/connect_to_sql_server_directly.da
 
 class SQL {
   static var database = "DOASQL";
-  static var ip = "192.168.117.235";
-  // static var ip = "192.168.100.7";
+  // static var ip = "192.168.117.235";
+  static var ip = "192.168.100.7";
+  // static var ip = "127.0.0.1";
   // static var ip = "192.168.188.235";
   // static var ip = "192.168.137.205";
   static final connectToSqlServerDirectlyPlugin = ConnectToSqlServerDirectly();
-  static Future connection()  {
-   
- 
-    return  connectToSqlServerDirectlyPlugin.initializeConnection(
+ static Future<void> connection()  {
+   return  connectToSqlServerDirectlyPlugin.initializeConnection(
       ip,
       database,
       'ali',   
@@ -20,26 +19,22 @@ class SQL {
     ); 
   }
 
-  static Future post(String query) {
-    print("query${query}");
-    connection();
+  static Future<void> post(String query)  {
+    print("query: $query");
+    // await connection();
     return connectToSqlServerDirectlyPlugin.getStatusOfQueryResult(query);
   }
-static Future get(String query) async {
-  print("query: $query");
-   connection();
-  try {
-  
-    return connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query);
-  } catch (e) {
-    print("Error occurred: $e");
-  }
-}
 
-
-  static Future Update(String query) {
-    print("query${query}");
-    connection();
-    return connectToSqlServerDirectlyPlugin.getStatusOfQueryResult(query);
+  static Future<dynamic> get(String query)  {
+    print("query: $query");
+    // await connection();
+    return  connectToSqlServerDirectlyPlugin.getRowsOfQueryResult(query);
   }
+
+  static Future<dynamic> Update(String query)  {
+    print("query: $query");
+    // await connection();
+   return  connectToSqlServerDirectlyPlugin.getStatusOfQueryResult(query);
+  }
+
 }

@@ -2,14 +2,14 @@
 class Message {
   String? toId;
   String? msg;
-  String? readS;
+  String? readn;
   String? fromId;
   String? sent;
 
   Message({
     this.toId,
     this.msg,
-    this.readS,
+    this.readn,
     this.fromId,
     this.sent,
   });
@@ -18,18 +18,18 @@ class Message {
     return Message(
       toId: json['toId'],
       msg: json['msg'],
-      readS: json['readS'],
+      readn: json['readn']!=''?json['readn']:null,
       fromId: json['fromId'],
       sent: json['sent'],
     );
   }
 
   toJson() {
-    return "'$toId','$msg','$readS','$fromId','$sent'";
+    return "'$toId','$msg','$readn','$fromId','$sent'";
   }
 
   @override
   String toString() {
-    return 'Message(toId: $toId, msg: $msg, readS: $readS, fromId: $fromId, sent: $sent)';
+    return 'Message(toId: $toId, msg: $msg, readn: $readn, fromId: $fromId, sent: $sent)';
   }
 }

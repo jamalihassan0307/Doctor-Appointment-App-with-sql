@@ -45,8 +45,12 @@ class StaticData {
       return false;
     }
   }
+  updateList(String id, int status){
+
+  }
 
   static Future<bool> updateAppointmentStatus(String id, int status) async {
+    
     try {
       String query = "UPDATE dbo.AppointmentModel SET ";
       query += "status = $status";
