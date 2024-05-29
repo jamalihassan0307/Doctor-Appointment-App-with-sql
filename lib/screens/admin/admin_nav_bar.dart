@@ -3,12 +3,9 @@ import 'package:doctor_appointment_app/screens/admin/admin_massage.dart';
 import 'package:doctor_appointment_app/screens/admin/AdminHomeScreen.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_schedule.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_setting.dart';
-// import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
-
-
 import 'package:get/get.dart';
 
 class AdminNavBarRoots extends StatefulWidget {
@@ -37,7 +34,7 @@ class _AdminNavBarRootsState extends State<AdminNavBarRoots> {
     AdminHomeController.to.getSchedule();
     AdminHomeController.to.getAllPatient();
     AdminChatController.to.getpatient();
-        
+
     AdminHomeController.to.getAllAppointment();
     super.initState();
   }

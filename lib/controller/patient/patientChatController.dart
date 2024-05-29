@@ -2,6 +2,8 @@ import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class PatientChatController extends GetxController {
@@ -29,68 +31,85 @@ class PatientChatController extends GetxController {
     } else {}
   }
  List<Message> read=[];
-Future<void> getpatientmessageRead(bool readr) async {
+  bool joining=false;
+  bool sms=false;
+   var selectedJoinType ='';
+   void selectJoinType(String joinType) {
+    selectedJoinType = joinType;
+    if (joining) {
+      
+    getpatientmessageRead();
+    }else{
+      print("false");
+    }
+  }
+  updatejoining(){
+    sms=false;
+    joining=!joining;
+    update();
+  }
+  List<DoctorModel> doctorlistjoining=[];
+   List<Message> list = [];
+Future<void> getpatientmessageRead() async {
   print("data");
 
   this.read.clear(); 
-   if (doctorlist.isNotEmpty) {
-    var query = '';
-    String old = '';
+  if (doctorlistjoining.isNotEmpty && doctorlistjoining.length >= 2) {
+    String query = '';
+    String id1 = StaticData.chatRoomId(doctorlistjoining[0].id, StaticData.patientmodel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+    String id2 = StaticData.chatRoomId(doctorlistjoining[1].id, StaticData.patientmodel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
 
-    for (var index = 0; index < doctorlist.length; index++) {
-      
-      String name = StaticData.chatRoomId(
-          doctorlist[index].id, StaticData.patientmodel!.id);
+    query = '''
+      SELECT 
+        ed.toId,
+        ed.fromId,
+        ed.msg, 
+        ed.readn, 
+        ed.sent
+      FROM 
+        dbo.$id1 ed
+         $selectedJoinType
+        dbo.$id2 bd
+      ON 
+        ed.toId = bd.toId
 
-      // Create a unique identifier by removing non-alphabetic characters
-      String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      print("data1$name  sdsf$id1");
+      UNION ALL
 
-      if (index == 0) {
-        query += 'SELECT $id1.toId, $id1.msg, $id1.readn, $id1.fromId, $id1.sent FROM dbo.$id1 ';
-      } else {
-        query += ' INNER JOIN dbo.$id1 ';  
-        if (readr) 
-        query += ' ON $id1.readn = \'\'';
-        else
-        query += ' ON $id1.readn !=$old.readn';
-      }
-      old=id1;
-    }
+      SELECT 
+        bd.toId,
+        bd.fromId, 
+        bd.msg, 
+        bd.readn,
+        bd.sent 
+      FROM 
+        dbo.$id2 bd
+      $selectedJoinType
+        dbo.$id1 ed
+      ON 
+        bd.toId = ed.toId
+      WHERE 
+        ed.toId IS NULL;
+    ''';
 
-    query += ' WHERE ' + doctorlist.map((patient) {
-      String name = StaticData.chatRoomId(
-          patient.id, StaticData.patientmodel!.id);
-      String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      return readr ? '$id1.readn = \'\'': '$id1.readn IS NOT NULL';
-    }).join(' AND ');
-    print("sssssss${query.length}");
-for (var i = 0; i < query.length; i += 1000) {
-  if ((i + 1000) < query.length) {
-    print("${query.substring(i, i + 1000)}");
-  } else {
-    print("${query.substring(i, query.length)}");
-  }
-}
-
-print("eeeeeee");
-    // print("query45667567 ${query.substring(0,1000)}");
-    // print("query45667567 ${query.substring(1000,1367)}");
+    print("query45667567$query");
     try {
       await SQL.get(query).then((value) {
         try {
-          List<Map<String, dynamic>> tempResult =
-              value.cast<Map<String, dynamic>>();
+          List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
           List<Message> list = [];
 
           for (var e in tempResult) {
-            list.add(Message.fromJson(e));
+            // Exclude records where `toId` is null
+            if (e['toId'] != null) {
+              list.add(Message.fromJson(e));
+            }
           }
           this.read.addAll(list);
           print("aadadadd${this.read}");
         } catch (e) {
           print("Error while parsing the result: $e");
         }
+        sms = true;
         update();
       }).catchError((error) {
         print("Error while executing the query: $error");
@@ -107,7 +126,17 @@ print("eeeeeee");
     loading = false;
     update();
   } else {
-    print("patientList is empty");
+    Fluttertoast.showToast(
+      msg: "At least 2 users are required for joining!",
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      gravity: ToastGravity.BOTTOM,
+      fontSize: 17,
+      timeInSecForIosWeb: 1,
+      toastLength: Toast.LENGTH_LONG,
+    );
+    
+    print("patientList does not have enough entries");
   }
 }
 

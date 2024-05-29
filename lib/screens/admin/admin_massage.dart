@@ -3,11 +3,14 @@
 import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/admin/admin_chat_Controller.dart';
+import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
+import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:doctor_appointment_app/screens/massage/chat_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class AdminMessagesScreen extends StatefulWidget {
@@ -60,22 +63,59 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                      InkWell(
                         onTap: (){
 
-                         obj.getpatientmessageRead(true);
+                         obj.updatejoining();
                         },
                         child: Icon(Icons.done_all)),
                         SizedBox(width:width*0.02),
-                     InkWell(
-                        onTap: (){
-                         obj.getpatientmessageRead(false);
+                       PopupMenuButton<String>(
+                        color: Colors.white,
+
+            onSelected: (String result) {
+              if (obj.patientListjoining.isNotEmpty && obj.patientListjoining.length == 2) {
+                 obj.selectJoinType(result);
+              } else {
+                  Fluttertoast.showToast(
+      msg: "At least 2 users are required for joining!",
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      gravity: ToastGravity.BOTTOM,
+      fontSize: 17,
+      timeInSecForIosWeb: 1,
+      toastLength: Toast.LENGTH_LONG,
+    );}
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'Left Join',
+                child: Text('Left Join'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Right Join',
+                child: Text('Right Join'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Inner Join',
+                child: Text('Inner Join'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'FULL OUTER Join',
+                child: Text('FULL OUTER Join'),
+              ),
+            ],
+          ), 
+                    //  InkWell(
+                    //     onTap: (){
+                    //      obj.getpatientmessageRead(false);
                        
-                        },
-                        child: Icon(Icons.done_all,color: Colors.blue,),),
-                            SizedBox(width:width*0.02),
+                    //     },
+                    //     child: Icon(Icons.done_all,color: Colors.blue,),),
+                    //         SizedBox(width:width*0.02),
                   ],
                 ),
                 SizedBox(
                   height: 20,
                 ),
+                if(!obj.sms)
                 obj.patientList.length == 0
                     ? SizedBox(
                         height: height * 0.8,
@@ -117,7 +157,17 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: ListTile(
                                       onTap: () {
-                                        Navigator.push(
+                                        if(obj.joining)
+                                          
+                                       {
+if(!obj.patientListjoining.any((element) => element.id==obj.patientList[index].id)){
+  obj.patientListjoining.add(obj.patientList[index]);
+  obj.update();
+}else{
+obj.patientListjoining.removeWhere((element) => element.id==obj.patientList[index].id);
+obj.update();}
+                                       }else{
+    Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => ChatScreen(
@@ -135,11 +185,24 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                                               
                                               ),
                                             ));
+                                       }
+                                    
                                       },
-                                      leading: CircleAvatar(
-                                        radius: 30,
-                                        backgroundImage: FileImage(File(
-                                            "${obj.patientList[index].image}")),
+                                      leading: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if(obj.joining)
+                                          if(!obj.patientListjoining.any((element) => element.id==obj.patientList[index].id))
+                                           Icon(Icons.radio_button_off),
+                                          if(obj.joining)
+                                          if(obj.patientListjoining.any((element) => element.id==obj.patientList[index].id))
+                                           Icon(Icons.radio_button_checked,color: Apptheme.primary),
+                                          CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: FileImage(File(
+                                                "${obj.patientList[index].image}")),
+                                          ),
+                                        ],
                                       ),
                                       title: Text(
                                         "${obj.patientList[index].fullname}",
@@ -268,6 +331,41 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                           }
                         },
                       ),
+            if(obj.sms)
+            obj.read.length==0?
+            SizedBox(
+                        height: height * 0.8,
+                        child: Center(
+                          child: CustomWidget.largeText('No SMS !'),
+                        ),
+                      ):
+                      ListView.builder(
+                        
+                            physics: NeverScrollableScrollPhysics(),
+                        itemCount: obj.read.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          Message model=obj.read[index];
+                          return Padding(padding: EdgeInsetsDirectional.all(8),
+                          child: ListTile(
+                            leading:  model.fromId==StaticData.patient
+                            ||model.fromId==StaticData.doctor?CircleAvatar(
+                              backgroundColor: Apptheme.primary,
+                              child: Center(
+                                child: Text("U",style: 
+                                TextStyle(fontSize: 22,color: Colors.white),),
+                              ),
+                            ):CircleAvatar(
+                              backgroundColor: Apptheme.primary,
+                              child: Center(
+                                child: Text("O",style: 
+                                TextStyle(fontSize: 22,color: Colors.white),),
+                              ),
+                            ),
+                            title:Text(model.msg!),
+                          ),
+                          );
+     } )
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
+import 'package:doctor_appointment_app/widgets/show_scheduler.dart';
 import 'package:doctor_appointment_app/widgets/upcoming_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -59,12 +60,48 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           ),
                         ),
                         SizedBox(width: width * 0.04),
-                        Icon(Icons.refresh)
+                        Icon(Icons.refresh),
+                        SizedBox(width: width * 0.04),
+                         PopupMenuButton<String>(
+  color: Colors.white,
+  onSelected: (String result) {
+    obj.selectJoinType(result);  // Replace with your logic to handle the selection
+  },
+  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+    const PopupMenuItem<String>(
+      value: 'WHERE',
+      child: Text('WHERE'),
+    ),
+    const PopupMenuItem<String>(
+      value: 'LIMIT',
+      child: Text('LIMIT'),
+    ),
+    const PopupMenuItem<String>(
+      value: 'ORDER BY',
+      child: Text('ORDER BY'),
+    ),
+    const PopupMenuItem<String>(
+      value: 'GROUP BY',
+      child: Text('GROUP BY'),
+    ),
+    const PopupMenuItem<String>(
+      value: 'HAVING',
+      child: Text('HAVING'),
+    ),
+  ],
+),
+InkWell(
+  onTap: (){
+    obj.updateShow();
+  },
+  child: Icon(Icons.display_settings))
+                 
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
+                    if(!obj.show)
                     Container(
                       padding: EdgeInsets.all(15),
                       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -165,10 +202,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         ],
                       ),
                     ),
+                   
                     SizedBox(
                       height: 30,
                     ),
+                      if(!obj.show)
                     _scheduleWidgets[_buttonIndex],
+                    if(obj.show)
+                    ShowSchedule()
                   ],
                 ),
               ),

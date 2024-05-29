@@ -4,10 +4,13 @@
 import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
+import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/screens/massage/chat_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
+import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -54,20 +57,54 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                       
                     SizedBox(width:width*0.02),
+                    SizedBox(width:width*0.02),
                      InkWell(
                         onTap: (){
 
-                         obj.getpatientmessageRead(false);
+                         obj.updatejoining();
                         },
                         child: Icon(Icons.done_all)),
                         SizedBox(width:width*0.02),
-                     InkWell(
-                        onTap: (){
-                         obj.getpatientmessageRead(true);
-                       
-                        },
-                        child: Icon(Icons.done_all,color: Colors.blue,),),
-                            SizedBox(width:width*0.02),
+                       PopupMenuButton<String>(
+                        color: Colors.white,
+
+            onSelected: (String result) {
+              if (obj.doctorlistjoining.isNotEmpty && obj.doctorlistjoining.length == 2) {
+                 obj.selectJoinType(result);
+                 print("sdhdsi");
+              } else {
+                  Fluttertoast.showToast(
+      msg: "At least 2 users are required for joining!",
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      gravity: ToastGravity.BOTTOM,
+      fontSize: 17,
+      timeInSecForIosWeb: 1,
+      toastLength: Toast.LENGTH_LONG,
+    );
+              }
+             
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'Left Join',
+                child: Text('Left Join'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Right Join',
+                child: Text('Right Join'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Inner Join',
+                child: Text('Inner Join'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'FULL OUTER Join',
+                child: Text('FULL OUTER Join'),
+              ),
+            ],
+          ), 
+                 
                       // InkWell(
                       //   onTap: (){
                       //     PatientChatController.to.getdoctor().then((value) {
@@ -84,6 +121,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 SizedBox(
                   height: 20,
                 ),
+                if(!obj.sms)
                 obj.doctorlist.length == 0
                     ? SizedBox(
                         height: height * 0.8,
@@ -126,6 +164,16 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                     child: ListTile(
                                       onTap: () {
                                         var model =obj.doctorlist[index];
+                                          if(obj.joining)
+                                          
+                                       {
+if(!obj.doctorlistjoining.any((element) => element.id==obj.doctorlist[index].id)){
+  obj.doctorlistjoining.add(obj.doctorlist[index]);
+  obj.update();
+}else{
+obj.doctorlistjoining.removeWhere((element) => element.id==obj.doctorlist[index].id);
+obj.update();}
+                                       }else{
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -140,13 +188,25 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                                 currentname: StaticData
                                                     .patientmodel!.fullname,
                                               ),
-                                            ));
+                                            ));}
                                       },
-                                      leading: CircleAvatar(
-                                        radius: 30,
-                                        backgroundImage:FileImage(
-                                                        File(
-                                            "${obj.doctorlist[index].image}")),
+                                      leading: Row(
+                                        
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                            if(obj.joining)
+                                          if(!obj.doctorlistjoining.any((element) => element.id==obj.doctorlist[index].id))
+                                           Icon(Icons.radio_button_off),
+                                          if(obj.joining)
+                                          if(obj.doctorlistjoining.any((element) => element.id==obj.doctorlist[index].id))
+                                           Icon(Icons.radio_button_checked,color: Apptheme.primary),
+                                          CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage:FileImage(
+                                                            File(
+                                                "${obj.doctorlist[index].image}")),
+                                          ),
+                                        ],
                                       ),
                                       title: Text(
                                         "${obj.doctorlist[index].fullname}",
@@ -274,6 +334,43 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           }
                         },
                       ),
+           
+            if(obj.sms)
+            obj.read.length==0?
+            SizedBox(
+                        height: height * 0.8,
+                        child: Center(
+                          child: CustomWidget.largeText('No SMS !'),
+                        ),
+                      ):
+                      ListView.builder(
+                        
+                            physics: NeverScrollableScrollPhysics(),
+                        itemCount: obj.read.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          Message model=obj.read[index];
+                          return Padding(padding: EdgeInsetsDirectional.all(8),
+                          child: ListTile(
+                            leading:  model.fromId==StaticData.patient
+                            ||model.fromId==StaticData.doctor?CircleAvatar(
+                              backgroundColor: Apptheme.primary,
+                              child: Center(
+                                child: Text("U",style: 
+                                TextStyle(fontSize: 22,color: Colors.white),),
+                              ),
+                            ):CircleAvatar(
+                              backgroundColor: Apptheme.primary,
+                              child: Center(
+                                child: Text("O",style: 
+                                TextStyle(fontSize: 22,color: Colors.white),),
+                              ),
+                            ),
+                            title:Text(model.msg!),
+                          ),
+                          );
+     } )
+            
               ],
             ),
           ),

@@ -80,36 +80,63 @@ class AdminChatController extends GetxController {
     } else {}
   }
   List<Message> read=[];
-Future<void> getpatientmessageRead(bool readr) async {
+  bool joining=false;
+  bool sms=false;
+   var selectedJoinType ='';
+   void selectJoinType(String joinType) {
+    selectedJoinType = joinType;
+    if (joining) {
+      
+    getpatientmessageRead();
+    }
+  }
+  updatejoining(){
+    sms=false;
+    joining=!joining;
+    update();
+  }
+  List<PatientModel> patientListjoining=[];
+   List<Message> list = [];
+Future<void> getpatientmessageRead() async {
   print("data");
 
   this.read.clear(); 
-  if (patientList.isNotEmpty && patientList.length >= 2) {
+  if (patientListjoining.isNotEmpty && patientListjoining.length >= 2) {
     String query = '';
-    String old = '';
+    String id1 = StaticData.chatRoomId(patientListjoining[0].id, StaticData.doctorModel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+    String id2 = StaticData.chatRoomId(patientListjoining[1].id, StaticData.doctorModel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
 
-    for (var index = 0; index < 2; index++) {
-      String name = StaticData.chatRoomId(patientList[index].id, StaticData.doctorModel!.id);
-      String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      print("data1$name  sdsf$id1");
+    query = '''
+      SELECT 
+        ed.toId,
+        ed.fromId,
+        ed.msg, 
+        ed.readn, 
+        ed.sent
+      FROM 
+        dbo.$id1 ed
+         $selectedJoinType
+        dbo.$id2 bd
+      ON 
+        ed.toId = bd.toId
 
-      if (index == 0) {
-        query += 'SELECT $id1.toId, $id1.msg, $id1.readn, $id1.fromId, $id1.sent FROM dbo.$id1 AS $id1';
-      } else {
-        query += ' INNER JOIN dbo.$id1 AS $id1';
-        if (readr) 
-          query += ' ON $id1.readn = \'\'';
-        else
-          query += ' ON $id1.readn != $old.readn';
-      }
-      old = id1;
-    }
+      UNION ALL
 
-    query += ' WHERE ' + patientList.sublist(0, 2).map((patient) {
-      String name = StaticData.chatRoomId(patient.id, StaticData.doctorModel!.id);
-      String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      return readr ? '$id1.readn = \'\'' : '$id1.readn IS NOT NULL';
-    }).join(' AND ');
+      SELECT 
+        bd.toId,
+        bd.fromId, 
+        bd.msg, 
+        bd.readn,
+        bd.sent 
+      FROM 
+        dbo.$id2 bd
+      $selectedJoinType
+        dbo.$id1 ed
+      ON 
+        bd.toId = ed.toId
+      WHERE 
+        ed.toId IS NULL;
+    ''';
 
     print("query45667567$query");
     try {
@@ -119,13 +146,17 @@ Future<void> getpatientmessageRead(bool readr) async {
           List<Message> list = [];
 
           for (var e in tempResult) {
-            list.add(Message.fromJson(e));
+            // Exclude records where `toId` is null
+            if (e['toId'] != null) {
+              list.add(Message.fromJson(e));
+            }
           }
           this.read.addAll(list);
           print("aadadadd${this.read}");
         } catch (e) {
           print("Error while parsing the result: $e");
         }
+        sms = true;
         update();
       }).catchError((error) {
         print("Error while executing the query: $error");

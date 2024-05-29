@@ -53,6 +53,98 @@ print("skip21");
 update(["AppointmentModel"]);
   }
 
+ var selectedJoinType="";
+   List<AppointmentModel> list = [];
+   List<Map<String, dynamic>> data=[];
+   bool show =false;
+   updateShow(){
+    show=!show;
+    update();
+   }
+
+    Future<void> selectJoinType(String queryType) async {
+  String query = '';
+  String doctorId = StaticData.doctorModel!.id;
+selectedJoinType=queryType;
+list.clear();
+data.clear();
+update();
+  switch (queryType) {
+    case 'WHERE':
+      query = '''
+        SELECT * FROM dbo.AppointmentModel
+        WHERE status = 2 AND doctorid = '$doctorId'
+      ''';
+      break;
+
+    case 'LIMIT':
+      query = '''
+       SELECT top 10 * FROM dbo.AppointmentModel
+        WHERE doctorid = '$doctorId'
+      ORDER BY createdtime DESC
+      ''';
+      break;
+
+    case 'ORDER BY':
+      query = '''
+        SELECT * FROM dbo.AppointmentModel
+        WHERE doctorid = '$doctorId'
+        ORDER BY rating DESC
+      ''';
+      break;
+
+    case 'GROUP BY':
+      query = '''
+        SELECT patientname, COUNT(*) AS appointment_count 
+        FROM dbo.AppointmentModel
+        WHERE doctorid = '$doctorId'
+        GROUP BY patientname
+      ''';
+      break;
+
+    case 'HAVING':
+      query = '''
+        SELECT patientname, COUNT(rating) AS appointment_count
+        FROM dbo.AppointmentModel
+        WHERE doctorid = '$doctorId'
+        GROUP BY patientname
+        HAVING AVG(rating) > 4.5
+      ''';
+      break;
+
+    default:
+      query = '''
+        SELECT * FROM dbo.AppointmentModel
+        WHERE doctorid = '$doctorId'
+      ''';
+  }
+
+  print("Executing query: $query");
+
+  try {
+    await SQL.get(query).then((value) {
+      if (queryType=="GROUP BY"||queryType=="HAVING") {
+          List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
+         data=tempResult;
+         print("sdfhkdfhsfj   ${data}");
+      } else { List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
+    list = tempResult.map((e) => AppointmentModel.fromMap(e)).toList();
+        print("Query result: $list");
+        update();
+       
+      }
+     
+      // Handle the result (update UI, etc.)
+    
+    }).catchError((error) {
+      print("Error while executing the query: $error");
+    });
+  } catch (e) {
+    print("Exception: $e");
+  }
+}
+
+
    Future<bool> updateAppointmentStatus(String id, int status) async {
     
     
