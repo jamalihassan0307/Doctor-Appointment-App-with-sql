@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorSlot.dart';
@@ -11,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
-
-import 'package:doctor_appointment_app/screens/login_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:intl/intl.dart';
 
@@ -63,18 +60,12 @@ class SignupController extends GetxController {
           address: address.text,
           email: email.text,
           fullname: fullname.text,
-          token: StaticData.token,
           password: password.text,
           id: id,
-          image: StaticData.image64,
-          status: 'Offline',
-          audiocallStatus: false,
+          image:await StaticData.assetToF("images/doctor4.png"),
           about: about.text,
           bio: bio.text,
           specialty: specilest.text,
-          callStatus: false,
-          roomId: '',
-          type: '',
           phonenumber: phonenumber.text,
           endtime: endTime.toString(),
           maxAppointmentDuration: maxAppointmentDuration!,
@@ -86,12 +77,13 @@ class SignupController extends GetxController {
             .post("INSERT INTO dbo.DoctorModel VALUES (${model.toMap()})")
             .then((value) async {
           String id1 =
-              model.id.substring(0, 10).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+              model.id.replaceAll(RegExp(r'[^a-zA-Z]'), '');
           List<DoctorSlot> slots = await generateDoctorSlots(
+            
               startTime!, endTime!, maxAppointmentDuration!, id, fullname.text);
 
           print("object12345");
-          SQL
+        await  SQL
               .post(
                   "CREATE TABLE  ${id1} (id VARCHAR(255) PRIMARY KEY,indexn INT,patientid VARCHAR(255),doctorname VARCHAR(255),doctorid VARCHAR(255),startTime VARCHAR(255),endTime VARCHAR(255),patientName VARCHAR(255),isAvailable bit,date varchar(255));")
               .onError((error, stackTrace) {
@@ -107,7 +99,7 @@ class SignupController extends GetxController {
           });
           print("object1235678");
 
-          clearForm();
+          // clearForm();
 
           var time = DateTime(DateTime.now().year, DateTime.now().month,
               DateTime.now().day, 12, 0);
@@ -126,8 +118,8 @@ class SignupController extends GetxController {
 
             print("object12345");
 
-            SQL.post("drop table ${id1}").then((value) {
-              SQL
+            SQL.post("drop table ${id1}").then((value) async {
+            await  SQL
                   .post(
                       "CREATE TABLE ${id1} (id VARCHAR(255) PRIMARY KEY,indexn INT,patientid VARCHAR(255),doctorname VARCHAR(255),doctorid VARCHAR(255),startTime VARCHAR(255),endTime VARCHAR(255),patientName VARCHAR(255),isAvailable bit,date varchar(255));")
                   .then((value) {
@@ -152,11 +144,11 @@ class SignupController extends GetxController {
           fontSize: 16.0,
         );
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(),
-            ));
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => LoginScreen(),
+        //     ));
       } catch (e) {
         print("eror${e.toString()}");
         Fluttertoast.showToast(
@@ -189,15 +181,9 @@ class SignupController extends GetxController {
         email: email.text,
         doctorList: [],
         fullname: fullname.text,
-        token: StaticData.token,
         password: password.text,
         id: id,
-        image: StaticData.image64,
-        status: 'Offline',
-        audiocallStatus: false,
-        callStatus: false,
-        roomId: '',
-        type: '',
+        image:await StaticData.assetToF("images/patient_logo.png"),
         phonenumber: phonenumber.text,
       );
 
@@ -255,12 +241,8 @@ class SignupController extends GetxController {
       int maxAppointmentDuration, String doctorid, String doctorname) async {
     List<DoctorSlot> doctorSlots = [];
     // try {
-    QuerySnapshot querySnapshot = await StaticData.firebase
-        .collection("slots")
-        .doc(doctorid)
-        .collection("slots")
-        .get();
-    int slotId = querySnapshot.docs.length;
+
+   
     DateTime? currentStartTime;
     DateFormat format = DateFormat("h:mm a", 'en_US');
 
@@ -272,14 +254,14 @@ class SignupController extends GetxController {
     } catch (e) {
       print('Error parsing time: $e');
     }
-
+int index=0;
     while (currentStartTime!.isBefore(parseTime(endTime))) {
       DateTime currentEndTime =
           currentStartTime.add(Duration(minutes: maxAppointmentDuration));
       var uuid = const Uuid();
       var id = uuid.v4();
       doctorSlots.add(DoctorSlot(
-        indexn: slotId++,
+        indexn: index++,
         date: currentStartTime.microsecondsSinceEpoch.toString(),
         doctorid: doctorid,
         doctorname: doctorname,
@@ -300,12 +282,7 @@ class SignupController extends GetxController {
       int maxAppointmentDuration, String doctorid, String doctorname) async {
     List<DoctorSlot> doctorSlots = [];
     // try {
-    QuerySnapshot querySnapshot = await StaticData.firebase
-        .collection("slots")
-        .doc(doctorid)
-        .collection("slots")
-        .get();
-    int slotId = querySnapshot.docs.length;
+   
     DateTime? currentStartTime;
     DateFormat format = DateFormat("h:mm a", 'en_US');
 
@@ -324,7 +301,7 @@ class SignupController extends GetxController {
       var uuid = const Uuid();
       var id = uuid.v4();
       doctorSlots.add(DoctorSlot(
-        indexn: slotId++,
+        indexn:int.tryParse(DateTime.now().microsecond.toString()),
         date: currentStartTime.microsecondsSinceEpoch.toString(),
         doctorid: doctorid,
         doctorname: doctorname,

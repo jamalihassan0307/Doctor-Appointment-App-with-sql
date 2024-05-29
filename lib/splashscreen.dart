@@ -1,7 +1,6 @@
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/screens/error_screen/connection_failed.dart';
-import 'package:doctor_appointment_app/screens/massage/notification_service.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,37 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
    
  
     Get.put(LoginController());
-    getToken();
     super.initState();
-    FirebaseMessaging.instance.getInitialMessage().then(
-      (message) {
-        if (message != null) {
-          print(message);
-        }
-      },
-    );
-    FirebaseMessaging.onMessage.listen(
-      (message) {
-        print("123231${message.data}");
-        if (message.notification != null) {
-          LocalNotificationService.createAndDisplayChatNotification(message);
-        }
-      },
-    );
-    FirebaseMessaging.onMessageOpenedApp.listen(
-      (message) {
-        print('app open on click');
-        print(message.notification!.body);
-        print(message.notification!.title);
-        print(message.data);
-
-        if (message.notification != null) {}
-      },
-    );
+   
   }
-   var data;
-
-  late FirebaseMessaging messaging;
 
   var height, width;
   @override
@@ -82,24 +52,13 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  getToken() {
-    messaging = FirebaseMessaging.instance;
-    messaging.getToken().then((value) {
-      if (value != null) {
-        StaticData.token = value;
-      }
-
-      print(value);
-    });
-  }
-
+ 
   Future<bool?> getDataFromSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? v = prefs.getString("patient");
     String? v1 = prefs.getString("doctor");
     print("v:$v");
     print("v1:$v1");
-    getToken();
     StaticData.patient = v ?? "";
     StaticData.doctor = v1 ?? "";
     if (v != null && v != "") {
@@ -180,8 +139,7 @@ class _SplashScreenState extends State<SplashScreen> {
         StaticData.doctor = users!.id;
         StaticData.doctorModel = users;
 
-        // StaticData.updatetokken(
-        //     StaticData.token, users!.id.toString(), "doctor");
+     
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -253,8 +211,6 @@ class _SplashScreenState extends State<SplashScreen> {
         StaticData.patient = users!.id;
         StaticData.patientmodel = users;
 
-        // StaticData.updatetokken(
-        //     StaticData.token, users!.id.toString(), "patient");
         Future.delayed(const Duration(milliseconds: 2000), () {
           Navigator.pushAndRemoveUntil(
             context,

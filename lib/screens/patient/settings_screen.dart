@@ -1,4 +1,5 @@
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/screens/patient/profile.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
@@ -33,7 +34,8 @@ class SettingsScreen extends StatelessWidget {
               leading: CircleAvatar(
                 radius: 30,
                 backgroundImage:
-                    MemoryImage(base64Decode(StaticData.patientmodel!.image)),
+                   FileImage(
+                                                        File(StaticData.patientmodel!.image)),
               ),
               title: Text(
                 ""

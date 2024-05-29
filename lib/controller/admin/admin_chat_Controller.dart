@@ -2,6 +2,8 @@ import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class AdminChatController extends GetxController {
@@ -82,45 +84,38 @@ Future<void> getpatientmessageRead(bool readr) async {
   print("data");
 
   this.read.clear(); 
-   if (patientList.isNotEmpty) {
+  if (patientList.isNotEmpty && patientList.length >= 2) {
     String query = '';
     String old = '';
 
-    for (var index = 0; index < patientList.length; index++) {
-      
-      String name = StaticData.chatRoomId(
-          patientList[index].id, StaticData.doctorModel!.id);
-
-      // Create a unique identifier by removing non-alphabetic characters
+    for (var index = 0; index < 2; index++) {
+      String name = StaticData.chatRoomId(patientList[index].id, StaticData.doctorModel!.id);
       String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
       print("data1$name  sdsf$id1");
 
       if (index == 0) {
         query += 'SELECT $id1.toId, $id1.msg, $id1.readn, $id1.fromId, $id1.sent FROM dbo.$id1 AS $id1';
       } else {
-        query += ' INNER JOIN dbo.$id1 AS $id1';  
+        query += ' INNER JOIN dbo.$id1 AS $id1';
         if (readr) 
-        query += ' ON $id1.readn = \'\'';
+          query += ' ON $id1.readn = \'\'';
         else
-        query += ' ON $id1.readn !=$old.readn';
+          query += ' ON $id1.readn != $old.readn';
       }
-      old=id1;
+      old = id1;
     }
 
-    // Add where clause to ensure all selected rows have readn based on the read parameter
-    query += ' WHERE ' + patientList.map((patient) {
-      String name = StaticData.chatRoomId(
-          patient.id, StaticData.doctorModel!.id);
+    query += ' WHERE ' + patientList.sublist(0, 2).map((patient) {
+      String name = StaticData.chatRoomId(patient.id, StaticData.doctorModel!.id);
       String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      return readr ? '$id1.readn = \'\'': '$id1.readn IS NOT NULL';
+      return readr ? '$id1.readn = \'\'' : '$id1.readn IS NOT NULL';
     }).join(' AND ');
 
     print("query45667567$query");
     try {
       await SQL.get(query).then((value) {
         try {
-          List<Map<String, dynamic>> tempResult =
-              value.cast<Map<String, dynamic>>();
+          List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
           List<Message> list = [];
 
           for (var e in tempResult) {
@@ -147,7 +142,17 @@ Future<void> getpatientmessageRead(bool readr) async {
     loading = false;
     update();
   } else {
-    print("patientList is empty");
+    Fluttertoast.showToast(
+      msg: "At least 2 users are required for joining!",
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      gravity: ToastGravity.BOTTOM,
+      fontSize: 17,
+      timeInSecForIosWeb: 1,
+      toastLength: Toast.LENGTH_LONG,
+    );
+    
+    print("patientList does not have enough entries");
   }
 }
 

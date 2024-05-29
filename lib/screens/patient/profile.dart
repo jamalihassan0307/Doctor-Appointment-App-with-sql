@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'dart:convert';
+// import 'dart:convert';
 import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/patient/profileController.dart';
@@ -103,16 +103,16 @@ class _ProfileState extends State<Profile> {
                                                     null
                                                 ? CircleAvatar(
                                                     radius: 75,
-                                                    backgroundImage: MemoryImage(
-                                                        base64Decode(StaticData
+                                                    backgroundImage:FileImage(
+                                                        File(StaticData
                                                             .patientmodel!
                                                             .image)),
                                                   )
                                                 : CircleAvatar(
                                                     radius: 75,
                                                     backgroundImage:
-                                                        MemoryImage(
-                                                            base64Decode(obj
+                                                      FileImage(
+                                                        File(obj
                                                                 .image
                                                                 .toString())),
                                                   ),

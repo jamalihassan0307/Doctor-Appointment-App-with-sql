@@ -224,7 +224,7 @@ class LoginController extends GetxController {
   List<DoctorSlot> slotsList = [];
   getdoctorSlotes(String id) {
     slotsList.clear();
-    String id1 = id.substring(0, 10).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+    String id1 = id.replaceAll(RegExp(r'[^a-zA-Z]'), '');
     SQL.get("select * from dbo.${id1}").then((value) {
       List<Map<String, dynamic>> tempResult =
           value.cast<Map<String, dynamic>>();

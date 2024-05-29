@@ -1,16 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChatController extends GetxController {
   static ChatController get my => Get.find();
-  static FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  static FirebaseStorage storage = FirebaseStorage.instance;
   bool showEmoji = false;
   final textController = TextEditingController();
   List<Message> list = [];
@@ -96,7 +91,7 @@ listupdate(message){
 
 }
    sendMessage(String rid, String msg, String from, String image,
-      String tokken, String name)  {
+     String name)  {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
     String name = StaticData.chatRoomId(from, rid);
 

@@ -1,4 +1,5 @@
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -65,8 +66,8 @@ class _AdminUpcomingScheduleState extends State<AdminUpcomingSchedule> {
                                       // subtitle: Text("${model!.bio}"),
                                       trailing: CircleAvatar(
                                               radius: 25,
-                                              backgroundImage: MemoryImage(
-                                                  base64Decode(
+                                              backgroundImage:FileImage(
+                                                        File(
                                                       model.patientimage)),
                                             )),
                                   Padding(

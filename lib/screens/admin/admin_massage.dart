@@ -1,12 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
-import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/admin_chat_Controller.dart';
-import 'package:doctor_appointment_app/model/massage.dart';
-import 'package:doctor_appointment_app/screens/massage/m_date_util.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
-import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
 
@@ -63,13 +60,13 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                      InkWell(
                         onTap: (){
 
-                         obj.getpatientmessageRead(false);
+                         obj.getpatientmessageRead(true);
                         },
                         child: Icon(Icons.done_all)),
                         SizedBox(width:width*0.02),
                      InkWell(
                         onTap: (){
-                         obj.getpatientmessageRead(true);
+                         obj.getpatientmessageRead(false);
                        
                         },
                         child: Icon(Icons.done_all,color: Colors.blue,),),
@@ -135,14 +132,13 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                                                     .doctorModel!.image!,
                                                 currentname: StaticData
                                                     .doctorModel!.fullname,
-                                                tokken: obj
-                                                    .patientList[index].token,
+                                              
                                               ),
                                             ));
                                       },
                                       leading: CircleAvatar(
                                         radius: 30,
-                                        backgroundImage: MemoryImage(base64Decode(
+                                        backgroundImage: FileImage(File(
                                             "${obj.patientList[index].image}")),
                                       ),
                                       title: Text(
@@ -198,7 +194,8 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                                 //       },
                                 //       leading: CircleAvatar(
                                 //         radius: 30,
-                                //         backgroundImage: MemoryImage(base64Decode(
+                                //         backgroundImage:FileImage(
+                                                        // File(
                                 //             "${obj.patientList[index].image}")),
                                 //       ),
                                 //       title: Row(

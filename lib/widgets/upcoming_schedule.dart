@@ -1,4 +1,5 @@
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 // import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
@@ -63,8 +64,8 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                     subtitle: Text("${model.bio}"),
                                     trailing:CircleAvatar(
                                             radius: 25,
-                                            backgroundImage: MemoryImage(
-                                                base64Decode(model.docimage))),
+                                            backgroundImage: FileImage(
+                                                        File(model.docimage))),
                                   ),
                                   Padding(
                                     padding:
@@ -152,11 +153,7 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                               .updateAppointmentStatus(
                                                   model.id, 0);
                                                   obj.updateList(model.id, 0 ,model);
-                                          StaticData.getdoctortokken(
-                                                  model.doctorid)
-                                              .then((value) {
-                                           
-                                          });
+                                        
 
                                           await StaticData.updateSlotsStatus(
                                               model.doctorid, model.slotsid, 1);

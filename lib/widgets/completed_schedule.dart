@@ -1,6 +1,7 @@
 // ignore_for_file: override_on_non_overriding_member
 
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -69,8 +70,8 @@ class _CompletedScheduleState extends State<CompletedSchedule> {
                                         subtitle: Text("${model.bio}"),
                                         trailing:  CircleAvatar(
                                                 radius: 25,
-                                                backgroundImage: MemoryImage(
-                                                    base64Decode(
+                                                backgroundImage:FileImage(
+                                                        File(
                                                         model.docimage)),
                                               )),
                                     Row(

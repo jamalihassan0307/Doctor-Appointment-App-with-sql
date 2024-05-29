@@ -1,4 +1,5 @@
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
 import 'package:doctor_appointment_app/screens/admin/patient_profile.dart';
@@ -50,8 +51,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         ),
                         CircleAvatar(
                           radius: 30,
-                          backgroundImage: MemoryImage(
-                              base64Decode(StaticData.doctorModel!.image!)),
+                          backgroundImage:FileImage(
+                                                        File(StaticData.doctorModel!.image!)),
                         ),
                       ],
                     ),
@@ -205,8 +206,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                       children: [
                                         CircleAvatar(
                                           radius: 25,
-                                          backgroundImage: MemoryImage(
-                                              base64Decode(patientModel.image)),
+                                          backgroundImage:FileImage(
+                                                        File(patientModel.image)),
                                         ),
                                         Text(
                                           "${patientModel.fullname}",

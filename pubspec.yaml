@@ -37,32 +37,22 @@ dependencies:
   cupertino_icons: ^1.0.2
   custom_clippers: ^2.0.0
   connect_to_sql_server_directly: 
-  mysql1:
   email_validator: 
-  firebase_messaging: ^14.7.4
+  
   get: 
-  firebase_core: 
-  cloud_firestore: 
-  firebase_storage: 
   image_picker: 
   uuid: 
   shared_preferences:
-  flutter_webrtc:
+  path_provider: 
+  # flutter_webrtc:
   http:
   get_time_ago: 
-  firebase_auth: 
   url_launcher: 
-  flutter_local_notifications:
-  firebase_analytics:
   fluttertoast:
   flutter_rating_bar:
   date_picker_timeline: 
   intl:
-  cron: 
-  flutter_spinkit:
-  cached_network_image: ^3.2.3
-  logging: 
-  signalr_netcore: ^1.3.7
+  # flutter_spinkit:
   
 dev_dependencies:
   flutter_test:

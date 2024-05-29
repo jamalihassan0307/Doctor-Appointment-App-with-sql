@@ -1,13 +1,11 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
-import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/screens/massage/chat_screen.dart';
-import 'package:doctor_appointment_app/screens/massage/m_date_util.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
-import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -141,14 +139,13 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                                     .patientmodel!.image,
                                                 currentname: StaticData
                                                     .patientmodel!.fullname,
-                                                tokken:
-                                                   model.token,
                                               ),
                                             ));
                                       },
                                       leading: CircleAvatar(
                                         radius: 30,
-                                        backgroundImage: MemoryImage(base64Decode(
+                                        backgroundImage:FileImage(
+                                                        File(
                                             "${obj.doctorlist[index].image}")),
                                       ),
                                       title: Text(
@@ -204,8 +201,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                 //       },
                                 //       leading: CircleAvatar(
                                 //         radius: 30,
-                                //         backgroundImage: MemoryImage(base64Decode(
-                                //             "${obj.doctorlist[index].image}")),
+                                //         backgroundImage: FileImage(
+                                                        // File("${obj.doctorlist[index].image}")),
                                 //       ),
                                 //       title: Row(
                                 //         mainAxisAlignment:

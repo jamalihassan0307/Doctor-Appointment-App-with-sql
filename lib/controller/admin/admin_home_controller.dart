@@ -17,7 +17,7 @@ class AdminHomeController extends GetxController {
    Future<bool> updateSlotsStatus(
       String database, String id, int status) async {
     try {
-      String id1 =database.substring(0, 10).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      String id1 =database.replaceAll(RegExp(r'[^a-zA-Z]'), '');
       String query = "UPDATE dbo.${id1} SET ";
       query += "isAvailable = $status";
 
@@ -79,30 +79,7 @@ update(["AppointmentModel"]);
     }
   }
 
-  String? patienttokken;
-  Future<String> getpatienttokken(String id) async {
-    try {
-      await SQL
-          .get("SELECT * FROM PatientModel where id='${id}'")
-          .then((value) async {
-        print("snaaaaaap    ${value}");
-
-        print("get data");
-        try {
-          var model = PatientModel.fromMap(value[0]);
-          patienttokken = model.token;
-          return model.token;
-        } catch (e) {
-          return " ";
-        }
-      });
-      return " ";
-    } catch (e) {
-      print("errrrrrrror    $e");
-      return "";
-    }
-  }
-
+ 
   getAllAppointment() {
     allAppointment.clear();
     requested.clear();
@@ -166,7 +143,7 @@ update(["AppointmentModel"]);
   String? schedule = '0';
   Future<String?> getSchedule() async {
     String id1 = StaticData.doctorModel!.id
-        .substring(0, 10)
+        
         .replaceAll(RegExp(r'[^a-zA-Z]'), '');
     SQL
         .get(

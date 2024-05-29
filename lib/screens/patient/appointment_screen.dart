@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
@@ -67,7 +68,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           CircleAvatar(
                             radius: 55,
                             backgroundImage:
-                                MemoryImage(base64Decode(widget.model.image!)),
+                               FileImage(
+                                                        File(widget.model.image!)),
                           ),
                           SizedBox(
                             height: 15,
@@ -118,7 +120,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                                 StaticData.patientmodel!.id,
                                             currentimage:
                                                 StaticData.patientmodel!.image,
-                                            tokken: widget.model.token,
                                             currentname: StaticData
                                                 .patientmodel!.fullname),
                                       ));

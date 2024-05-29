@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, deprecated_member_use
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ class ChatScreen extends StatefulWidget {
   final String id;
   final String current;
   final String currentimage;
-  final String tokken;
   final String currentname;
 
   const ChatScreen({
@@ -24,7 +24,6 @@ class ChatScreen extends StatefulWidget {
     required this.id,
     required this.current,
     required this.currentimage,
-    required this.tokken,
     required this.currentname,
   }) : super(key: key);
 
@@ -91,7 +90,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       CircleAvatar(
                         radius: 25,
                         backgroundImage:
-                            MemoryImage(base64Decode(widget.image)),
+                            FileImage(
+                                                        File(widget.image)),
                       ),
                       SizedBox(
                         width: width * 0.01,
@@ -192,7 +192,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             obj.textController.text,
                             widget.current,
                             widget.currentimage,
-                            widget.tokken,
                             widget.currentname);
 
                       }
@@ -236,7 +235,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           obj.textController.text,
                           widget.current,
                           widget.currentimage,
-                          widget.tokken,
                           widget.currentname);
 
                       obj.textController.text = '';

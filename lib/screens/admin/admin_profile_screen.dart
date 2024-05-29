@@ -1,6 +1,6 @@
 // ignore_for_file: override_on_non_overriding_member, unused_local_variable
 
-import 'dart:convert';
+// import 'dart:convert';
 import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/admin/admin_profile_controller.dart';
@@ -103,16 +103,16 @@ class _AdminProfileState extends State<AdminProfile> {
                                                     null
                                                 ? CircleAvatar(
                                                     radius: 75,
-                                                    backgroundImage: MemoryImage(
-                                                        base64Decode(StaticData
+                                                    backgroundImage: FileImage(
+                                                        File(StaticData
                                                             .doctorModel!
                                                             .image!)),
                                                   )
                                                 : CircleAvatar(
                                                     radius: 75,
                                                     backgroundImage:
-                                                        MemoryImage(
-                                                            base64Decode(obj
+                                                       FileImage(
+                                                        File(obj
                                                                 .image
                                                                 .toString())),
                                                   ),

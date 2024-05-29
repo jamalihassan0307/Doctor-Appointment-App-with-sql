@@ -1,4 +1,5 @@
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -62,8 +63,8 @@ class _CanceledScheduleState extends State<CanceledSchedule> {
                                     subtitle: Text("${model.bio}"),
                                     trailing:  CircleAvatar(
                                             radius: 25,
-                                            backgroundImage: MemoryImage(
-                                                base64Decode(model.docimage)),
+                                            backgroundImage:FileImage(
+                                                        File(model.docimage)),
                                           )),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 15),

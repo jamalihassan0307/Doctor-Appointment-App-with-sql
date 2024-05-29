@@ -1,6 +1,7 @@
 // ignore_for_file: override_on_non_overriding_member
 
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
 // import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
@@ -66,8 +67,8 @@ class _AdminCanceledScheduleState extends State<AdminCanceledSchedule> {
                                     // subtitle: Text("${model!.status}"),
                                     trailing: CircleAvatar(
                                             radius: 25,
-                                            backgroundImage: MemoryImage(
-                                                base64Decode(
+                                            backgroundImage:FileImage(
+                                                        File(
                                                     model.patientimage)),
                                           )),
                                 Padding(

@@ -1,4 +1,5 @@
-import 'dart:convert';
+// import 'dart:convert';
+import 'dart:io';
 
 import 'package:doctor_appointment_app/screens/admin/admin_profile_screen.dart';
 import 'package:doctor_appointment_app/screens/welcome_screen.dart';
@@ -34,7 +35,8 @@ class AdminSettingsScreen extends StatelessWidget {
               leading: CircleAvatar(
                 radius: 30,
                 backgroundImage:
-                    MemoryImage(base64Decode(StaticData.doctorModel!.image!)),
+                   FileImage(
+                                                        File(StaticData.doctorModel!.image!)),
               ),
               title: Text(
                 ""
