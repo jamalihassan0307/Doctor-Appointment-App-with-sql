@@ -2,6 +2,7 @@
 // import 'dart:convert';
 import 'dart:io';
 
+import 'package:doctor_appointment_app/SQL/signalr.dart';
 import 'package:doctor_appointment_app/controller/admin/admin_chat_Controller.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -49,11 +50,16 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                       padding:
                           const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                       child: Center(
-                        child: Text(
-                          "Messages1",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
+                        child: InkWell(
+                          onTap: (){
+                            LiveServer.Connect();
+                          },
+                          child: Text(
+                            "Messages1",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

@@ -51,6 +51,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return WillPopScope(
       onWillPop: () async {
+        print("exit")
+;         String name = StaticData.chatRoomId(
+      widget.current,
+      widget.id,
+    );
+
+    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+        ChatController.my.sendallsms(id1);
         Navigator.pop(context);
         if (_textFocusNode.hasFocus) {
           _textFocusNode.unfocus();
@@ -74,6 +82,14 @@ class _ChatScreenState extends State<ChatScreen> {
               child: AppBar(
                 leading: InkWell(
                   onTap: () {
+                     print("exit")
+;         String name = StaticData.chatRoomId(
+      widget.current,
+      widget.id,
+    );
+
+    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+        ChatController.my.sendallsms(id1);
                     Navigator.pop(context);
                   },
                   child: Icon(

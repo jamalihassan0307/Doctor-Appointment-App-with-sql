@@ -43,14 +43,14 @@ class ProfileController extends GetxController {
 
   Future<void> updateprofile(BuildContext context) async {
     if (hpickedFile != null) {
-      Uint8List imageBytes = await hpickedFile!.readAsBytes();
-      String base64Image = base64Encode(imageBytes);
+      // Uint8List imageBytes = await hpickedFile!.readAsBytes();
+      // String base64Image = base64Encode(imageBytes);
 
       String query = "UPDATE dbo.PatientModel SET ";
       query += "fullname = '${name.text}',";
       query += "email =' ${email.text}',";
       query += "password = '${password.text}',";
-      query += "image = '$base64Image'";
+      query += "image = '${hpickedFile!.path}'";
 
       query += " WHERE id = '${StaticData.patientmodel!.id}'";
       await SQL.Update(query);

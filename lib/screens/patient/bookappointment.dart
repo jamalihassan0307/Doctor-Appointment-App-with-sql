@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
+import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorSlot.dart';
@@ -264,9 +265,16 @@ PatientController.to.requested.add(model12);
 
                     SQL.post(
                         "INSERT INTO dbo.AppointmentModel VALUES (${model12.toMap()})");
-
+StaticData.patientmodel!.doctorList.add(widget.model.id);
+PatientChatController.to.doctorlist.add(widget.model);
                     await StaticData.updateSlotsStatus(
                         widget.model.id, slots!.id, 0);
+                          String name = StaticData.chatRoomId(widget.model.id, StaticData.patientmodel!.id);
+
+    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      SQL.get(
+                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
+          
 
                     // StaticData.sendNotifcation(
                     //   "Appointment",

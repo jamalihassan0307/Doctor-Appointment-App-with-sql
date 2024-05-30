@@ -1,3 +1,4 @@
+import 'package:doctor_appointment_app/SQL/signalr.dart';
 import 'package:doctor_appointment_app/splashscreen.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
 // import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +10,7 @@ void main() async {
       statusBarColor: Apptheme.primary, statusBarBrightness: Brightness.dark));
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  // LiveServer.Connect();
+  LiveServer.Connect();
   runApp(MyApp());
 }
 

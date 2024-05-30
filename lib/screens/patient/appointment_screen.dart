@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
+import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
 import 'package:doctor_appointment_app/screens/massage/chat_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/cupertino.dart';
@@ -179,6 +180,15 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                         query +=
                                             " WHERE id = '${StaticData.patientmodel!.id}'";
                                         SQL.Update(query);
+                                          String name = StaticData.chatRoomId(widget.model.id, StaticData.patientmodel!.id);
+                                          StaticData.patientmodel!.doctorList.add(widget.model.id);
+PatientChatController.to.doctorlist.add(widget.model);
+
+    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      SQL.get(
+                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
+          
+
                                       } else {
                                         print("id presnt");
                                       }

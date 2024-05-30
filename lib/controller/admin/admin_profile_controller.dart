@@ -91,8 +91,8 @@ class AdminProfileController extends GetxController {
   Future<void> updateprofile(BuildContext context) async {
     StaticData.updatedoctorprofile();
     if (hpickedFile != null) {
-      Uint8List imageBytes = await hpickedFile!.readAsBytes();
-      String base64Image = base64Encode(imageBytes);
+      // Uint8List imageBytes = await hpickedFile!.readAsBytes();
+      // String base64Image = base64Encode(imageBytes);
 
       String query = "UPDATE dbo.DoctorModel SET ";
       query += "fullname = '${name.text}',";
@@ -107,7 +107,7 @@ class AdminProfileController extends GetxController {
       query += "endtime = '${endTime}',";
       query += "maxAppointmentDuration = '${maxAppointmentDuration}',";
 
-      query += "image = '$base64Image'";
+      query += "image = '${hpickedFile!.path}'";
 
       query += " WHERE id = '${StaticData.doctorModel!.id}'";
       await SQL.Update(query);

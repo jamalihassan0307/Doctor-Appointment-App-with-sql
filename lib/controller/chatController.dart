@@ -11,6 +11,21 @@ class ChatController extends GetxController {
   List<Message> list = [];
 
 
+  sendallsms(String roomid) {
+    print("smssmsmsmsm${sendMessageList.length}");
+  String query = "INSERT INTO dbo.${roomid} VALUES ";
+  List<String> valuesList = [];
+  
+  for (var i = 0; i < sendMessageList.length; i++) {
+    valuesList.add("(${sendMessageList[i].toJson()})");
+  }
+  sendMessageList.clear();
+  query += valuesList.join(", ");
+  
+  SQL.post(query);
+}
+
+
   Future getAllMessages(String chatid) async {
    list.clear();
     String id1 = chatid.replaceAll(RegExp(r'[^a-zA-Z]'), '');
@@ -29,6 +44,9 @@ class ChatController extends GetxController {
                 list.add(Message.fromJson(e));
                 update();
               }
+              list.sort(
+      (a, b) => b.sent!.compareTo(a.sent!),
+    );update();
         } catch (e) {
           print("iyfryu$e");
         }
@@ -81,15 +99,16 @@ class ChatController extends GetxController {
     }
   }
 listupdate(message){ 
-  list.sort(
-      (a, b) => b.sent!.compareTo(a.sent!),
-    );
+
 
  list.add(message);
     print("adddddddddddd");
-    update(["sms"]);
+    update(["sms"]);  list.sort(
+      (a, b) => b.sent!.compareTo(a.sent!),
+    );
 
 }
+List<Message> sendMessageList=[];
    sendMessage(String rid, String msg, String from, String image,
      String name)  {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
@@ -101,43 +120,42 @@ listupdate(message){
         
                        textController.text = '';
    listupdate(message);
+   sendMessageList.add(message);
    
-    try {
-       SQL
-          .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})")
-          .then((value)  {
-        try {
-          if (value[0].toString().substring(0, 4) == "Invalid ") {
-            print("errrrrrrrrrrrrror2131");
-             SQL.get(
-                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
-             SQL
-                .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
-          }
-        } catch (e) {
-          print("asddafdsf${value[0]}");
-          if (value[0] == "E") { 
-            var a= SQL.get(
-                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
-if (a=="Error: java.sql.SQLException: There is already an object named '$id1' in the database.") {
-  print("table exist already");
-}else{  SQL
-                .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
-print("gdgdggi76786868");
-}
+//     try {
+//        SQL
+//           .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})")
+//           .then((value)  {
+//         try {
+//           if (value[0].toString().substring(0, 4) == "Invalid ") {
+//             print("errrrrrrrrrrrrror2131");
+//               // SQL
+//               //   .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
+//           }
+//         } catch (e) {
+// //           print("asddafdsf${value[0]}");
+// //           if (value[0] == "E") { 
+// //             var a= SQL.get(
+// //                 "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
+// // if (a=="Error: java.sql.SQLException: There is already an object named '$id1' in the database.") {
+// //   print("table exist already");
+// // }else{  SQL
+// //                 .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
+// // print("gdgdggi76786868");
+// // }
            
           
-          } else {
-            print("errrrrrrrrrrrrror");
-           }
+//           // } else {
+//           //   print("errrrrrrrrrrrrror");
+//           //  }
 
-          // print("errrrrrrrrrrrrror");
-          // await SQL.get(
-          //     "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
-          // await SQL.get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
-        }
-      });
-    } catch (e) {}
+//           // print("errrrrrrrrrrrrror");
+//           // await SQL.get(
+//           //     "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
+//           // await SQL.get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
+//         }
+      // });
+    // } catch (e) {}
     // final ref = firestore
     //     .collection('chatroom')
     //     .doc(StaticData.chatRoomId(rid, from))
