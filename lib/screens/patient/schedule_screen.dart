@@ -1,4 +1,5 @@
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
+import 'package:doctor_appointment_app/widgets/loading.dart';
 import 'package:doctor_appointment_app/widgets/show_scheduler.dart';
 import 'package:doctor_appointment_app/widgets/upcoming_schedule.dart';
 import 'package:flutter/material.dart';
@@ -216,9 +217,12 @@ InkWell(
             ),
           ),
           if (obj.loading == true)
-            Center(
-              child: CircularProgressIndicator(),
-            )
+           Center(
+                              child: SizedBox(
+                                height: height * 0.1,
+                                width: width * 0.2,
+                                child: SpinKit.loadSpinkit,
+                              ),),
         ],
       );
     });

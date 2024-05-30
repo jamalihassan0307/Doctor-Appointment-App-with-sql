@@ -1,10 +1,10 @@
-import 'dart:convert';
+// import 'dart:convert';
 
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_nav_bar.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';

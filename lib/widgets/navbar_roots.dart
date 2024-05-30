@@ -30,8 +30,10 @@ class _NavBarRootsState extends State<NavBarRoots> {
     Get.put(PatientController());
 
      Get.put(PatientChatController());
+    //  PatientController.to.updateloading(true);
     PatientController.to.getAllAppointment();
     PatientChatController.to.getdoctor();
+      // PatientController.to.updateloading(false);
     super.initState();
   }
   Widget build(BuildContext context) {

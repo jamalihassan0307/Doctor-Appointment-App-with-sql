@@ -1,6 +1,6 @@
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
-import 'package:doctor_appointment_app/staticdata.dart';
+// import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -112,9 +112,9 @@ List<Message> sendMessageList=[];
    sendMessage(String rid, String msg, String from, String image,
      String name)  {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
-    String name = StaticData.chatRoomId(from, rid);
+    // String name = StaticData.chatRoomId(from, rid);
 
-    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+    // String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
     final Message message =
         Message(toId: rid, msg: msg, readn: '', fromId: from, sent: time);
         
@@ -156,12 +156,6 @@ List<Message> sendMessageList=[];
 //         }
       // });
     // } catch (e) {}
-    // final ref = firestore
-    //     .collection('chatroom')
-    //     .doc(StaticData.chatRoomId(rid, from))
-    //     .collection('chats');
-    // await ref.doc(time).set(message.toJson()).then((value) {});
 
-    // StaticData.sendNotifcation(name, msg, tokken);
   }
 }

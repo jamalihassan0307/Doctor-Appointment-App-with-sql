@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:doctor_appointment_app/controller/admin/admin_home_controller.dart';
-import 'package:doctor_appointment_app/controller/patient/patientController.dart';
+// import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 // import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';

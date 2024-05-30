@@ -3,6 +3,7 @@ import 'package:doctor_appointment_app/widgets/admin/adminShow.dart';
 import 'package:doctor_appointment_app/widgets/admin/admin_canceled_schedule.dart';
 import 'package:doctor_appointment_app/widgets/admin/admin_completed_schedule.dart';
 import 'package:doctor_appointment_app/widgets/admin/admin_upcoming_schedule.dart';
+import 'package:doctor_appointment_app/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -216,8 +217,11 @@ InkWell(
           ),
           if (obj.loading == true)
             Center(
-              child: CircularProgressIndicator(),
-            )
+                              child: SizedBox(
+                                height: height * 0.1,
+                                width: width * 0.2,
+                                child: SpinKit.loadSpinkit,
+                              ),),
         ],
       );
     

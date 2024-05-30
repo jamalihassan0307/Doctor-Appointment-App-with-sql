@@ -11,6 +11,11 @@ class PatientController extends GetxController {
   static PatientController get to => Get.find();
   List<AppointmentModel> allAppointment = [];
   bool loading = false;
+  // bool mainloading = false;
+  // updateloading(bool lo){
+  //   mainloading=lo;
+  //   // update();
+  // }
   List<AppointmentModel> requested = [];
   List<AppointmentModel> confirmed = [];
   List<AppointmentModel> cencal = [];

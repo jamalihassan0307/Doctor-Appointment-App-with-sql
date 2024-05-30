@@ -54,6 +54,7 @@ dependencies:
   intl:
   signalr_netcore: 
   logging: 
+  flutter_spinkit: 
   # flutter_spinkit:
   
 dev_dependencies:

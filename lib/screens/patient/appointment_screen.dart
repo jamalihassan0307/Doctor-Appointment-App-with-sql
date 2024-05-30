@@ -281,8 +281,12 @@ PatientChatController.to.doctorlist.add(widget.model);
                     //         builder: (BuildContext context, snapshot) {
                     //           if (snapshot.connectionState ==
                     //               ConnectionState.waiting) {
-                    //             return Center(
-                    //                 child: CircularProgressIndicator());
+                    //             return  Center(
+                              // child: SizedBox(
+                              //   height: height * 0.1,
+                              //   width: width * 0.2,
+                              //   child: SpinKit.loadSpinkit,
+                              // ),),;
                     //           }
 
                     //           if (snapshot.hasError) {

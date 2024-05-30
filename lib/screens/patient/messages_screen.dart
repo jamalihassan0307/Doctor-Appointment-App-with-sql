@@ -9,6 +9,7 @@ import 'package:doctor_appointment_app/screens/massage/chat_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
+import 'package:doctor_appointment_app/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -376,8 +377,11 @@ obj.update();}
           ),
           if (obj.loading == true)
             Center(
-              child: CircularProgressIndicator(),
-            )
+                              child: SizedBox(
+                                height: height * 0.1,
+                                width: width * 0.2,
+                                child: SpinKit.loadSpinkit,
+                              ),),
         ],
       );
     });
