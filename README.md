@@ -2,9 +2,9 @@
 
 TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks. It offers a user-friendly interface and efficient functionalities to manage tax-related data effectively.
 
-![Cover Image 1](image1.jpg)
-![Cover Image 2](image2.jpg)
-![Cover Image 3](image3.jpg)
+![Cover Image 1](https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/1.png)
+![Cover Image 2](https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/2.png)
+![Cover Image 3](https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/3.png)
 
 ## About Me
 
