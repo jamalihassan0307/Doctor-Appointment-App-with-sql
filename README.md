@@ -113,8 +113,8 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
   </tr>
   <tr>
     <td align="center"><p><b>WellCome</b></p></td>
-    <td align="center"><p><b>Appointment List</b></p></td>
-    <td align="center"><p><b>Doctor Details</b></p></td>
+    <td align="center"><p><b>Signup Doctor</b></p></td>
+    <td align="center"><p><b>Login Doctor</b></p></td>
   </tr>
 
   <!-- Seventh Row -->
@@ -130,9 +130,9 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Profile</b></p></td>
-    <td align="center"><p><b>Appointment List</b></p></td>
-    <td align="center"><p><b>Doctor Details</b></p></td>
+    <td align="center"><p><b>Doctor Dashboard</b></p></td>
+    <td align="center"><p><b>Doctor chat Dashboard</b></p></td>
+    <td align="center"><p><b>Joining on chat</b></p></td>
   </tr>
 
   <!-- Eighth Row -->
@@ -148,9 +148,9 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Profile</b></p></td>
-    <td align="center"><p><b>Appointment List</b></p></td>
-    <td align="center"><p><b>Doctor Details</b></p></td>
+    <td align="center"><p><b>Joining result</b></p></td>
+    <td align="center"><p><b>Schedule</b></p></td>
+    <td align="center"><p><b>Fuilter Schedule result</b></p></td>
   </tr>
 
   <!-- Ninth Row -->
@@ -166,9 +166,9 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Profile</b></p></td>
-    <td align="center"><p><b>Appointment List</b></p></td>
-    <td align="center"><p><b>Doctor Details</b></p></td>
+    <td align="center"><p><b>Fuilter Schedule </b></p></td>
+    <td align="center"><p><b>Doctor Profile</b></p></td>
+    <td align="center"><p><b>Doctor Profile</b></p></td>
   </tr>
 
   <!-- Tenth Row -->
@@ -184,9 +184,9 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Profile</b></p></td>
-    <td align="center"><p><b>Appointment List</b></p></td>
-    <td align="center"><p><b>Doctor Details</b></p></td>
+    <td align="center"><p><b>Doctor Profile</b></p></td>
+    <td align="center"><p><b>Date picker</b></p></td>
+    <td align="center"><p><b>Signup</b></p></td>
   </tr>
 
   <!-- Eleventh Row -->
@@ -198,8 +198,13 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
       <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/35.png" style="width:100%; height:auto;" />
     </td>
     <td style="width:33%; padding:5px;">
-      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/36.png" style="width:100%; height:auto;" />
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/19.png" style="width:100%; height:auto;" />
     </td>
+  </tr>
+   <tr>
+    <td align="center"><p><b>Signup</b></p></td>
+    <td align="center"><p><b>Signup</b></p></td>
+    <td align="center"><p><b>chat sms</b></p></td>
   </tr>
 
    <tr>
@@ -214,7 +219,7 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Chat screen</b></p></td>
+    <td align="center"><p><b>Doctor Detail</b></p></td>
     <td align="center"><p><b>Chat screen</b></p></td>
     <td align="center"><p><b>Massage Detail</b></p></td>
   </tr>
