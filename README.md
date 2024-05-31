@@ -87,10 +87,21 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     <td align="center"><p><b>Joined Result</b></p></td>
   </tr>
 </table>
+
+
+
+
+
 # Doctor Dashboard
+
+
+
+
 <table border="1">
-  <tr>
-  
+ <tr>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/16a.png" style="width:100%; height:auto;" />
+    </td>
     <td style="width:33%; padding:5px;">
       <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/17.png" style="width:100%; height:auto;" />
     </td>
@@ -99,7 +110,7 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-   
+    <td align="center"><p><b>Chat screen</b></p></td>
     <td align="center"><p><b>Chat screen</b></p></td>
     <td align="center"><p><b>Massage Detail</b></p></td>
   </tr>
