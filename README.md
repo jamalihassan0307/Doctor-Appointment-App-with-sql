@@ -233,8 +233,8 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
 Hey there! I'm Ali Hassan, a passionate learner in the field of Flutter Application Development.
 
 - 🔭 Currently learning Flutter Application Development
-- 🤔 Exploring new technologies and developing software solutions and quick hacks.
-- 🎓 Studying Computer Science, computer programming, and Mathematics.
+- 🤔 Exploring new technologies and developing software solutions and quick hacks
+- 🎓 Studying Computer Science, computer programming, and Mathematics
 
 ## Tech Stack
 
@@ -244,14 +244,32 @@ Hey there! I'm Ali Hassan, a passionate learner in the field of Flutter Applicat
 
 ## Features
 
-- User authentication for secure access
-- Profile management for personalized experience
-- Efficient tax data management
-- Streamlined tax administration tasks
+- **User Authentication**: Secure access for both patients and doctors
+- **Profile Management**: Personalized profiles for each user
+- **Appointment Scheduling**: Easy scheduling and management of appointments
+- **Chat Functionality**: Real-time communication between patients and doctors
+
+## Application Working Principle
+
+1. **User Authentication**:
+   - Both patients and doctors can sign up and log in securely.
+   - User credentials are stored and verified to ensure secure access.
+
+2. **Profile Management**:
+   - Users can create and update their profiles with personal information.
+   - Profiles help in personalizing the user experience.
+
+3. **Appointment Scheduling**:
+   - Patients can view available doctors and schedule appointments.
+   - Doctors can manage their appointment schedules and view patient details.
+
+4. **Chat Functionality**:
+   - Enables real-time messaging between patients and doctors.
+   - Facilitates better communication for appointment reminders, consultations, and follow-ups.
 
 ## Getting Started
 
-To get started with TaxTip Admin:
+To get started with the Doctor Appointment App:
 
 1. Clone this repository.
 2. Set up Flutter development environment if not already installed.
