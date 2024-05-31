@@ -24,8 +24,8 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
   </tr>
   <tr>
     <td align="center"><p><b>Login Page</b></p></td>
-    <td align="center"><p><b>Home</b></p></td>
-    <td align="center"><p><b>Home</b></p></td>
+    <td align="center"><p><b>WellCome Page</b></p></td>
+    <td align="center"><p><b>WellCome Page</b></p></td>
   </tr>
 
   <!-- Second Row -->
@@ -42,8 +42,8 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
   </tr>
   <tr>
     <td align="center"><p><b>Login Page</b></p></td>
-    <td align="center"><p><b>Home</b></p></td>
-    <td align="center"><p><b>Home</b></p></td>
+    <td align="center"><p><b>Patient Home</b></p></td>
+    <td align="center"><p><b>Patient Chat</b></p></td>
   </tr>
 
   <!-- Third Row -->
@@ -59,9 +59,9 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Profile</b></p></td>
-    <td align="center"><p><b>Appointment List</b></p></td>
-    <td align="center"><p><b>Doctor Details</b></p></td>
+    <td align="center"><p><b>Setting</b></p></td>
+    <td align="center"><p><b>Patient Profile</b></p></td>
+    <td align="center"><p><b>Patient Schedule</b></p></td>
   </tr>
 
   <!-- Repeat similar blocks for all other images up to 35 -->
@@ -80,9 +80,9 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Profile</b></p></td>
-    <td align="center"><p><b>Appointment List</b></p></td>
-    <td align="center"><p><b>Doctor Details</b></p></td>
+    <td align="center"><p><b>Fuilter Schedule</b></p></td>
+    <td align="center"><p><b>Joining On Chat</b></p></td>
+    <td align="center"><p><b>Joined Result</b></p></td>
   </tr>
 
   <!-- Fifth Row -->
@@ -94,13 +94,116 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
       <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/17.png" style="width:100%; height:auto;" />
     </td>
     <td style="width:33%; padding:5px;">
-      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/18.png" style="width:100%; height:auto;" />
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/19.png" style="width:100%; height:auto;" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><p><b>Dr Profile</b></p></td>
+    <td align="center"><p><b>Chat screen</b></p></td>
+    <td align="center"><p><b>Massage Detail</b></p></td>
+  </tr>
+
+  <!-- Sixth Row -->
+  <tr>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/19.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/20.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/21.png" style="width:100%; height:auto;" />
     </td>
   </tr>
   <tr>
     <td align="center"><p><b>Profile</b></p></td>
     <td align="center"><p><b>Appointment List</b></p></td>
     <td align="center"><p><b>Doctor Details</b></p></td>
+  </tr>
+
+  <!-- Seventh Row -->
+  <tr>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/22.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/23.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/24.png" style="width:100%; height:auto;" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><p><b>Profile</b></p></td>
+    <td align="center"><p><b>Appointment List</b></p></td>
+    <td align="center"><p><b>Doctor Details</b></p></td>
+  </tr>
+
+  <!-- Eighth Row -->
+  <tr>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/25.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/26.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/27.png" style="width:100%; height:auto;" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><p><b>Profile</b></p></td>
+    <td align="center"><p><b>Appointment List</b></p></td>
+    <td align="center"><p><b>Doctor Details</b></p></td>
+  </tr>
+
+  <!-- Ninth Row -->
+  <tr>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/28.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/29.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/30.png" style="width:100%; height:auto;" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><p><b>Profile</b></p></td>
+    <td align="center"><p><b>Appointment List</b></p></td>
+    <td align="center"><p><b>Doctor Details</b></p></td>
+  </tr>
+
+  <!-- Tenth Row -->
+  <tr>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/31.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/32.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/33.png" style="width:100%; height:auto;" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><p><b>Profile</b></p></td>
+    <td align="center"><p><b>Appointment List</b></p></td>
+    <td align="center"><p><b>Doctor Details</b></p></td>
+  </tr>
+
+  <!-- Eleventh Row -->
+  <tr>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/34.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/35.png" style="width:100%; height:auto;" />
+    </td>
+    <td style="width:33%; padding:5px;">
+      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/36.png" style="width:100%; height:auto;" />
+    </td>
   </tr>
 
   <!-- Continue this pattern for the remaining images up to 35 -->
