@@ -9,6 +9,8 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
 
 # Projects Screenshots
 
+
+# Patient Dashboard
 <table border="1">
   <!-- First Row -->
   <tr>
@@ -84,12 +86,11 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     <td align="center"><p><b>Joining On Chat</b></p></td>
     <td align="center"><p><b>Joined Result</b></p></td>
   </tr>
-
-  <!-- Fifth Row -->
+</table>
+# Doctor Dashboard
+<table border="1">
   <tr>
-    <td style="width:33%; padding:5px;">
-      <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/16.png" style="width:100%; height:auto;" />
-    </td>
+  
     <td style="width:33%; padding:5px;">
       <img src="https://github.com/jamalihassan0307/Doctor-Appointment-App-with-sql/blob/master/ss/17.png" style="width:100%; height:auto;" />
     </td>
@@ -98,7 +99,7 @@ TaxTip Admin is a Flutter project aimed at simplifying tax administration tasks.
     </td>
   </tr>
   <tr>
-    <td align="center"><p><b>Dr Profile</b></p></td>
+   
     <td align="center"><p><b>Chat screen</b></p></td>
     <td align="center"><p><b>Massage Detail</b></p></td>
   </tr>
