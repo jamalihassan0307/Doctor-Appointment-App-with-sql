@@ -35,8 +35,7 @@ class AdminSettingsScreen extends StatelessWidget {
               leading: CircleAvatar(
                 radius: 30,
                 backgroundImage:
-                   FileImage(
-                                                        File(StaticData.doctorModel!.image!)),
+                    FileImage(File(StaticData.doctorModel!.image!)),
               ),
               title: Text(
                 ""

@@ -66,11 +66,10 @@ class _AdminCanceledScheduleState extends State<AdminCanceledSchedule> {
                                     ),
                                     // subtitle: Text("${model!.status}"),
                                     trailing: CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage:FileImage(
-                                                        File(
-                                                    model.patientimage)),
-                                          )),
+                                      radius: 25,
+                                      backgroundImage:
+                                          FileImage(File(model.patientimage)),
+                                    )),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 15),
                                   child: Divider(

@@ -61,11 +61,11 @@ class _CanceledScheduleState extends State<CanceledSchedule> {
                                       ),
                                     ),
                                     subtitle: Text("${model.bio}"),
-                                    trailing:  CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage:FileImage(
-                                                        File(model.docimage)),
-                                          )),
+                                    trailing: CircleAvatar(
+                                      radius: 25,
+                                      backgroundImage:
+                                          FileImage(File(model.docimage)),
+                                    )),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 15),
                                   child: Divider(

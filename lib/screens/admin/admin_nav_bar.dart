@@ -26,11 +26,9 @@ class _AdminNavBarRootsState extends State<AdminNavBarRoots> {
 
   @override
   void initState() {
-    
     Get.put(AdminHomeController());
     Get.put(AdminHomeController());
-     Get.put(AdminChatController());
-    // StaticData.updatedoctorprofile();
+    Get.put(AdminChatController());
     AdminHomeController.to.getSchedule();
     AdminHomeController.to.getAllPatient();
     AdminChatController.to.getpatient();
@@ -38,6 +36,7 @@ class _AdminNavBarRootsState extends State<AdminNavBarRoots> {
     AdminHomeController.to.getAllAppointment();
     super.initState();
   }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

@@ -4,7 +4,6 @@ import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:flutter/material.dart';
 
-
 class ConnectionFailed extends StatefulWidget {
   const ConnectionFailed({Key? key}) : super(key: key);
 
@@ -52,8 +51,11 @@ class _ConnectionFailedState extends State<ConnectionFailed> {
               childTextColor: Colors.white,
               onPressed: () {
                 print("dfsdf");
-                 Navigator.push(context,MaterialPageRoute(builder: (context) => SplashScreen(),));
-                
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SplashScreen(),
+                    ));
               },
             ),
           ),
@@ -62,4 +64,3 @@ class _ConnectionFailedState extends State<ConnectionFailed> {
     );
   }
 }
-

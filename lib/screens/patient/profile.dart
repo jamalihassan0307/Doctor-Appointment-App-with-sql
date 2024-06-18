@@ -103,18 +103,16 @@ class _ProfileState extends State<Profile> {
                                                     null
                                                 ? CircleAvatar(
                                                     radius: 75,
-                                                    backgroundImage:FileImage(
+                                                    backgroundImage: FileImage(
                                                         File(StaticData
                                                             .patientmodel!
                                                             .image)),
                                                   )
                                                 : CircleAvatar(
                                                     radius: 75,
-                                                    backgroundImage:
-                                                      FileImage(
-                                                        File(obj
-                                                                .image
-                                                                .toString())),
+                                                    backgroundImage: FileImage(
+                                                        File(obj.image
+                                                            .toString())),
                                                   ),
                                       ),
                                       Align(

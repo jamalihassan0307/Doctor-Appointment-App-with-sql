@@ -55,31 +55,27 @@ class ProfileController extends GetxController {
 
       query += " WHERE id = '${StaticData.patientmodel!.id}'";
       if (StaticData.localdatabase) {
-          var map={
-           'fullname': '${name.text}',
-           'email': '${email.text}',
-           'password': '${password.text}',
-           'image': '${hpickedFile!.path}',
+        var map = {
+          'fullname': '${name.text}',
+          'email': '${email.text}',
+          'password': '${password.text}',
+          'image': '${hpickedFile!.path}',
         };
-      try {
-    var result = await SQLService.updateData('PatientModel', map, StaticData.patientmodel!.id);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
+        try {
+          var result = await SQLService.updateData(
+              'PatientModel', map, StaticData.patientmodel!.id);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      } else {
+        try {
+          var result = await SQL.Update(query);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      }
 
       Fluttertoast.showToast(
           msg: "Update Succssfully",
@@ -105,35 +101,31 @@ class ProfileController extends GetxController {
 
       query += " WHERE id = '${StaticData.patientmodel!.id}'";
       if (StaticData.localdatabase) {
-      try {
-          var map={
-           'fullname': '${name.text}',
-           'email': '${email.text}',
-           'password': '${password.text}',
-   
+        try {
+          var map = {
+            'fullname': '${name.text}',
+            'email': '${email.text}',
+            'password': '${password.text}',
+
 //  "email =' ${email.text}',",
-     
+
 //  "password = '${password.text}',",
 //  "image = '${hpickedFile!.path}'",
-        };
-    var result = await SQLService.updateData('PatientModel', map, StaticData.patientmodel!.id);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
+          };
+          var result = await SQLService.updateData(
+              'PatientModel', map, StaticData.patientmodel!.id);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      } else {
+        try {
+          var result = await SQL.Update(query);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      }
 
       Fluttertoast.showToast(
           msg: "Update Succssfully",
@@ -143,7 +135,7 @@ class ProfileController extends GetxController {
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0);
-     await StaticData.updatepatientprofile().then((value) {
+      await StaticData.updatepatientprofile().then((value) {
         initalizedata();
         Navigator.push(
             context,

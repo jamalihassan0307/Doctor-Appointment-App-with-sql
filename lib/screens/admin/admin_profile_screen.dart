@@ -110,11 +110,9 @@ class _AdminProfileState extends State<AdminProfile> {
                                                   )
                                                 : CircleAvatar(
                                                     radius: 75,
-                                                    backgroundImage:
-                                                       FileImage(
-                                                        File(obj
-                                                                .image
-                                                                .toString())),
+                                                    backgroundImage: FileImage(
+                                                        File(obj.image
+                                                            .toString())),
                                                   ),
                                       ),
                                       Align(

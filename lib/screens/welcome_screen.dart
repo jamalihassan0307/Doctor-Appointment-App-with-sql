@@ -27,7 +27,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               SizedBox(
                 height: 15,
               ),
-              
               SizedBox(
                 height: 10,
               ),
@@ -123,5 +122,4 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
-
- }
+}

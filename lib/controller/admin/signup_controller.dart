@@ -63,7 +63,7 @@ class SignupController extends GetxController {
           fullname: fullname.text,
           password: password.text,
           id: id,
-          image:await StaticData.assetToF("images/doctor4.png"),
+          image: await StaticData.assetToF("images/doctor4.png"),
           about: about.text,
           bio: bio.text,
           specialty: specilest.text,
@@ -74,22 +74,19 @@ class SignupController extends GetxController {
         );
         print("time startTime.toString()${startTime.toString()}");
         print("time endTime.toString()${endTime.toString()}");
-           var query="INSERT INTO DoctorModel VALUES (${model.toMap()})";
-        SQLQuery.postdata(query)
-            .then((value) async {
-          String id1 =
-              model.id.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+        var query = "INSERT INTO DoctorModel VALUES (${model.toMap()})";
+        SQLQuery.postdata(query).then((value) async {
+          String id1 = model.id.replaceAll(RegExp(r'[^a-zA-Z]'), '');
           List<DoctorSlot> slots = await generateDoctorSlots(
-            
               startTime!, endTime!, maxAppointmentDuration!, id, fullname.text);
 
           print("object12345");
-             var query="CREATE TABLE  ${id1} (id VARCHAR(255) PRIMARY KEY,indexn INT,patientid VARCHAR(255),doctorname VARCHAR(255),doctorid VARCHAR(255),startTime VARCHAR(255),endTime VARCHAR(255),patientName VARCHAR(255),isAvailable bit,date varchar(255));";
-        await  SQLQuery.createTabledata(query).then((value) async {
+          var query =
+              "CREATE TABLE  ${id1} (id VARCHAR(255) PRIMARY KEY,indexn INT,patientid VARCHAR(255),doctorname VARCHAR(255),doctorid VARCHAR(255),startTime VARCHAR(255),endTime VARCHAR(255),patientName VARCHAR(255),isAvailable bit,date varchar(255));";
+          await SQLQuery.createTabledata(query).then((value) async {
             for (var e in slots) {
-                 var query="INSERT INTO ${id1} VALUES (${e.toMap()})";
-             await SQLQuery
-                  .postdata(query);
+              var query = "INSERT INTO ${id1} VALUES (${e.toMap()})";
+              await SQLQuery.postdata(query);
             }
           });
           print("object1235678");
@@ -114,8 +111,7 @@ class SignupController extends GetxController {
             print("object12345");
 
             SQLQuery.delecttable(id1).then((value) async {
-            await  SQLQuery.createTable3(id1)
-                  .then((value) {
+              await SQLQuery.createTable3(id1).then((value) {
                 for (var e in slots1) {
                   SQLQuery.postInsertData(id1, e);
                 }
@@ -176,13 +172,11 @@ class SignupController extends GetxController {
         fullname: fullname.text,
         password: password.text,
         id: id,
-        image:await StaticData.assetToF("images/patient_logo.png"),
+        image: await StaticData.assetToF("images/patient_logo.png"),
         phonenumber: phonenumber.text,
       );
-   var query="INSERT INTO PatientModel VALUES (${model.toMap()})";
-      SQLQuery
-          .postdata(query)
-          .then((value) {
+      var query = "INSERT INTO PatientModel VALUES (${model.toMap()})";
+      SQLQuery.postdata(query).then((value) {
         // clearForm();
         Fluttertoast.showToast(
           msg: "Signup Successful",
@@ -235,7 +229,6 @@ class SignupController extends GetxController {
     List<DoctorSlot> doctorSlots = [];
     // try {
 
-   
     DateTime? currentStartTime;
     DateFormat format = DateFormat("h:mm a", 'en_US');
 
@@ -247,7 +240,7 @@ class SignupController extends GetxController {
     } catch (e) {
       print('Error parsing time: $e');
     }
-int index=0;
+    int index = 0;
     while (currentStartTime!.isBefore(parseTime(endTime))) {
       DateTime currentEndTime =
           currentStartTime.add(Duration(minutes: maxAppointmentDuration));
@@ -275,7 +268,7 @@ int index=0;
       int maxAppointmentDuration, String doctorid, String doctorname) async {
     List<DoctorSlot> doctorSlots = [];
     // try {
-   
+
     DateTime? currentStartTime;
     DateFormat format = DateFormat("h:mm a", 'en_US');
 
@@ -294,7 +287,7 @@ int index=0;
       var uuid = const Uuid();
       var id = uuid.v4();
       doctorSlots.add(DoctorSlot(
-        indexn:int.tryParse(DateTime.now().microsecond.toString()),
+        indexn: int.tryParse(DateTime.now().microsecond.toString()),
         date: currentStartTime.microsecondsSinceEpoch.toString(),
         doctorid: doctorid,
         doctorname: doctorname,

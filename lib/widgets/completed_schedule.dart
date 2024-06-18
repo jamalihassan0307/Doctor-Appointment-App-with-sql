@@ -68,12 +68,11 @@ class _CompletedScheduleState extends State<CompletedSchedule> {
                                           ),
                                         ),
                                         subtitle: Text("${model.bio}"),
-                                        trailing:  CircleAvatar(
-                                                radius: 25,
-                                                backgroundImage:FileImage(
-                                                        File(
-                                                        model.docimage)),
-                                              )),
+                                        trailing: CircleAvatar(
+                                          radius: 25,
+                                          backgroundImage:
+                                              FileImage(File(model.docimage)),
+                                        )),
                                     Row(
                                       children: [
                                         SizedBox(

@@ -15,9 +15,7 @@ class _NoConnectionState extends State<NoConnection> {
     print("sdsdfsd");
     return SafeArea(
       child: Scaffold(
-        body: 
-        
-        Stack(
+        body: Stack(
           children: [
             Image.asset(
               'images/Connection_Lost.png',
@@ -55,7 +53,6 @@ class _NoConnectionState extends State<NoConnection> {
             ),
           ],
         ),
-      
       ),
     );
   }

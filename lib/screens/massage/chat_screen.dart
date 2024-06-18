@@ -51,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        print("exit") ;       
+        print("exit");
         //  String name = StaticData.chatRoomId(
 //       widget.current,
 //       widget.id,
@@ -82,7 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: AppBar(
                 leading: InkWell(
                   onTap: () {
-                     print("exit");
+                    print("exit");
 // ;         String name = StaticData.chatRoomId(
 //       widget.current,
 //       widget.id,
@@ -105,9 +105,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     children: [
                       CircleAvatar(
                         radius: 25,
-                        backgroundImage:
-                            FileImage(
-                                                        File(widget.image)),
+                        backgroundImage: FileImage(File(widget.image)),
                       ),
                       SizedBox(
                         width: width * 0.01,
@@ -124,7 +122,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     ],
                   ),
                 ),
-              
               ),
             ),
             body: GetBuilder<ChatController>(
@@ -209,7 +206,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             widget.current,
                             widget.currentimage,
                             widget.currentname);
-
                       }
                     },
                     decoration: InputDecoration(

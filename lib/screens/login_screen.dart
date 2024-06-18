@@ -39,17 +39,18 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(
                   height: height * 0.08,
-                  width: width,),
+                  width: width,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                        "Select Profile",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF7165D6),
-                        ),
-                      ),
+                    "Select Profile",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF7165D6),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: height * 0.2,
@@ -76,13 +77,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                       image: AssetImage(
                                           "images/doctor_logo-removebg-preview.png")),
                                   Text(
-                        "Doctor",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF7165D6),
-                        ),
-                      ),
+                                    "Doctor",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF7165D6),
+                                    ),
+                                  ),
                                 ],
                               ),
                             )),
@@ -106,13 +107,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                       image: AssetImage(
                                           "images/patient_logo.png")),
                                   Text(
-                        "Patient",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF7165D6),
-                        ),
-                      ),
+                                    "Patient",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF7165D6),
+                                    ),
+                                  ),
                                 ],
                               ),
                             )),
@@ -121,7 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                 
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: TextFormField(
@@ -145,7 +145,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(
-                  
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: TextFormField(
@@ -204,7 +203,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             obj.index == 0
                                 ? obj.signInWithEmailAndPassword(context)
                                 : obj.signInWithEmailAndPassword1(context);
-                           
                           } else {}
                         },
                         child: Padding(

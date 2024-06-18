@@ -63,12 +63,11 @@ class _AdminCompletedScheduleState extends State<AdminCompletedSchedule> {
                                       ),
                                     ),
                                     // subtitle: Text("${model!.time}"),
-                                    trailing:  CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage:FileImage(
-                                                        File(
-                                                    model.patientimage)),
-                                          )),
+                                    trailing: CircleAvatar(
+                                      radius: 25,
+                                      backgroundImage:
+                                          FileImage(File(model.patientimage)),
+                                    )),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 15),
                                   child: Divider(

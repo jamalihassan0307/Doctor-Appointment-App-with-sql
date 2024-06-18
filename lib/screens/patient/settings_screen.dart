@@ -34,8 +34,7 @@ class SettingsScreen extends StatelessWidget {
               leading: CircleAvatar(
                 radius: 30,
                 backgroundImage:
-                   FileImage(
-                                                        File(StaticData.patientmodel!.image)),
+                    FileImage(File(StaticData.patientmodel!.image)),
               ),
               title: Text(
                 ""

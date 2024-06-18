@@ -111,40 +111,36 @@ class AdminProfileController extends GetxController {
       query += "image = '${hpickedFile!.path}'";
 
       query += " WHERE id = '${StaticData.doctorModel!.id}'";
-       if (StaticData.localdatabase) {
-      try {
-         var map = {
-  'fullname': name.text,
-  'email': email.text,
-  'password': password.text,
-  'address': address.text,
-  'specialty': specilest.text,
-  'bio': bio.text,
-  'fee': double.tryParse(fee.text) ?? 0.0,
-  'about': about.text,
-  'starttime': startTime,
-  'endtime': endTime,
-  'maxAppointmentDuration': maxAppointmentDuration,
-  'image': hpickedFile!.path,
-};
-    var result = await SQLService.updateData('DoctorModel', map, StaticData.doctorModel!.id);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
+      if (StaticData.localdatabase) {
+        try {
+          var map = {
+            'fullname': name.text,
+            'email': email.text,
+            'password': password.text,
+            'address': address.text,
+            'specialty': specilest.text,
+            'bio': bio.text,
+            'fee': double.tryParse(fee.text) ?? 0.0,
+            'about': about.text,
+            'starttime': startTime,
+            'endtime': endTime,
+            'maxAppointmentDuration': maxAppointmentDuration,
+            'image': hpickedFile!.path,
+          };
+          var result = await SQLService.updateData(
+              'DoctorModel', map, StaticData.doctorModel!.id);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      } else {
+        try {
+          var result = await SQL.Update(query);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      }
 
       Fluttertoast.showToast(
           msg: "Update Succssfully",
@@ -179,39 +175,35 @@ class AdminProfileController extends GetxController {
       query += "maxAppointmentDuration = '${maxAppointmentDuration}',";
 
       query += " WHERE id = '${StaticData.doctorModel!.id}'";
-       if (StaticData.localdatabase) {
+      if (StaticData.localdatabase) {
         var map = {
-  'fullname': name.text,
-  'email': email.text,
-  'password': password.text,
-  'address': address.text,
-  'specialty': specilest.text,
-  'bio': bio.text,
-  'fee': double.tryParse(fee.text) ?? 0.0,
-  'about': about.text,
-  'starttime': startTime,
-  'endtime': endTime,
-  'maxAppointmentDuration': maxAppointmentDuration,
-};
-      try {
-    var result = await SQLService.updateData('DoctorModel', map, StaticData.doctorModel!.id);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
+          'fullname': name.text,
+          'email': email.text,
+          'password': password.text,
+          'address': address.text,
+          'specialty': specilest.text,
+          'bio': bio.text,
+          'fee': double.tryParse(fee.text) ?? 0.0,
+          'about': about.text,
+          'starttime': startTime,
+          'endtime': endTime,
+          'maxAppointmentDuration': maxAppointmentDuration,
+        };
+        try {
+          var result = await SQLService.updateData(
+              'DoctorModel', map, StaticData.doctorModel!.id);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      } else {
+        try {
+          var result = await SQL.Update(query);
+          print("resultresult${result.toString()}");
+        } catch (e) {
+          print("Error in updateprofile: $e");
+        }
+      }
       Fluttertoast.showToast(
           msg: "Update Succssfully",
           toastLength: Toast.LENGTH_SHORT,

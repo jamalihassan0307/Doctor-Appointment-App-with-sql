@@ -26,16 +26,16 @@ class _NavBarRootsState extends State<NavBarRoots> {
 
   @override
   void initState() {
-    
     Get.put(PatientController());
 
-     Get.put(PatientChatController());
+    Get.put(PatientChatController());
     //  PatientController.to.updateloading(true);
     PatientController.to.getAllAppointment();
     PatientChatController.to.getdoctor();
-      // PatientController.to.updateloading(false);
+    // PatientController.to.updateloading(false);
     super.initState();
   }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

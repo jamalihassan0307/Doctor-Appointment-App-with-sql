@@ -160,7 +160,8 @@ class _MessageCardState extends State<MessageCard> {
                     Icons.remove_red_eye,
                     color: Colors.black,
                   ),
-                  name: widget.message.readn == null ||widget.message.readn==''
+                  name: widget.message.readn == null ||
+                          widget.message.readn == ''
                       ? 'Read At: Not seen yet'
                       : 'Read At: ${MyDateUtil.getMessageTime(context: context, time: widget.message.readn!)}',
                   onTap: () {}),

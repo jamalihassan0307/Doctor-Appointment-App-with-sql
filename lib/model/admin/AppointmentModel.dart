@@ -41,9 +41,8 @@ class AppointmentModel {
         patientid: map['patientid'],
         doctorid: map['doctorid'],
         doctorname: map['doctorname'],
-        docimage: map['docimage'],  
+        docimage: map['docimage'],
         patientname: map['patientname'],
-
         patientimage: map['patientimage'],
         slotsid: map['slotsid'],
         time: map['time'],

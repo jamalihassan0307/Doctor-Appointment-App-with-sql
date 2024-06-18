@@ -215,7 +215,7 @@ class _CalenderState extends State<Calender> {
                         createdtime: DateTime.now().microsecondsSinceEpoch,
                         status: 1,
                         rating: 0.0);
-PatientController.to.requested.add(model12);
+                    PatientController.to.requested.add(model12);
                     // LoginController.to.getdoctorSlotes(widget.model.id);
                     await LoginController.to
                         .getDoctorId(widget.model.id)
@@ -238,94 +238,84 @@ PatientController.to.requested.add(model12);
                               "patientList = '${json.encode(widget.model.patientList)}'";
 
                           query += " WHERE id = '${widget.model.id}'";
-                        if (StaticData.localdatabase) {
-      try {
-        var map={
-          'patientList':'${json.encode(widget.model.patientList)}'
-        };
-    var result = await SQLService.updateData('DoctorModel', map, widget.model.id);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
-                        
+                          if (StaticData.localdatabase) {
+                            try {
+                              var map = {
+                                'patientList':
+                                    '${json.encode(widget.model.patientList)}'
+                              };
+                              var result = await SQLService.updateData(
+                                  'DoctorModel', map, widget.model.id);
+                              print("resultresult${result.toString()}");
+                            } catch (e) {
+                              print("Error in updateprofile: $e");
+                            }
+                          } else {
+                            try {
+                              var result = await SQL.Update(query);
+                              print("resultresult${result.toString()}");
+                            } catch (e) {
+                              print("Error in updateprofile: $e");
+                            }
+                          }
                         } else {
                           print("id presnt");
                         }
-                        if (StaticData.patientmodel!.doctorList.contains(
-                              widget.model.id
-                            ) ==
+                        if (StaticData.patientmodel!.doctorList
+                                .contains(widget.model.id) ==
                             false) {
-                            StaticData.patientmodel!.doctorList
+                          StaticData.patientmodel!.doctorList
                               .add(widget.model.id);
                           String query1 = "UPDATE PatientModel SET ";
                           query1 +=
-                              "doctorList = '${json.encode( StaticData.patientmodel!.doctorList)}'";
+                              "doctorList = '${json.encode(StaticData.patientmodel!.doctorList)}'";
 
                           query1 += " WHERE id = '${widget.model.id}'";
                           if (StaticData.localdatabase) {
-      try {
-          var map={
-          'doctorList':'${json.encode(StaticData.patientmodel!.doctorList)}'
-        };
-    var result = await SQLService.updateData('PatientModel', map, widget.model.id);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query1);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
+                            try {
+                              var map = {
+                                'doctorList':
+                                    '${json.encode(StaticData.patientmodel!.doctorList)}'
+                              };
+                              var result = await SQLService.updateData(
+                                  'PatientModel', map, widget.model.id);
+                              print("resultresult${result.toString()}");
+                            } catch (e) {
+                              print("Error in updateprofile: $e");
+                            }
+                          } else {
+                            try {
+                              var result = await SQL.Update(query1);
+                              print("resultresult${result.toString()}");
+                            } catch (e) {
+                              print("Error in updateprofile: $e");
+                            }
+                          }
                         } else {
-                            print("id presnt");
+                          print("id presnt");
                         }
                       } else {
                         print("null");
                       }
                     });
 
-
-
                     SQLQuery.postInsertAppointment(model12);
-StaticData.patientmodel!.doctorList.add(widget.model.id);
-PatientChatController.to.doctorlist.add(widget.model);
+                    StaticData.patientmodel!.doctorList.add(widget.model.id);
+                    PatientChatController.to.doctorlist.add(widget.model);
                     await StaticData.updateSlotsStatus(
                         widget.model.id, slots!.id, 0);
-                          String name = StaticData.chatRoomId(widget.model.id, StaticData.patientmodel!.id);
+                    String name = StaticData.chatRoomId(
+                        widget.model.id, StaticData.patientmodel!.id);
 
-    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-   
-      SQLQuery.createTable1(id1);
-          
+                    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+
+                    SQLQuery.createTable1(id1);
 
                     // StaticData.sendNotifcation(
                     //   "Appointment",
                     //   "Send appointment request from ${StaticData.patientmodel!.fullname} at ${model.time}",
                     //   widget.model.token,
-                    // ); 
+                    // );
 
                     Fluttertoast.showToast(
                       msg: "Appointment request send sucessfuly !",

@@ -14,7 +14,6 @@ void main() async {
   if (StaticData.localdatabase) {
     print("ggg");
     await SQLService.openDB();
-    //  await SQLService.;
   }
   runApp(MyApp());
 }

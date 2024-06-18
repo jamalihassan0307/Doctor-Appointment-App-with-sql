@@ -23,28 +23,29 @@ class LoginController extends GetxController {
     index = a;
     update();
   }
+
   bool showtable = false;
   updatetable(bool a) {
     showtable = a;
     update();
   }
+
   List<String> tables = [];
 
-  String selectedTable='';
-    List<Map<String, dynamic>>? tableData = [];
-    Future<void> fetchTableData(String table) async {
+  String selectedTable = '';
+  List<Map<String, dynamic>>? tableData = [];
+  Future<void> fetchTableData(String table) async {
     try {
       var result = await SQLService.get('SELECT * FROM $table');
-     
-        selectedTable = table;
-        tableData = result;
-        update(); 
-    
+
+      selectedTable = table;
+      tableData = result;
+      update();
     } catch (e) {
       print("Error retrieving data from $table: $e");
-    
-        tableData = [];
-    update();
+
+      tableData = [];
+      update();
     }
   }
 
@@ -52,9 +53,8 @@ class LoginController extends GetxController {
 
   Future<PatientModel?> getPatientId(String id) async {
     try {
-         var query="SELECT * FROM PatientModel where id='${id}'";
-      await SQLQuery.getdata(query)
-          .then((value) async {
+      var query = "SELECT * FROM PatientModel where id='${id}'";
+      await SQLQuery.getdata(query).then((value) async {
         print("snaaaaaap    ${value}");
 
         print("get data");
@@ -83,10 +83,10 @@ class LoginController extends GetxController {
 
   DoctorModel? getdoctor;
   Future<DoctorModel?> getDoctorId(String id) async {
-    try {   var query="SELECT * FROM DoctorModel where id='${id}'";
-      
-      await SQLQuery.getdata(query)
-          .then((value) async {
+    try {
+      var query = "SELECT * FROM DoctorModel where id='${id}'";
+
+      await SQLQuery.getdata(query).then((value) async {
         try {
           getdoctor = await DoctorModel.fromMap(value[0]);
           print("modelasdsdf${getdoctor}");
@@ -116,9 +116,9 @@ class LoginController extends GetxController {
 
   void signInWithEmailAndPassword(BuildContext context) async {
     try {
-         var query="SELECT * FROM DoctorModel where email='${email.text}' AND password='${password.text}'";
-      await SQLQuery.getdata(query)
-          .then((value) async {
+      var query =
+          "SELECT * FROM DoctorModel where email='${email.text}' AND password='${password.text}'";
+      await SQLQuery.getdata(query).then((value) async {
         print("snaaaaaap    ${value}");
 
         DoctorModel model = DoctorModel.fromMap(value[0]);
@@ -167,16 +167,14 @@ class LoginController extends GetxController {
   }
 
   void signInWithEmailAndPassword1(BuildContext context) async {
-   
     try {
-         var query="SELECT * FROM PatientModel where email='${email.text}' AND password='${password.text}'";
-      await SQLQuery.getdata(query)
-          
-          .then((value) async {
+      var query =
+          "SELECT * FROM PatientModel where email='${email.text}' AND password='${password.text}'";
+      await SQLQuery.getdata(query).then((value) async {
         print("snaaaaaap    ${value}");
         PatientModel? model;
         try {
-          model =await PatientModel.fromMap(value[0]);
+          model = await PatientModel.fromMap(value[0]);
           print("model doctor list${model.doctorList}");
           print("model doctor list${model.doctorList.length}");
         } catch (e) {
@@ -256,7 +254,7 @@ class LoginController extends GetxController {
           value.cast<Map<String, dynamic>>();
       for (var element in tempResult) {
         print("element[isAvailable]${element["isAvailable"]}");
-        if (element["isAvailable"] == true||element["isAvailable"] ==1) {
+        if (element["isAvailable"] == true || element["isAvailable"] == 1) {
           slotsList.add(DoctorSlot.fromMap(element));
         } else {
           print("skip");

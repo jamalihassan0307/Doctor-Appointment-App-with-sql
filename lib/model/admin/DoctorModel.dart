@@ -39,8 +39,6 @@ class DoctorModel {
     required this.fee,
   });
 
-
-
   String toMap() {
     return "'$id','$fullname','$phonenumber','$email','$password','$image','$bio','$specialty','$starttime','$endtime','$about','$address',$maxAppointmentDuration,$totalrating,$ratingperson,'${json.encode(patientList)}',$fee";
   }
@@ -67,7 +65,6 @@ class DoctorModel {
     );
   }
 
- 
   factory DoctorModel.fromJson(String source) =>
       DoctorModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
@@ -75,6 +72,4 @@ class DoctorModel {
   String toString() {
     return 'DoctorModel(id: $id, fullname: $fullname, phonenumber: $phonenumber, email: $email, password: $password, bio: $bio, specialty: $specialty, starttime: $starttime, endtime: $endtime, about: $about, address: $address, maxAppointmentDuration: $maxAppointmentDuration, totalrating: $totalrating, ratingperson: $ratingperson, patientList: $patientList, fee: $fee, image: $image)';
   }
-
- 
 }

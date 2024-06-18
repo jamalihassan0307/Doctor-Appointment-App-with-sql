@@ -17,9 +17,8 @@ class AdminChatController extends GetxController {
     patientList.clear();
     if (StaticData.doctorModel!.patientList!.isNotEmpty) {
       for (var element in StaticData.doctorModel!.patientList!) {
-           var query="select * from PatientModel where id='${element}'";
-        await SQLQuery.getdata(query)
-            .then((value) {
+        var query = "select * from PatientModel where id='${element}'";
+        await SQLQuery.getdata(query).then((value) {
           try {
             patientList.add(PatientModel.fromMap(value[0]));
           } catch (e) {}
@@ -79,75 +78,82 @@ class AdminChatController extends GetxController {
       update();
     } else {}
   }
-  List<Message> read=[];
-  bool joining=false;
-  bool sms=false;
-   var selectedJoinType ='';
-   void selectJoinType(String joinType) {
+
+  List<Message> read = [];
+  bool joining = false;
+  bool sms = false;
+  var selectedJoinType = '';
+  void selectJoinType(String joinType) {
     selectedJoinType = joinType;
     if (joining) {
-      
-    getpatientmessageRead();
+      getpatientmessageRead();
     }
   }
-  updatejoining(){
-    sms=false;
-    joining=!joining;
+
+  updatejoining() {
+    sms = false;
+    joining = !joining;
     update();
   }
-  List<PatientModel> patientListjoining=[];
-   List<Message> list = [];
-Future<void> getpatientmessageRead() async {
-  print("Starting getpatientmessageRead");
 
-  this.read.clear(); 
+  List<PatientModel> patientListjoining = [];
+  List<Message> list = [];
+  Future<void> getpatientmessageRead() async {
+    print("Starting getpatientmessageRead");
 
-  if (patientListjoining.isNotEmpty && patientListjoining.length >= 2) {
-    String id1 = StaticData.chatRoomId(patientListjoining[0].id, StaticData.doctorModel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
-    String id2 = StaticData.chatRoomId(patientListjoining[1].id, StaticData.doctorModel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+    this.read.clear();
 
-    try {
-      var result = await SQLQuery.getpatientmessageRead(id1, selectedJoinType, id2);
+    if (patientListjoining.isNotEmpty && patientListjoining.length >= 2) {
+      String id1 = StaticData.chatRoomId(
+              patientListjoining[0].id, StaticData.doctorModel!.id)
+          .replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      String id2 = StaticData.chatRoomId(
+              patientListjoining[1].id, StaticData.doctorModel!.id)
+          .replaceAll(RegExp(r'[^a-zA-Z]'), '');
 
       try {
-        List<Map<String, dynamic>> tempResult = result.cast<Map<String, dynamic>>();
-        List<Message> list = [];
+        var result =
+            await SQLQuery.getpatientmessageRead(id1, selectedJoinType, id2);
 
-        for (var e in tempResult) {
-          // Exclude records where `toId` is null
-          if (e['toId'] != null) {
-            list.add(Message.fromJson(e));
+        try {
+          List<Map<String, dynamic>> tempResult =
+              result.cast<Map<String, dynamic>>();
+          List<Message> list = [];
+
+          for (var e in tempResult) {
+            // Exclude records where `toId` is null
+            if (e['toId'] != null) {
+              list.add(Message.fromJson(e));
+            }
           }
+
+          this.read.addAll(list);
+          print("Messages retrieved: ${this.read.length}");
+        } catch (e) {
+          print("Error while parsing the result: $e");
         }
 
-        this.read.addAll(list);
-        print("Messages retrieved: ${this.read.length}");
+        sms = true;
+        update();
       } catch (e) {
-        print("Error while parsing the result: $e");
+        print("Exception: $e");
       }
 
-      sms = true;
+      this.read.sort((a, b) => a.sent!.compareTo(b.sent!));
+      print("Sorted messages: ${this.read.length}");
+      loading = false;
       update();
-    } catch (e) {
-      print("Exception: $e");
+    } else {
+      Fluttertoast.showToast(
+        msg: "At least 2 users are required for joining!",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 17,
+        timeInSecForIosWeb: 1,
+        toastLength: Toast.LENGTH_LONG,
+      );
+      print("Not enough entries in patientListjoining");
     }
-
-    this.read.sort((a, b) => a.sent!.compareTo(b.sent!));
-    print("Sorted messages: ${this.read.length}");
-    loading = false;
-    update();
-  } else {
-    Fluttertoast.showToast(
-      msg: "At least 2 users are required for joining!",
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      gravity: ToastGravity.BOTTOM,
-      fontSize: 17,
-      timeInSecForIosWeb: 1,
-      toastLength: Toast.LENGTH_LONG,
-    );
-    print("Not enough entries in patientListjoining");
   }
-}
-
 }

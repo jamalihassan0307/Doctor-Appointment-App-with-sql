@@ -18,7 +18,7 @@ class Message {
     return Message(
       toId: json['toId'],
       msg: json['msg'],
-      readn: json['readn']!=''?json['readn']:null,
+      readn: json['readn'] != '' ? json['readn'] : null,
       fromId: json['fromId'],
       sent: json['sent'],
     );

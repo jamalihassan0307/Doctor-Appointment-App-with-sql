@@ -53,7 +53,6 @@ class SQLService {
     }
   }
 
-
   static Future<void> createTables(Database db) async {
     try {
       await db.execute('''
@@ -139,16 +138,19 @@ class SQLService {
       throw Exception("Failed to create table: $e");
     }
   }
-   static Future<List<String>> getAllTables() async {
-  try {
-    List<Map<String, Object?>>? result = await _db?.rawQuery("SELECT name FROM sqlite_master WHERE type='table';");
-    List<String> tables = result!.map((row) => row['name'] as String).toList();
-    return tables;
-  } catch (e) {
-    print("Error in getAllTables: $e");
-    return [];
-  } 
-}
+
+  static Future<List<String>> getAllTables() async {
+    try {
+      List<Map<String, Object?>>? result = await _db
+          ?.rawQuery("SELECT name FROM sqlite_master WHERE type='table';");
+      List<String> tables =
+          result!.map((row) => row['name'] as String).toList();
+      return tables;
+    } catch (e) {
+      print("Error in getAllTables: $e");
+      return [];
+    }
+  }
 
   static Future<List<Map<String, dynamic>>?> get(String query) async {
     try {
@@ -181,7 +183,8 @@ class SQLService {
   //     throw Exception("Failed to execute update query: $e");
   //   }
   // }
-     static Future<int?> updateData(String tableName, Map<String, dynamic> map, String id) async {
+  static Future<int?> updateData(
+      String tableName, Map<String, dynamic> map, String id) async {
     try {
       String query = 'UPDATE $tableName SET ';
       List<String> columns = [];
@@ -203,7 +206,12 @@ class SQLService {
       throw Exception("Failed to execute update query: $e");
     }
   }
-     static Future<int?> updateDataid(String tableName, Map<String, dynamic> map, Map<String, dynamic> mapid,) async {
+
+  static Future<int?> updateDataid(
+    String tableName,
+    Map<String, dynamic> map,
+    Map<String, dynamic> mapid,
+  ) async {
     try {
       String query = 'UPDATE $tableName SET ';
       List<String> columns = [];
@@ -215,11 +223,9 @@ class SQLService {
       });
 
       query += columns.join(', ');
-        mapid.forEach((column, value) {
-          
-
-      query += ' WHERE $column = ? = ?';
-      values.add(value);
+      mapid.forEach((column, value) {
+        query += ' WHERE $column = ? = ?';
+        values.add(value);
       });
 
       print("Executing update query: $query with values: $values");

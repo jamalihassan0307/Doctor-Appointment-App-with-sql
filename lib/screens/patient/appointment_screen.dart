@@ -71,8 +71,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           CircleAvatar(
                             radius: 55,
                             backgroundImage:
-                               FileImage(
-                                                        File(widget.model.image!)),
+                                FileImage(File(widget.model.image!)),
                           ),
                           SizedBox(
                             height: 15,
@@ -154,28 +153,33 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                           query +=
                                               " WHERE id = '${widget.model.id}'";
                                           if (StaticData.localdatabase) {
-      try {
-          var map={
-          'patientList':'${json.encode(widget.model.patientList)}'
-        };
-    var result = await SQLService.updateData('DoctorModel', map, widget.model.id);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
+                                            try {
+                                              var map = {
+                                                'patientList':
+                                                    '${json.encode(widget.model.patientList)}'
+                                              };
+                                              var result =
+                                                  await SQLService.updateData(
+                                                      'DoctorModel',
+                                                      map,
+                                                      widget.model.id);
+                                              print(
+                                                  "resultresult${result.toString()}");
+                                            } catch (e) {
+                                              print(
+                                                  "Error in updateprofile: $e");
+                                            }
+                                          } else {
+                                            try {
+                                              var result =
+                                                  await SQL.Update(query);
+                                              print(
+                                                  "resultresult${result.toString()}");
+                                            } catch (e) {
+                                              print(
+                                                  "Error in updateprofile: $e");
+                                            }
+                                          }
                                         } else {
                                           print("id presnt");
                                         }
@@ -203,38 +207,44 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
                                         query +=
                                             " WHERE id = '${StaticData.patientmodel!.id}'";
-                                       if (StaticData.localdatabase) {
-      try {
-        
-          var map={
-          'doctorList':'${json.encode(LoginController.to.getpatient!.doctorList)}'
-        };
-    var result = await SQLService.updateData('PatientModel', map, StaticData.patientmodel!.id);
-    print("resultresult${result.toString()}");
+                                        if (StaticData.localdatabase) {
+                                          try {
+                                            var map = {
+                                              'doctorList':
+                                                  '${json.encode(LoginController.to.getpatient!.doctorList)}'
+                                            };
+                                            var result =
+                                                await SQLService.updateData(
+                                                    'PatientModel',
+                                                    map,
+                                                    StaticData
+                                                        .patientmodel!.id);
+                                            print(
+                                                "resultresult${result.toString()}");
+                                          } catch (e) {
+                                            print("Error in updateprofile: $e");
+                                          }
+                                        } else {
+                                          try {
+                                            var result =
+                                                await SQL.Update(query);
+                                            print(
+                                                "resultresult${result.toString()}");
+                                          } catch (e) {
+                                            print("Error in updateprofile: $e");
+                                          }
+                                        }
+                                        String name = StaticData.chatRoomId(
+                                            widget.model.id,
+                                            StaticData.patientmodel!.id);
+                                        StaticData.patientmodel!.doctorList
+                                            .add(widget.model.id);
+                                        PatientChatController.to.doctorlist
+                                            .add(widget.model);
 
-  } catch (e) {
-    print("Error in updateprofile: $e");
- 
-  }
-       }else{
- try {
-      
-    var result = await   SQL.Update(query);
-    print("resultresult${result.toString()}");
-
-  } catch (e) {
-    print("Error in updateprofile: $e");
-    
-  }
-       }
-                                          String name = StaticData.chatRoomId(widget.model.id, StaticData.patientmodel!.id);
-                                          StaticData.patientmodel!.doctorList.add(widget.model.id);
-PatientChatController.to.doctorlist.add(widget.model);
-
-    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      SQLQuery.createTable2(id1);
-          
-
+                                        String id1 = name.replaceAll(
+                                            RegExp(r'[^a-zA-Z]'), '');
+                                        SQLQuery.createTable2(id1);
                                       } else {
                                         print("id presnt");
                                       }
@@ -328,11 +338,11 @@ PatientChatController.to.doctorlist.add(widget.model);
                     //           if (snapshot.connectionState ==
                     //               ConnectionState.waiting) {
                     //             return  Center(
-                              // child: SizedBox(
-                              //   height: height * 0.1,
-                              //   width: width * 0.2,
-                              //   child: SpinKit.loadSpinkit,
-                              // ),),;
+                    // child: SizedBox(
+                    //   height: height * 0.1,
+                    //   width: width * 0.2,
+                    //   child: SpinKit.loadSpinkit,
+                    // ),),;
                     //           }
 
                     //           if (snapshot.hasError) {

@@ -21,12 +21,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Get.put(SignupController());
     super.initState();
   }
+
   final GlobalKey<FormState> form = GlobalKey<FormState>();
   var height, width;
 
   @override
   Widget build(BuildContext context) {
-  
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
@@ -301,7 +301,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Align(
                       alignment: Alignment.centerLeft,
                       child: CustomWidget.largeText("   Select Available Time:",
-                          height:height* 0.002)),
+                          height: height * 0.002)),
                 if (obj.index == 0)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -385,7 +385,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       alignment: Alignment.centerLeft,
                       child: CustomWidget.largeText(
                           "   Select Max Appointment Duration:",
-                          height:height* 0.003)),
+                          height: height * 0.003)),
                 if (obj.index == 0)
                   SizedBox(
                       height: height * 0.10,
@@ -442,8 +442,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                         },
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 30),
                           child: Center(
                             child: Text(
                               "Creat Account",
