@@ -1,3 +1,4 @@
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/screens/error_screen/connection_failed.dart';
@@ -22,13 +23,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-   SQL.connection(); 
-      getDataFromSF();
-   
- 
+    SQL.connection();
+    getDataFromSF();
+
     Get.put(LoginController());
     super.initState();
-   
   }
 
   var height, width;
@@ -38,21 +37,18 @@ class _SplashScreenState extends State<SplashScreen> {
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Apptheme.primary ,
+      backgroundColor: Apptheme.primary,
       body: Center(
         child: Container(
           height: height,
           width: width,
-          child: Center(child:  Image.asset(
-            "images/well.gif",
-            color:Colors.white
-          )),
+          child: Center(
+              child: Image.asset("images/well.gif", color: Colors.white)),
         ),
       ),
     );
   }
 
- 
   Future<bool?> getDataFromSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? v = prefs.getString("patient");
@@ -77,13 +73,13 @@ class _SplashScreenState extends State<SplashScreen> {
         print("error");
       }
     } else {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
-          ),
-          (route) => true,
-        );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const WelcomeScreen(),
+        ),
+        (route) => true,
+      );
       return false;
     }
 
@@ -93,45 +89,47 @@ class _SplashScreenState extends State<SplashScreen> {
   bool isLoggedIn = false;
   Future<void> fetchdoctorByUUID(String uuid, context) async {
     DoctorModel? users;
+    var q = "SELECT * FROM DoctorModel where id='${uuid}'";
     print("get data");
 
     try {
-      await SQL
-          .get("SELECT * FROM DoctorModel where id='${uuid}'")
-          .then(( value) async {
-       print("snaaaaaap    ${value}");
+      await SQLQuery.getForSignin(q).then((value) async {
+        print("snaaaaaap    ${value}");
 
         print("get data$value");
         try {
-         if (value=="Error: java.sql.SQLException: Network error IOException: Connection timed out") {
-              print("aaasdadddasdadad");
-             Navigator.push(context,MaterialPageRoute(builder: (context) => ConnectionFailed(),));
-            
-         }
-        //  else if(value.isBlank){
-          
-        //   Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const WelcomeScreen(),
-        //   ),
-        //   (route) => true,
-        // );
-        //  }
-         else{
-          users = DoctorModel.fromMap(value[0]);
-         }
-         
+          if (value ==
+              "Error: java.sql.SQLException: Network error IOException: Connection timed out") {
+            print("aaasdadddasdadad");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConnectionFailed(),
+                ));
+          }
+          //  else if(value.isBlank){
+
+          //   Navigator.pushAndRemoveUntil(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const WelcomeScreen(),
+          //   ),
+          //   (route) => true,
+          // );
+          //  }
+          else {
+            users = DoctorModel.fromMap(value[0]);
+          }
         } catch (e) {
           print('Document with UUID $uuid does not exist.$e');
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
-          ),
-          (route) => true,
-        );
-   
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const WelcomeScreen(),
+            ),
+            (route) => true,
+          );
+
           return;
         }
 
@@ -139,71 +137,71 @@ class _SplashScreenState extends State<SplashScreen> {
         StaticData.doctor = users!.id;
         StaticData.doctorModel = users;
 
-     
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AdminNavBarRoots(),
-            ),
-            (route) => true,
-          );
-        });
-      print("Current user: $users");
-    } catch (e) {
-      print('Document with UUID $uuid does not exist.$e');
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
+            builder: (context) => const AdminNavBarRoots(),
           ),
           (route) => true,
         );
-    
+      });
+      print("Current user: $users");
+    } catch (e) {
+      print('Document with UUID $uuid does not exist.$e');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const WelcomeScreen(),
+        ),
+        (route) => true,
+      );
+
       print('Error fetching user data: $e');
     }
   }
 
   Future<void> fetchpatientByUUID(String uuid, context) async {
     PatientModel? users;
+    var q = "SELECT * FROM PatientModel where id='${uuid}'";
     try {
-      SQL
-          .get("SELECT * FROM PatientModel where id='${uuid}'")
-          .then(( value) async {
+      SQLQuery.getForSignin(q).then((value) async {
         print("snaaaaaap    ${value}");
 
         print("get data$value");
         try {
-            if (value=="Error: java.sql.SQLException: Network error IOException: Connection timed out") {
-              print("aaasdadddasdadad");
-             Navigator.push(context,MaterialPageRoute(builder: (context) => ConnectionFailed(),));
-            
-         }
-        //  else if(value.lenght==0){
-          
-        //   Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const WelcomeScreen(),
-        //   ),
-        //   (route) => true,
-        // );
-        //  }
-         else{
-          users = PatientModel.fromMap(value[0]);
-          LoginController.to.getAllDoctor();
-         }
-         
-         
+          if (value ==
+              "Error: java.sql.SQLException: Network error IOException: Connection timed out") {
+            print("aaasdadddasdadad");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConnectionFailed(),
+                ));
+          }
+          //  else if(value.lenght==0){
+
+          //   Navigator.pushAndRemoveUntil(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const WelcomeScreen(),
+          //   ),
+          //   (route) => true,
+          // );
+          //  }
+          else {
+            users = PatientModel.fromMap(value[0]);
+            LoginController.to.getAllDoctor();
+          }
         } catch (e) {
           print('Document with UUID $uuid does not exist.$e');
-           Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
-          ),
-          (route) => true,
-        );
-    
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const WelcomeScreen(),
+            ),
+            (route) => true,
+          );
+
           return;
         }
 
@@ -225,15 +223,14 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     } catch (e) {
       print('Document with UUID $uuid does not exist.');
-    
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WelcomeScreen(),
-          ),
-          (route) => true,
-        );
-      
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const WelcomeScreen(),
+        ),
+        (route) => true,
+      );
 
       print('Error fetching user data: $e');
     }

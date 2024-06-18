@@ -1,4 +1,5 @@
-import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+// import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
@@ -60,66 +61,16 @@ update();
     update();
    }
   Future<void> selectJoinType(String queryType) async {
-  String query = '';
+
   String patientId = StaticData.patientmodel!.id;
 selectedJoinType=queryType;
 list.clear();
-data.clear();
+data=[];
 update();
-  switch (queryType) {
-    case 'WHERE':
-      query = '''
-        SELECT * FROM dbo.AppointmentModel
-        WHERE status = 2 AND patientid = '$patientId'
-      ''';
-      break;
-
-    case 'LIMIT':
-      query = '''
-       SELECT top 10 * FROM dbo.AppointmentModel
-        WHERE patientid = '$patientId'
-      ORDER BY createdtime DESC
-      ''';
-      break;
-
-    case 'ORDER BY':
-      query = '''
-        SELECT * FROM dbo.AppointmentModel
-        WHERE patientid = '$patientId'
-        ORDER BY rating DESC
-      ''';
-      break;
-
-    case 'GROUP BY':
-      query = '''
-        SELECT doctorname, COUNT(*) AS appointment_count 
-        FROM dbo.AppointmentModel
-        WHERE patientid = '$patientId'
-        GROUP BY doctorname
-      ''';
-      break;
-
-    case 'HAVING':
-      query = '''
-        SELECT doctorname, COUNT(rating) AS appointment_count
-        FROM dbo.AppointmentModel
-        WHERE patientid = '$patientId'
-        GROUP BY doctorname
-        HAVING AVG(rating) > 4.5
-      ''';
-      break;
-
-    default:
-      query = '''
-        SELECT * FROM dbo.AppointmentModel
-        WHERE patientid = '$patientId'
-      ''';
-  }
-
-  print("Executing query: $query");
+ 
 
   try {
-    await SQL.get(query).then((value) {
+    await SQLQuery.selectJoinTypePatient(queryType, patientId).then((value) {
       if (queryType=="GROUP BY"||queryType=="HAVING") {
           List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
          data=tempResult;
@@ -149,9 +100,8 @@ update();
     update();
     print("dadada");
     loading = true;
-    SQL
-        .get(
-            "select * from dbo.AppointmentModel where patientid='${StaticData.patientmodel!.id}'")
+       var query="select * from AppointmentModel where patientid='${StaticData.patientmodel!.id}'";
+    SQLQuery.getdata(query)
         .then((value) {
           print("valueeeeeeeeeeeeeeee${value}");
       List<Map<String, dynamic>> tempResult =
@@ -169,11 +119,8 @@ update();
 
   Future<bool> updateRating(String id, double fullrating) async {
     try {
-      String query = "UPDATE dbo.AppointmentModel SET ";
-      query += "rating = $fullrating";
-
-      query += " WHERE id = '${id}'";
-      SQL.Update(query);
+     
+      SQLQuery.updateRating(fullrating, id);
       return true;
     } catch (e) {
       return false;
@@ -184,8 +131,8 @@ update();
 
   Future<DoctorModel?> getdoctorF(String id) async {
     try {
-      await SQL
-          .get("SELECT * FROM DoctorModel where id='${id}'")
+         var query="SELECT * FROM DoctorModel where id='${id}'";
+      await SQLQuery.getdata(query)
           .then((value) async {
         print("snaaaaaap    ${value}");
 
@@ -216,11 +163,8 @@ update();
 
   Future<bool> updateDoctorRating(String id, double fullrating) async {
     try {
-      String query = "UPDATE dbo.AppointmentModel SET ";
-      query += "rating = $fullrating";
-
-      query += " WHERE id = '${id}'";
-      SQL.Update(query);
+     
+      SQLQuery.updateRating(fullrating, id);
       return true;
     } catch (e) {
       return false;
@@ -230,12 +174,8 @@ update();
   Future<bool> updateDoctortotalRating(
       String id, double fullrating, int total) async {
     try {
-      String query = "UPDATE dbo.DoctorModel SET ";
-      query += "totalrating = $fullrating";
-      query += "ratingperson = $total";
-
-      query += " WHERE id = '${id}'";
-      SQL.Update(query);
+    
+      SQLQuery.updateDoctortotalRating(fullrating, id, total);
       LoginController.to.getAllDoctor();
       getAllAppointment();
       return true;

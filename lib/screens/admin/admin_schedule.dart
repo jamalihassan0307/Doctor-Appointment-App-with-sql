@@ -59,14 +59,13 @@ class _AdminScheduleState extends State<AdminSchedule> {
                             ),
                           ),
                         ),
-                        SizedBox(width: width * 0.04),
-                        Icon(Icons.refresh),
+                        // SizedBox(width: width * 0.04),
+                        // Icon(Icons.refresh),
                         SizedBox(width: width * 0.04),
                          PopupMenuButton<String>(
   color: Colors.white,
   onSelected: (String result) {
-    obj.selectJoinType(result);  // Replace with your logic to handle the selection
-  },
+    obj.selectJoinType(result);  },
   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
     const PopupMenuItem<String>(
       value: 'WHERE',

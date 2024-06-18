@@ -2,7 +2,8 @@
 
 import 'dart:async';
 
-import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+// import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorSlot.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
@@ -73,8 +74,8 @@ class SignupController extends GetxController {
         );
         print("time startTime.toString()${startTime.toString()}");
         print("time endTime.toString()${endTime.toString()}");
-        SQL
-            .post("INSERT INTO dbo.DoctorModel VALUES (${model.toMap()})")
+           var query="INSERT INTO DoctorModel VALUES (${model.toMap()})";
+        SQLQuery.postdata(query)
             .then((value) async {
           String id1 =
               model.id.replaceAll(RegExp(r'[^a-zA-Z]'), '');
@@ -83,18 +84,12 @@ class SignupController extends GetxController {
               startTime!, endTime!, maxAppointmentDuration!, id, fullname.text);
 
           print("object12345");
-        await  SQL
-              .post(
-                  "CREATE TABLE  ${id1} (id VARCHAR(255) PRIMARY KEY,indexn INT,patientid VARCHAR(255),doctorname VARCHAR(255),doctorid VARCHAR(255),startTime VARCHAR(255),endTime VARCHAR(255),patientName VARCHAR(255),isAvailable bit,date varchar(255));")
-              .onError((error, stackTrace) {
-            print("errror");
-          }).then((value) {
+             var query="CREATE TABLE  ${id1} (id VARCHAR(255) PRIMARY KEY,indexn INT,patientid VARCHAR(255),doctorname VARCHAR(255),doctorid VARCHAR(255),startTime VARCHAR(255),endTime VARCHAR(255),patientName VARCHAR(255),isAvailable bit,date varchar(255));";
+        await  SQLQuery.createTabledata(query).then((value) async {
             for (var e in slots) {
-              SQL
-                  .post("INSERT INTO dbo.${id1} VALUES (${e.toMap()})")
-                  .onError((error, stackTrace) {
-                print("errror");
-              });
+                 var query="INSERT INTO ${id1} VALUES (${e.toMap()})";
+             await SQLQuery
+                  .postdata(query);
             }
           });
           print("object1235678");
@@ -118,13 +113,11 @@ class SignupController extends GetxController {
 
             print("object12345");
 
-            SQL.post("drop table ${id1}").then((value) async {
-            await  SQL
-                  .post(
-                      "CREATE TABLE ${id1} (id VARCHAR(255) PRIMARY KEY,indexn INT,patientid VARCHAR(255),doctorname VARCHAR(255),doctorid VARCHAR(255),startTime VARCHAR(255),endTime VARCHAR(255),patientName VARCHAR(255),isAvailable bit,date varchar(255));")
+            SQLQuery.delecttable(id1).then((value) async {
+            await  SQLQuery.createTable3(id1)
                   .then((value) {
                 for (var e in slots1) {
-                  SQL.post("INSERT INTO dbo.${id1} VALUES (${e.toMap()})");
+                  SQLQuery.postInsertData(id1, e);
                 }
               });
             });
@@ -186,9 +179,9 @@ class SignupController extends GetxController {
         image:await StaticData.assetToF("images/patient_logo.png"),
         phonenumber: phonenumber.text,
       );
-
-      SQL
-          .post("INSERT INTO dbo.PatientModel VALUES (${model.toMap()})")
+   var query="INSERT INTO PatientModel VALUES (${model.toMap()})";
+      SQLQuery
+          .postdata(query)
           .then((value) {
         // clearForm();
         Fluttertoast.showToast(

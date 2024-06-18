@@ -1,5 +1,6 @@
 // import 'dart:convert';
 
+import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/screens/admin/admin_nav_bar.dart';
@@ -94,7 +95,7 @@ class AdminProfileController extends GetxController {
       // Uint8List imageBytes = await hpickedFile!.readAsBytes();
       // String base64Image = base64Encode(imageBytes);
 
-      String query = "UPDATE dbo.DoctorModel SET ";
+      String query = "UPDATE DoctorModel SET ";
       query += "fullname = '${name.text}',";
       query += "email ='${email.text}',";
       query += "password = '${password.text}',";
@@ -110,7 +111,40 @@ class AdminProfileController extends GetxController {
       query += "image = '${hpickedFile!.path}'";
 
       query += " WHERE id = '${StaticData.doctorModel!.id}'";
-      await SQL.Update(query);
+       if (StaticData.localdatabase) {
+      try {
+         var map = {
+  'fullname': name.text,
+  'email': email.text,
+  'password': password.text,
+  'address': address.text,
+  'specialty': specilest.text,
+  'bio': bio.text,
+  'fee': double.tryParse(fee.text) ?? 0.0,
+  'about': about.text,
+  'starttime': startTime,
+  'endtime': endTime,
+  'maxAppointmentDuration': maxAppointmentDuration,
+  'image': hpickedFile!.path,
+};
+    var result = await SQLService.updateData('DoctorModel', map, StaticData.doctorModel!.id);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
 
       Fluttertoast.showToast(
           msg: "Update Succssfully",
@@ -131,7 +165,7 @@ class AdminProfileController extends GetxController {
         });
       });
     } else {
-      String query = "UPDATE dbo.DoctorModel SET ";
+      String query = "UPDATE DoctorModel SET ";
       query += "fullname = '${name.text}',";
       query += "email =' ${email.text}',";
       query += "password = '${password.text}',";
@@ -145,8 +179,39 @@ class AdminProfileController extends GetxController {
       query += "maxAppointmentDuration = '${maxAppointmentDuration}',";
 
       query += " WHERE id = '${StaticData.doctorModel!.id}'";
-      await SQL.Update(query);
+       if (StaticData.localdatabase) {
+        var map = {
+  'fullname': name.text,
+  'email': email.text,
+  'password': password.text,
+  'address': address.text,
+  'specialty': specilest.text,
+  'bio': bio.text,
+  'fee': double.tryParse(fee.text) ?? 0.0,
+  'about': about.text,
+  'starttime': startTime,
+  'endtime': endTime,
+  'maxAppointmentDuration': maxAppointmentDuration,
+};
+      try {
+    var result = await SQLService.updateData('DoctorModel', map, StaticData.doctorModel!.id);
+    print("resultresult${result.toString()}");
 
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
       Fluttertoast.showToast(
           msg: "Update Succssfully",
           toastLength: Toast.LENGTH_SHORT,

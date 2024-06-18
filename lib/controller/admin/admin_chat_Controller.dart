@@ -1,4 +1,4 @@
-import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -17,8 +17,8 @@ class AdminChatController extends GetxController {
     patientList.clear();
     if (StaticData.doctorModel!.patientList!.isNotEmpty) {
       for (var element in StaticData.doctorModel!.patientList!) {
-        await SQL
-            .get("select * from dbo.PatientModel where id='${element}'")
+           var query="select * from PatientModel where id='${element}'";
+        await SQLQuery.getdata(query)
             .then((value) {
           try {
             patientList.add(PatientModel.fromMap(value[0]));
@@ -44,7 +44,7 @@ class AdminChatController extends GetxController {
         String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
         print("data1${name}  sdsf${id1}");
         try {
-          SQL.get("select * from dbo.${id1}").then((value) {
+          SQLQuery.getpatientmessage(id1).then((value) {
             try {
               List<Map<String, dynamic>> tempResult =
                   value.cast<Map<String, dynamic>>();
@@ -98,78 +98,42 @@ class AdminChatController extends GetxController {
   List<PatientModel> patientListjoining=[];
    List<Message> list = [];
 Future<void> getpatientmessageRead() async {
-  print("data");
+  print("Starting getpatientmessageRead");
 
   this.read.clear(); 
+
   if (patientListjoining.isNotEmpty && patientListjoining.length >= 2) {
-    String query = '';
     String id1 = StaticData.chatRoomId(patientListjoining[0].id, StaticData.doctorModel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
     String id2 = StaticData.chatRoomId(patientListjoining[1].id, StaticData.doctorModel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
 
-    query = '''
-      SELECT 
-        ed.toId,
-        ed.fromId,
-        ed.msg, 
-        ed.readn, 
-        ed.sent
-      FROM 
-        dbo.$id1 ed
-         $selectedJoinType
-        dbo.$id2 bd
-      ON 
-        ed.toId = bd.toId
-
-      UNION ALL
-
-      SELECT 
-        bd.toId,
-        bd.fromId, 
-        bd.msg, 
-        bd.readn,
-        bd.sent 
-      FROM 
-        dbo.$id2 bd
-      $selectedJoinType
-        dbo.$id1 ed
-      ON 
-        bd.toId = ed.toId
-      WHERE 
-        ed.toId IS NULL;
-    ''';
-
-    print("query45667567$query");
     try {
-      await SQL.get(query).then((value) {
-        try {
-          List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
-          List<Message> list = [];
+      var result = await SQLQuery.getpatientmessageRead(id1, selectedJoinType, id2);
 
-          for (var e in tempResult) {
-            // Exclude records where `toId` is null
-            if (e['toId'] != null) {
-              list.add(Message.fromJson(e));
-            }
+      try {
+        List<Map<String, dynamic>> tempResult = result.cast<Map<String, dynamic>>();
+        List<Message> list = [];
+
+        for (var e in tempResult) {
+          // Exclude records where `toId` is null
+          if (e['toId'] != null) {
+            list.add(Message.fromJson(e));
           }
-          this.read.addAll(list);
-          print("aadadadd${this.read}");
-        } catch (e) {
-          print("Error while parsing the result: $e");
         }
-        sms = true;
-        update();
-      }).catchError((error) {
-        print("Error while executing the query: $error");
-      });
+
+        this.read.addAll(list);
+        print("Messages retrieved: ${this.read.length}");
+      } catch (e) {
+        print("Error while parsing the result: $e");
+      }
+
+      sms = true;
+      update();
     } catch (e) {
       print("Exception: $e");
     }
 
-    this.read.sort(
-      (a, b) => a.sent!.compareTo(b.sent!),
-    );
-
-    print("read${this.read}");
+    this.read.sort((a, b) => a.sent!.compareTo(b.sent!));
+    print("Sorted messages: ${this.read.length}");
     loading = false;
     update();
   } else {
@@ -182,8 +146,7 @@ Future<void> getpatientmessageRead() async {
       timeInSecForIosWeb: 1,
       toastLength: Toast.LENGTH_LONG,
     );
-    
-    print("patientList does not have enough entries");
+    print("Not enough entries in patientListjoining");
   }
 }
 

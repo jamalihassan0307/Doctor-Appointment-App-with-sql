@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+import 'package:doctor_appointment_app/SQL/sqflite.dart';
+// import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorSlot.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
@@ -21,13 +23,37 @@ class LoginController extends GetxController {
     index = a;
     update();
   }
+  bool showtable = false;
+  updatetable(bool a) {
+    showtable = a;
+    update();
+  }
+  List<String> tables = [];
+
+  String selectedTable='';
+    List<Map<String, dynamic>>? tableData = [];
+    Future<void> fetchTableData(String table) async {
+    try {
+      var result = await SQLService.get('SELECT * FROM $table');
+     
+        selectedTable = table;
+        tableData = result;
+        update(); 
+    
+    } catch (e) {
+      print("Error retrieving data from $table: $e");
+    
+        tableData = [];
+    update();
+    }
+  }
 
   PatientModel? getpatient;
 
   Future<PatientModel?> getPatientId(String id) async {
     try {
-      await SQL
-          .get("SELECT * FROM PatientModel where id='${id}'")
+         var query="SELECT * FROM PatientModel where id='${id}'";
+      await SQLQuery.getdata(query)
           .then((value) async {
         print("snaaaaaap    ${value}");
 
@@ -57,9 +83,9 @@ class LoginController extends GetxController {
 
   DoctorModel? getdoctor;
   Future<DoctorModel?> getDoctorId(String id) async {
-    try {
-      await SQL
-          .get("SELECT * FROM DoctorModel where id='${id}'")
+    try {   var query="SELECT * FROM DoctorModel where id='${id}'";
+      
+      await SQLQuery.getdata(query)
           .then((value) async {
         try {
           getdoctor = await DoctorModel.fromMap(value[0]);
@@ -90,9 +116,8 @@ class LoginController extends GetxController {
 
   void signInWithEmailAndPassword(BuildContext context) async {
     try {
-      await SQL
-          .get(
-              "SELECT * FROM DoctorModel where email='${email.text}' AND password='${password.text}'")
+         var query="SELECT * FROM DoctorModel where email='${email.text}' AND password='${password.text}'";
+      await SQLQuery.getdata(query)
           .then((value) async {
         print("snaaaaaap    ${value}");
 
@@ -100,7 +125,7 @@ class LoginController extends GetxController {
         StaticData.doctorModel = model;
         StaticData.doctor = model.id;
         update();
-        // String query = "UPDATE dbo.DoctorModel SET ";
+        // String query = "UPDATE DoctorModel SET ";
         // query += "token = '${StaticData.token}', ";
 
         // query += " WHERE id = '${model.id}'";
@@ -123,7 +148,7 @@ class LoginController extends GetxController {
 
         StaticData.cleardata(context).then((value) {
           prefs.setString("doctor", model.id);
-          clearForm();
+          // clearForm();
         });
       });
 
@@ -142,10 +167,11 @@ class LoginController extends GetxController {
   }
 
   void signInWithEmailAndPassword1(BuildContext context) async {
+   
     try {
-      await SQL
-          .get(
-              "SELECT * FROM PatientModel where email='${email.text}' AND password='${password.text}'")
+         var query="SELECT * FROM PatientModel where email='${email.text}' AND password='${password.text}'";
+      await SQLQuery.getdata(query)
+          
           .then((value) async {
         print("snaaaaaap    ${value}");
         PatientModel? model;
@@ -169,7 +195,7 @@ class LoginController extends GetxController {
         StaticData.patientmodel = model;
         StaticData.patient = model.id;
         update();
-        // String query = "UPDATE dbo.PatientModel SET ";
+        // String query = "UPDATE PatientModel SET ";
         // query += "token = '${StaticData.token}', ";
 
         // query += " WHERE id = '${model.id}'";
@@ -209,7 +235,7 @@ class LoginController extends GetxController {
 
   List<DoctorModel> alldoctor = [];
   getAllDoctor() {
-    SQL.get("select * from dbo.DoctorModel").then((value) {
+    SQLQuery.getAllDoctor().then((value) {
       List<Map<String, dynamic>> tempResult =
           value.cast<Map<String, dynamic>>();
       for (var element in tempResult) {
@@ -225,12 +251,12 @@ class LoginController extends GetxController {
   getdoctorSlotes(String id) {
     slotsList.clear();
     String id1 = id.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-    SQL.get("select * from dbo.${id1}").then((value) {
+    SQLQuery.getdoctorSlotes(id1).then((value) {
       List<Map<String, dynamic>> tempResult =
           value.cast<Map<String, dynamic>>();
       for (var element in tempResult) {
         print("element[isAvailable]${element["isAvailable"]}");
-        if (element["isAvailable"] == true) {
+        if (element["isAvailable"] == true||element["isAvailable"] ==1) {
           slotsList.add(DoctorSlot.fromMap(element));
         } else {
           print("skip");

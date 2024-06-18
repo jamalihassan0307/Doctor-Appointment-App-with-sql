@@ -1,5 +1,8 @@
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
+import 'package:doctor_appointment_app/staticdata.dart';
 // import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,16 +16,9 @@ class ChatController extends GetxController {
 
   sendallsms(String roomid) {
     print("smssmsmsmsm${sendMessageList.length}");
-  String query = "INSERT INTO dbo.${roomid} VALUES ";
-  List<String> valuesList = [];
-  
-  for (var i = 0; i < sendMessageList.length; i++) {
-    valuesList.add("(${sendMessageList[i].toJson()})");
-  }
-  sendMessageList.clear();
-  query += valuesList.join(", ");
-  
-  SQL.post(query);
+  SQLQuery.postSendAllMessage(roomid, sendMessageList).then((value){
+    sendMessageList.clear();
+  });
 }
 
 
@@ -30,7 +26,8 @@ class ChatController extends GetxController {
    list.clear();
     String id1 = chatid.replaceAll(RegExp(r'[^a-zA-Z]'), '');
     print("data1${chatid}  sdsf${id1}");
-    var value = await SQL.get("select * from dbo.${id1}").then((value) {
+    var value = await SQLQuery.getAllMessages(id1).then((value) {
+      
       if (value==null) {
          list.clear();
       } else {
@@ -70,11 +67,8 @@ class ChatController extends GetxController {
     //     .doc(message.sent)
     //     .update({'read': DateTime.now().millisecondsSinceEpoch.toString()});
      try {
-      String query = "UPDATE dbo.${id1} SET ";
-      query += "readn = '${DateTime.now().millisecondsSinceEpoch.toString()}'";
-
-      query += " WHERE sent = '${message.sent}'";
-      SQL.Update(query);
+      
+      SQLQuery.updateMessageReadStatus(id1, message);
     } catch (e) {
       print("errrrrro${e}");
     }
@@ -93,8 +87,8 @@ class ChatController extends GetxController {
      String id1 = chatid.replaceAll(RegExp(r'[^a-zA-Z]'), '');
    
          try {
-      String query = "DELETE FROM dbo.${id1} WHERE sent='${message.sent}';";
-      SQL.post(query);
+     
+      SQLQuery.deleteMessage(id1, message);
     } catch (e) {
     }
   }
@@ -110,52 +104,64 @@ listupdate(message){
 }
 List<Message> sendMessageList=[];
    sendMessage(String rid, String msg, String from, String image,
-     String name)  {
+     String name)  async {
+      
     final time = DateTime.now().millisecondsSinceEpoch.toString();
-    // String name = StaticData.chatRoomId(from, rid);
-
-    // String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+    String name = StaticData.chatRoomId(from, rid);
+    String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
     final Message message =
         Message(toId: rid, msg: msg, readn: '', fromId: from, sent: time);
-        
-                       textController.text = '';
-   listupdate(message);
-   sendMessageList.add(message);
-   
-//     try {
-//        SQL
-//           .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})")
-//           .then((value)  {
-//         try {
-//           if (value[0].toString().substring(0, 4) == "Invalid ") {
-//             print("errrrrrrrrrrrrror2131");
-//               // SQL
-//               //   .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
-//           }
-//         } catch (e) {
-// //           print("asddafdsf${value[0]}");
-// //           if (value[0] == "E") { 
-// //             var a= SQL.get(
-// //                 "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
-// // if (a=="Error: java.sql.SQLException: There is already an object named '$id1' in the database.") {
-// //   print("table exist already");
-// // }else{  SQL
-// //                 .get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
-// // print("gdgdggi76786868");
-// // }
-           
-          
-//           // } else {
-//           //   print("errrrrrrrrrrrrror");
-//           //  }
+        list.add(message);
+          list.sort(
+      (a, b) => b.sent!.compareTo(a.sent!),
+    );
+        textController.clear();
+        update();
+   var createTableQuery = '''
+  CREATE TABLE IF NOT EXISTS ${id1}  (
+    toId TEXT,
+    msg TEXT,
+    readn TEXT,
+    fromId TEXT,
+    sent TEXT
+  )
+  ''';
 
-//           // print("errrrrrrrrrrrrror");
-//           // await SQL.get(
-//           //     "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
-//           // await SQL.get("INSERT INTO dbo.${id1} VALUES (${message.toJson()})");
-//         }
-      // });
-    // } catch (e) {}
+  // var insertQuery = '''
+  // INSERT INTO ${id1} (id, toId, msg, readn, fromId, sent) VALUES (
+  //   '${message.toId}',
+  //   '${message.msg}',
+  //   '${message.readn}',
+  //   '${message.fromId}',
+  //   '${message.sent}'
+  // )
+  // ''';
+var query='INSERT INTO ${id1} VALUES (${message.toJson()})';
+    try {
+      if (StaticData.localdatabase) {
+   await SQLService.post(createTableQuery);
+      try {
+    var result = await SQLService.post(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
+      
+        
+    } catch (e) {}
 
   }
 }

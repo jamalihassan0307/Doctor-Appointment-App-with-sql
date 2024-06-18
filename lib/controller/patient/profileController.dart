@@ -1,6 +1,7 @@
 // import 'dart:convert';
 import 'dart:io';
 
+import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/widgets/navbar_roots.dart';
@@ -46,14 +47,39 @@ class ProfileController extends GetxController {
       // Uint8List imageBytes = await hpickedFile!.readAsBytes();
       // String base64Image = base64Encode(imageBytes);
 
-      String query = "UPDATE dbo.PatientModel SET ";
+      String query = "UPDATE PatientModel SET ";
       query += "fullname = '${name.text}',";
       query += "email =' ${email.text}',";
       query += "password = '${password.text}',";
       query += "image = '${hpickedFile!.path}'";
 
       query += " WHERE id = '${StaticData.patientmodel!.id}'";
-      await SQL.Update(query);
+      if (StaticData.localdatabase) {
+          var map={
+           'fullname': '${name.text}',
+           'email': '${email.text}',
+           'password': '${password.text}',
+           'image': '${hpickedFile!.path}',
+        };
+      try {
+    var result = await SQLService.updateData('PatientModel', map, StaticData.patientmodel!.id);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
 
       Fluttertoast.showToast(
           msg: "Update Succssfully",
@@ -72,13 +98,42 @@ class ProfileController extends GetxController {
             ));
       });
     } else {
-      String query = "UPDATE dbo.PatientModel SET ";
+      String query = "UPDATE PatientModel SET ";
       query += "fullname = '${name.text}'";
       query += "email = '${email.text}'";
       query += "password = '${password.text}'";
 
       query += " WHERE id = '${StaticData.patientmodel!.id}'";
-      await SQL.Update(query);
+      if (StaticData.localdatabase) {
+      try {
+          var map={
+           'fullname': '${name.text}',
+           'email': '${email.text}',
+           'password': '${password.text}',
+   
+//  "email =' ${email.text}',",
+     
+//  "password = '${password.text}',",
+//  "image = '${hpickedFile!.path}'",
+        };
+    var result = await SQLService.updateData('PatientModel', map, StaticData.patientmodel!.id);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
 
       Fluttertoast.showToast(
           msg: "Update Succssfully",

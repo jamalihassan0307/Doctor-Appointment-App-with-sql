@@ -1,4 +1,5 @@
-import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+// import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/massage.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -15,8 +16,9 @@ class PatientChatController extends GetxController {
     doctorlist.clear();
     if (StaticData.patientmodel!.doctorList.isNotEmpty) {
       for (var element in StaticData.patientmodel!.doctorList) {
-        await SQL
-            .get("select * from dbo.DoctorModel where id='${element}'")
+           var query="select * from DoctorModel where id='${element}'";
+        await SQLQuery
+            .getdata(query)
             .then((value) {
           try {
             doctorlist.add(DoctorModel.fromMap(value[0]));
@@ -55,45 +57,13 @@ Future<void> getpatientmessageRead() async {
 
   this.read.clear(); 
   if (doctorlistjoining.isNotEmpty && doctorlistjoining.length >= 2) {
-    String query = '';
+ 
     String id1 = StaticData.chatRoomId(doctorlistjoining[0].id, StaticData.patientmodel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
     String id2 = StaticData.chatRoomId(doctorlistjoining[1].id, StaticData.patientmodel!.id).replaceAll(RegExp(r'[^a-zA-Z]'), '');
 
-    query = '''
-      SELECT 
-        ed.toId,
-        ed.fromId,
-        ed.msg, 
-        ed.readn, 
-        ed.sent
-      FROM 
-        dbo.$id1 ed
-         $selectedJoinType
-        dbo.$id2 bd
-      ON 
-        ed.toId = bd.toId
-
-      UNION ALL
-
-      SELECT 
-        bd.toId,
-        bd.fromId, 
-        bd.msg, 
-        bd.readn,
-        bd.sent 
-      FROM 
-        dbo.$id2 bd
-      $selectedJoinType
-        dbo.$id1 ed
-      ON 
-        bd.toId = ed.toId
-      WHERE 
-        ed.toId IS NULL;
-    ''';
-
-    print("query45667567$query");
+   
     try {
-      await SQL.get(query).then((value) {
+      await SQLQuery.getdotormessageRead(id1, selectedJoinType, id2).then((value) {
         try {
           List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
           List<Message> list = [];
@@ -156,7 +126,7 @@ Future<void> getpatientmessageRead() async {
   //       String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
   //       print("data1${name}  sdsf${id1}");
   //       try {
-  //         SQL.get("select * from dbo.${id1}").then((value) {
+  //         SQL.get("select * from ${id1}").then((value) {
   //           try {
   //             List<Map<String, dynamic>> tempResult =
   //                 value.cast<Map<String, dynamic>>();

@@ -1,9 +1,10 @@
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:get/get.dart';
 
-import '../../SQL/sql.dart';
+// import '../../SQL/sql.dart';
 
 class AdminHomeController extends GetxController {
   static AdminHomeController get to => Get.find();
@@ -17,12 +18,8 @@ class AdminHomeController extends GetxController {
    Future<bool> updateSlotsStatus(
       String database, String id, int status) async {
     try {
-      String id1 =database.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      String query = "UPDATE dbo.${id1} SET ";
-      query += "isAvailable = $status";
-
-      query += " WHERE id = '${id}'";
-      SQL.Update(query);
+     String id1 =database.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+      SQLQuery.updateSlotsStatus1(id1, status, id);
       return true;
     } catch (e) {
       return false;
@@ -63,70 +60,21 @@ update(["AppointmentModel"]);
    }
 
     Future<void> selectJoinType(String queryType) async {
-  String query = '';
+ 
+list.clear();
+data=[];
   String doctorId = StaticData.doctorModel!.id;
 selectedJoinType=queryType;
-list.clear();
-data.clear();
 update();
-  switch (queryType) {
-    case 'WHERE':
-      query = '''
-        SELECT * FROM dbo.AppointmentModel
-        WHERE status = 2 AND doctorid = '$doctorId'
-      ''';
-      break;
-
-    case 'LIMIT':
-      query = '''
-       SELECT top 10 * FROM dbo.AppointmentModel
-        WHERE doctorid = '$doctorId'
-      ORDER BY createdtime DESC
-      ''';
-      break;
-
-    case 'ORDER BY':
-      query = '''
-        SELECT * FROM dbo.AppointmentModel
-        WHERE doctorid = '$doctorId'
-        ORDER BY rating DESC
-      ''';
-      break;
-
-    case 'GROUP BY':
-      query = '''
-        SELECT patientname, COUNT(*) AS appointment_count 
-        FROM dbo.AppointmentModel
-        WHERE doctorid = '$doctorId'
-        GROUP BY patientname
-      ''';
-      break;
-
-    case 'HAVING':
-      query = '''
-        SELECT patientname, COUNT(rating) AS appointment_count
-        FROM dbo.AppointmentModel
-        WHERE doctorid = '$doctorId'
-        GROUP BY patientname
-        HAVING AVG(rating) > 4.5
-      ''';
-      break;
-
-    default:
-      query = '''
-        SELECT * FROM dbo.AppointmentModel
-        WHERE doctorid = '$doctorId'
-      ''';
-  }
-
-  print("Executing query: $query");
+  
 
   try {
-    await SQL.get(query).then((value) {
+    await SQLQuery.selectJoinType(queryType, doctorId) .then((value) {
       if (queryType=="GROUP BY"||queryType=="HAVING") {
           List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
          data=tempResult;
          print("sdfhkdfhsfj   ${data}");
+             update();
       } else { List<Map<String, dynamic>> tempResult = value.cast<Map<String, dynamic>>();
     list = tempResult.map((e) => AppointmentModel.fromMap(e)).toList();
         print("Query result: $list");
@@ -144,17 +92,13 @@ update();
   }
 }
 
-
    Future<bool> updateAppointmentStatus(String id, int status) async {
     
     
     
     try {
-      String query = "UPDATE dbo.AppointmentModel SET ";
-      query += "status = $status";
-
-      query += " WHERE id = '${id}'";
-      SQL.Update(query);
+    
+      SQLQuery.updateAppointmentStatus(status, id);
       return true;
     } catch (e) {
       return false;
@@ -181,9 +125,8 @@ update();
     print("dadada");
     loadingapp = true;
     try {
-        SQL
-        .get(
-            "select * from dbo.AppointmentModel where doctorid='${StaticData.doctorModel!.id}'")
+         var query="select * from AppointmentModel where doctorid='${StaticData.doctorModel!.id}'";
+        SQLQuery.getdata(query)
         .then((value) {
           print("aefwserftetwerta${value}");
       List<Map<String, dynamic>> tempResult =
@@ -215,8 +158,9 @@ update();
     allPatients.clear();
     if (StaticData.doctorModel!.patientList!.isNotEmpty) {
       for (var element in StaticData.doctorModel!.patientList!) {
-        SQL
-            .get("select * from dbo.PatientModel where id='${element}'")
+           var query="select * from PatientModel where id='${element}'";
+        SQLQuery
+            .getdata(query)
             .then((value) {
               print("value$value");
           try {
@@ -237,9 +181,8 @@ update();
     String id1 = StaticData.doctorModel!.id
         
         .replaceAll(RegExp(r'[^a-zA-Z]'), '');
-    SQL
-        .get(
-            "select count(isAvailable) as data from dbo.${id1} where isAvailable=1")
+           var query="select count(isAvailable) as data from ${id1} where isAvailable=1";
+    SQLQuery.getdata(query)
         .then((value) {
       try {
         if (value != "" && value != null) {

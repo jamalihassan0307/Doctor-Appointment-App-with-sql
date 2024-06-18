@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 import 'package:date_picker_timeline/date_picker_widget.dart';
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
@@ -217,7 +219,7 @@ PatientController.to.requested.add(model12);
                     // LoginController.to.getdoctorSlotes(widget.model.id);
                     await LoginController.to
                         .getDoctorId(widget.model.id)
-                        .then((model) {
+                        .then((model) async {
                       if (LoginController.to.getdoctor != null) {
                         print(
                             "model234${LoginController.to.getdoctor.toString()}");
@@ -231,12 +233,34 @@ PatientController.to.requested.add(model12);
                             false) {
                           widget.model.patientList!
                               .add(StaticData.patientmodel!.id);
-                          String query = "UPDATE dbo.DoctorModel SET ";
+                          String query = "UPDATE DoctorModel SET ";
                           query +=
                               "patientList = '${json.encode(widget.model.patientList)}'";
 
                           query += " WHERE id = '${widget.model.id}'";
-                          SQL.Update(query);
+                        if (StaticData.localdatabase) {
+      try {
+        var map={
+          'patientList':'${json.encode(widget.model.patientList)}'
+        };
+    var result = await SQLService.updateData('DoctorModel', map, widget.model.id);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
                         
                         } else {
                           print("id presnt");
@@ -247,12 +271,34 @@ PatientController.to.requested.add(model12);
                             false) {
                             StaticData.patientmodel!.doctorList
                               .add(widget.model.id);
-                          String query1 = "UPDATE dbo.PatientModel SET ";
+                          String query1 = "UPDATE PatientModel SET ";
                           query1 +=
                               "doctorList = '${json.encode( StaticData.patientmodel!.doctorList)}'";
 
                           query1 += " WHERE id = '${widget.model.id}'";
-                          SQL.Update(query1);
+                          if (StaticData.localdatabase) {
+      try {
+          var map={
+          'doctorList':'${json.encode(StaticData.patientmodel!.doctorList)}'
+        };
+    var result = await SQLService.updateData('PatientModel', map, widget.model.id);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query1);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
                         } else {
                             print("id presnt");
                         }
@@ -263,8 +309,7 @@ PatientController.to.requested.add(model12);
 
 
 
-                    SQL.post(
-                        "INSERT INTO dbo.AppointmentModel VALUES (${model12.toMap()})");
+                    SQLQuery.postInsertAppointment(model12);
 StaticData.patientmodel!.doctorList.add(widget.model.id);
 PatientChatController.to.doctorlist.add(widget.model);
                     await StaticData.updateSlotsStatus(
@@ -272,8 +317,8 @@ PatientChatController.to.doctorlist.add(widget.model);
                           String name = StaticData.chatRoomId(widget.model.id, StaticData.patientmodel!.id);
 
     String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      SQL.get(
-                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
+   
+      SQLQuery.createTable1(id1);
           
 
                     // StaticData.sendNotifcation(

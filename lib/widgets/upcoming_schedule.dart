@@ -1,6 +1,7 @@
 // import 'dart:convert';
 import 'dart:io';
 
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
 import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 // import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -62,10 +63,10 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                       ),
                                     ),
                                     subtitle: Text("${model.bio}"),
-                                    trailing:CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage: FileImage(
-                                                        File(model.docimage))),
+                                    trailing: CircleAvatar(
+                                        radius: 25,
+                                        backgroundImage:
+                                            FileImage(File(model.docimage))),
                                   ),
                                   Padding(
                                     padding:
@@ -147,13 +148,13 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                     children: [
                                       InkWell(
                                         onTap: () async {
-
                                           model = obj.requested[index];
-                                          await StaticData
+                                          await SQLQuery
                                               .updateAppointmentStatus(
-                                                  model.id, 0);
-                                                  obj.updateList(model.id, 0 ,model);
-                                        
+                                            0,
+                                            model.id,
+                                          );
+                                          obj.updateList(model.id, 0, model);
 
                                           await StaticData.updateSlotsStatus(
                                               model.doctorid, model.slotsid, 1);

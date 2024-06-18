@@ -19,7 +19,13 @@ class SQL {
     ); 
   }
 
-  static Future<void> post(String query)  {
+  static Future post(String query)  async {
+    print("query:4657894678464 $query");
+    await connection();
+
+    return connectToSqlServerDirectlyPlugin.getStatusOfQueryResult(query);
+  }
+  static Future delete(String query)  {
     print("query: $query");
     // await connection();
     return connectToSqlServerDirectlyPlugin.getStatusOfQueryResult(query);

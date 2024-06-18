@@ -2,6 +2,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/SQL/sql.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/controller/patient/patientChatController.dart';
@@ -127,7 +129,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                   try {
                                     await LoginController.to
                                         .getDoctorId(widget.model.id)
-                                        .then((model) {
+                                        .then((model) async {
                                       if (LoginController.to.getdoctor !=
                                           null) {
                                         print(
@@ -145,13 +147,35 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                           widget.model.patientList!
                                               .add(StaticData.patientmodel!.id);
                                           String query =
-                                              "UPDATE dbo.DoctorModel SET ";
+                                              "UPDATE DoctorModel SET ";
                                           query +=
                                               "patientList = '${json.encode(widget.model.patientList)}'";
 
                                           query +=
                                               " WHERE id = '${widget.model.id}'";
-                                          SQL.Update(query);
+                                          if (StaticData.localdatabase) {
+      try {
+          var map={
+          'patientList':'${json.encode(widget.model.patientList)}'
+        };
+    var result = await SQLService.updateData('DoctorModel', map, widget.model.id);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
                                         } else {
                                           print("id presnt");
                                         }
@@ -162,7 +186,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                     LoginController.to
                                         .getPatientId(
                                             StaticData.patientmodel!.id)
-                                        .then((model1) {
+                                        .then((model1) async {
                                       print(
                                           "model${LoginController.to.getpatient.toString()}");
                                       if (!LoginController
@@ -173,20 +197,42 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                             .add(widget.model.id);
 
                                         String query =
-                                            "UPDATE dbo.PatientModel SET ";
+                                            "UPDATE PatientModel SET ";
                                         query +=
                                             "doctorList = '${json.encode(LoginController.to.getpatient!.doctorList)}'";
 
                                         query +=
                                             " WHERE id = '${StaticData.patientmodel!.id}'";
-                                        SQL.Update(query);
+                                       if (StaticData.localdatabase) {
+      try {
+        
+          var map={
+          'doctorList':'${json.encode(LoginController.to.getpatient!.doctorList)}'
+        };
+    var result = await SQLService.updateData('PatientModel', map, StaticData.patientmodel!.id);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+ 
+  }
+       }else{
+ try {
+      
+    var result = await   SQL.Update(query);
+    print("resultresult${result.toString()}");
+
+  } catch (e) {
+    print("Error in updateprofile: $e");
+    
+  }
+       }
                                           String name = StaticData.chatRoomId(widget.model.id, StaticData.patientmodel!.id);
                                           StaticData.patientmodel!.doctorList.add(widget.model.id);
 PatientChatController.to.doctorlist.add(widget.model);
 
     String id1 = name.replaceAll(RegExp(r'[^a-zA-Z]'), '');
-      SQL.get(
-                "CREATE TABLE ${id1} (toId VARCHAR(255),msg VARCHAR(MAX),readn VARCHAR(255),fromId VARCHAR(255),sent VARCHAR(255));");
+      SQLQuery.createTable2(id1);
           
 
                                       } else {

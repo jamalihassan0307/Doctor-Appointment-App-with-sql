@@ -63,166 +63,164 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         SizedBox(width: width * 0.04),
                         Icon(Icons.refresh),
                         SizedBox(width: width * 0.04),
-                         PopupMenuButton<String>(
-  color: Colors.white,
-  onSelected: (String result) {
-    obj.selectJoinType(result);  // Replace with your logic to handle the selection
-  },
-  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-    const PopupMenuItem<String>(
-      value: 'WHERE',
-      child: Text('WHERE'),
-    ),
-    const PopupMenuItem<String>(
-      value: 'LIMIT',
-      child: Text('LIMIT'),
-    ),
-    const PopupMenuItem<String>(
-      value: 'ORDER BY',
-      child: Text('ORDER BY'),
-    ),
-    const PopupMenuItem<String>(
-      value: 'GROUP BY',
-      child: Text('GROUP BY'),
-    ),
-    const PopupMenuItem<String>(
-      value: 'HAVING',
-      child: Text('HAVING'),
-    ),
-  ],
-),
-InkWell(
-  onTap: (){
-    obj.updateShow();
-  },
-  child: Icon(Icons.display_settings))
-                 
+                        PopupMenuButton(
+                          color: Colors.white,
+                          onSelected: (String result) {
+                            obj.selectJoinType(
+                                result); // Replace with your logic to handle the selection
+                          },
+                          itemBuilder: (BuildContext context) => [
+                            const PopupMenuItem(
+                              value: 'WHERE',
+                              child: Text('WHERE'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'LIMIT',
+                              child: Text('LIMIT'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'ORDER BY',
+                              child: Text('ORDER BY'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'GROUP BY',
+                              child: Text('GROUP BY'),
+                            ),
+                            const PopupMenuItem(
+                              value: 'HAVING',
+                              child: Text('HAVING'),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                            onTap: () {
+                              obj.updateShow();
+                            },
+                            child: Icon(Icons.display_settings))
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    if(!obj.show)
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF4F6FA),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _buttonIndex = 0;
-                              });
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 18),
-                              decoration: BoxDecoration(
-                                color: _buttonIndex == 0
-                                    ? Color(0xFF7165D6)
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                "Requests",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
+                    if (!obj.show)
+                      Container(
+                        padding: EdgeInsets.all(15),
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF4F6FA),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _buttonIndex = 0;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 18),
+                                decoration: BoxDecoration(
                                   color: _buttonIndex == 0
-                                      ? Colors.white
-                                      : Colors.black38,
+                                      ? Color(0xFF7165D6)
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "Requests",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: _buttonIndex == 0
+                                        ? Colors.white
+                                        : Colors.black38,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 0,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _buttonIndex = 1;
-                              });
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 18),
-                              decoration: BoxDecoration(
-                                color: _buttonIndex == 1
-                                    ? Color(0xFF7165D6)
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                "Confirm",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
+                            SizedBox(
+                              width: 0,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _buttonIndex = 1;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 18),
+                                decoration: BoxDecoration(
                                   color: _buttonIndex == 1
-                                      ? Colors.white
-                                      : Colors.black38,
+                                      ? Color(0xFF7165D6)
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "Confirm",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: _buttonIndex == 1
+                                        ? Colors.white
+                                        : Colors.black38,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 0,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                _buttonIndex = 2;
-                              });
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 18),
-                              decoration: BoxDecoration(
-                                color: _buttonIndex == 2
-                                    ? Color(0xFF7165D6)
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                "Canceled",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
+                            SizedBox(
+                              width: 0,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _buttonIndex = 2;
+                                });
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 18),
+                                decoration: BoxDecoration(
                                   color: _buttonIndex == 2
-                                      ? Colors.white
-                                      : Colors.black38,
+                                      ? Color(0xFF7165D6)
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "Canceled",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: _buttonIndex == 2
+                                        ? Colors.white
+                                        : Colors.black38,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                   
                     SizedBox(
                       height: 30,
                     ),
-                      if(!obj.show)
-                    _scheduleWidgets[_buttonIndex],
-                    if(obj.show)
-                    ShowSchedule()
+                    if (!obj.show) _scheduleWidgets[_buttonIndex],
+                    if (obj.show) ShowSchedule()
                   ],
                 ),
               ),
             ),
           ),
           if (obj.loading == true)
-           Center(
-                              child: SizedBox(
-                                height: height * 0.1,
-                                width: width * 0.2,
-                                child: SpinKit.loadSpinkit,
-                              ),),
+            Center(
+              child: SizedBox(
+                height: height * 0.1,
+                width: width * 0.2,
+                child: SpinKit.loadSpinkit,
+              ),
+            ),
         ],
       );
     });

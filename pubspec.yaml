@@ -55,6 +55,7 @@ dependencies:
   signalr_netcore: 
   logging: 
   flutter_spinkit: 
+  sqflite: 
   # flutter_spinkit:
   
 dev_dependencies:

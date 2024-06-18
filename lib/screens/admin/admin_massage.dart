@@ -78,6 +78,7 @@ class _AdminMessagesScreenState extends State<AdminMessagesScreen> {
                         color: Colors.white,
 
             onSelected: (String result) {
+              print("valeeee$result");
               if (obj.patientListjoining.isNotEmpty && obj.patientListjoining.length == 2) {
                  obj.selectJoinType(result);
               } else {
