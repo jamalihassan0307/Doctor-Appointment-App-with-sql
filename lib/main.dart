@@ -2,7 +2,6 @@ import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/splashscreen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:doctor_appointment_app/util/appthem.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
