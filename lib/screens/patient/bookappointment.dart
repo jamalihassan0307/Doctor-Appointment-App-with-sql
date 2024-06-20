@@ -216,91 +216,32 @@ class _CalenderState extends State<Calender> {
                         status: 1,
                         rating: 0.0);
                     PatientController.to.requested.add(model12);
-                    // LoginController.to.getdoctorSlotes(widget.model.id);
-                    await LoginController.to
-                        .getDoctorId(widget.model.id)
-                        .then((model) async {
-                      if (LoginController.to.getdoctor != null) {
-                        print(
-                            "model234${LoginController.to.getdoctor.toString()}");
-                        print(
-                            "model23424${LoginController.to.getdoctor!.patientList!.contains(
-                          StaticData.patientmodel!.id,
-                        )}");
-                        if (LoginController.to.getdoctor!.patientList!.contains(
-                              StaticData.patientmodel!.id,
-                            ) ==
-                            false) {
-                          widget.model.patientList!
-                              .add(StaticData.patientmodel!.id);
-                          String query = "UPDATE DoctorModel SET ";
-                          query +=
-                              "patientList = '${json.encode(widget.model.patientList)}'";
-
-                          query += " WHERE id = '${widget.model.id}'";
-                          if (StaticData.localdatabase) {
-                            try {
-                              var map = {
-                                'patientList':
-                                    '${json.encode(widget.model.patientList)}'
-                              };
-                              var result = await SQLService.updateData(
-                                  'DoctorModel', map, widget.model.id);
-                              print("resultresult${result.toString()}");
-                            } catch (e) {
-                              print("Error in updateprofile: $e");
-                            }
-                          } else {
-                            try {
-                              var result = await SQL.Update(query);
-                              print("resultresult${result.toString()}");
-                            } catch (e) {
-                              print("Error in updateprofile: $e");
-                            }
-                          }
-                        } else {
-                          print("id presnt");
-                        }
-                        if (StaticData.patientmodel!.doctorList
-                                .contains(widget.model.id) ==
-                            false) {
-                          StaticData.patientmodel!.doctorList
-                              .add(widget.model.id);
-                          String query1 = "UPDATE PatientModel SET ";
-                          query1 +=
-                              "doctorList = '${json.encode(StaticData.patientmodel!.doctorList)}'";
-
-                          query1 += " WHERE id = '${widget.model.id}'";
-                          if (StaticData.localdatabase) {
-                            try {
-                              var map = {
-                                'doctorList':
-                                    '${json.encode(StaticData.patientmodel!.doctorList)}'
-                              };
-                              var result = await SQLService.updateData(
-                                  'PatientModel', map, widget.model.id);
-                              print("resultresult${result.toString()}");
-                            } catch (e) {
-                              print("Error in updateprofile: $e");
-                            }
-                          } else {
-                            try {
-                              var result = await SQL.Update(query1);
-                              print("resultresult${result.toString()}");
-                            } catch (e) {
-                              print("Error in updateprofile: $e");
-                            }
-                          }
-                        } else {
-                          print("id presnt");
-                        }
-                      } else {
-                        print("null");
-                      }
-                    });
-
+                      VisterUser? user;
+                       try {
+                                    
+                                                var id = StaticData.chatRoomId(
+                                          StaticData.patientmodel!.id,
+                                          widget.model.id,
+                                        ).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+                                         user = VisterUser(
+                                            id: id,
+                                            patientid:
+                                                StaticData.patientmodel!.id,
+                                            doctorid:
+                                                 widget.model.id);
+                                        print("VisterUser=$user");
+                                        try {
+                                          SQLQuery.postdata(
+                                              "INSERT INTO VisterUser VALUES (${user.toMap()})");
+                                        } catch (e) {}
+                                          
+                                      } catch (e) {}
+                    
                     SQLQuery.postInsertAppointment(model12);
-                    StaticData.patientmodel!.doctorList.add(widget.model.id);
+                    if (!PatientChatController.to.doctorlist.any((user1) => user!.id==user1.id)) {
+                      
+                    StaticData.patientmodel!.doctorList!.add(user!);
+                    }
                     PatientChatController.to.doctorlist.add(widget.model);
                     await StaticData.updateSlotsStatus(
                         widget.model.id, slots!.id, 0);

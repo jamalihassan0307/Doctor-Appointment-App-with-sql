@@ -17,7 +17,7 @@ class DoctorModel {
   int maxAppointmentDuration;
   double totalrating;
   int ratingperson;
-  List<String>? patientList;
+  List<VisterUser>? patientList;
   double fee;
   DoctorModel({
     required this.id,
@@ -35,7 +35,7 @@ class DoctorModel {
     required this.maxAppointmentDuration,
     required this.totalrating,
     required this.ratingperson,
-    required this.patientList,
+     this.patientList,
     required this.fee,
   });
 
@@ -60,7 +60,6 @@ class DoctorModel {
       address: map['address'],
       totalrating: double.tryParse(map['totalrating'].toString()) ?? 0.0,
       ratingperson: map['ratingperson'],
-      patientList: List<String>.from(json.decode(map['patientList'] ?? [])),
       fee: double.tryParse(map['fee'].toString()) ?? 0.0,
     );
   }
@@ -71,5 +70,32 @@ class DoctorModel {
   @override
   String toString() {
     return 'DoctorModel(id: $id, fullname: $fullname, phonenumber: $phonenumber, email: $email, password: $password, bio: $bio, specialty: $specialty, starttime: $starttime, endtime: $endtime, about: $about, address: $address, maxAppointmentDuration: $maxAppointmentDuration, totalrating: $totalrating, ratingperson: $ratingperson, patientList: $patientList, fee: $fee, image: $image)';
+  }
+}
+class VisterUser {
+  String id;
+  String doctorid;
+  String patientid;
+  VisterUser({
+    required this.id,
+    required this.doctorid,
+    required this.patientid,
+  });
+   String toMap() {
+    return "'$id','$doctorid','$patientid'";
+  }
+   factory VisterUser.fromMap(map) {
+    return VisterUser(
+      id: map['id'],
+      doctorid: map['doctorid'],
+      patientid: map['patientid'],
+    );
+  }
+
+  factory VisterUser.fromJson(String source) =>
+      VisterUser.fromMap(json.decode(source) as Map<String, dynamic>);
+ @override
+  String toString() {
+    return 'VisterUser(id: $id, doctorid: $doctorid, patientid: $patientid,)';
   }
 }

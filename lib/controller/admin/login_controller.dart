@@ -33,10 +33,10 @@ class LoginController extends GetxController {
   List<String> tables = [];
 
   String selectedTable = '';
-  List<Map<String, dynamic>>? tableData = [];
+  var tableData = [];
   Future<void> fetchTableData(String table) async {
     try {
-      var result = await SQLService.get('SELECT * FROM $table');
+      var result = await SQLQuery.getdata('SELECT * FROM $table');
 
       selectedTable = table;
       tableData = result;
@@ -121,10 +121,34 @@ class LoginController extends GetxController {
       await SQLQuery.getdata(query).then((value) async {
         print("snaaaaaap    ${value}");
 
-        DoctorModel model = DoctorModel.fromMap(value[0]);
+  
+       DoctorModel model = DoctorModel.fromMap(value[0]);
+        
+           var query =
+          "SELECT * FROM VisterUser where doctorid='${model.id}' OR patientid='${model.id}'"; List<VisterUser> listofuser=[];
+      await SQLQuery.getdata(query).then((value) async {
+        print("snaaaaaap    ${value}");
+       
+         List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        listofuser.add(VisterUser.fromMap(element));
+      }
+      });
+       if (listofuser.isNotEmpty) {
+        print("shjs");
+    if (model != null) {
+      model.patientList ??= [];
+      model.patientList!.addAll(listofuser);
+    } else {
+      print("users is null");
+    }
+ 
+      print("shjsq11");
+        
+      }      
         StaticData.doctorModel = model;
-        StaticData.doctor = model.id;
-        update();
+        StaticData.doctor = model.id;update();
         // String query = "UPDATE DoctorModel SET ";
         // query += "token = '${StaticData.token}', ";
 
@@ -174,9 +198,33 @@ class LoginController extends GetxController {
         print("snaaaaaap    ${value}");
         PatientModel? model;
         try {
+          
           model = await PatientModel.fromMap(value[0]);
-          print("model doctor list${model.doctorList}");
-          print("model doctor list${model.doctorList.length}");
+    //       // print("model doctor list${model.doctorList}");
+    //       // print("model doctor list${model.doctorList!.length}");
+           var query =
+          "SELECT * FROM VisterUser where doctorid='${model.id}' OR patientid='${model.id}'"; List<VisterUser> listofuser=[];
+      await SQLQuery.getdata(query).then((value) async {
+        print("snaaaaaap    ${value}");
+       
+         List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        listofuser.add(VisterUser.fromMap(element));
+      }
+      });
+       if (listofuser.isNotEmpty) {
+        print("shjs");
+    if (model != null) {
+      model.doctorList ??= [];
+      model.doctorList!.addAll(listofuser);
+    } else {
+      print("users is null");
+    }
+ 
+      print("shjsq11");
+        
+      }
         } catch (e) {
           print("lsdfgjd${e}");
           Fluttertoast.showToast(

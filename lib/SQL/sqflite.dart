@@ -1,5 +1,7 @@
 import 'dart:io';
 // import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+import 'package:doctor_appointment_app/SQL/sql.dart';
+import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -31,9 +33,7 @@ class SQLService {
 
   static Future<Database> openDB() async {
     try {
-      // await deleteOldDatabase(); // Ensure the old database is deleted
-      // await Future.delayed(Duration(seconds: 1)); // Small delay to ensure file system catches up
-
+      // await deleteOldDatabase();
       var databasesPath = await getDatabasesPath();
       String path = join(databasesPath, 'doasql.db');
 
@@ -71,6 +71,12 @@ class SQLService {
           bio TEXT NOT NULL,
           rating FLOAT NULL
         );
+      ''');
+      await db.execute('''
+        CREATE TABLE IF NOT EXISTS  VisterUser (
+        id VARCHAR(255)  PRIMARY KEY,
+        patientid VARCHAR(255),
+        doctorid VARCHAR(255));
       ''');
 
       await db.execute('''
@@ -140,9 +146,12 @@ class SQLService {
   }
 
   static Future<List<String>> getAllTables() async {
-    try {
-      List<Map<String, Object?>>? result = await _db
+   
+      if (StaticData.localdatabase) {
+         try {
+         List<Map<String, Object?>>? result = await _db
           ?.rawQuery("SELECT name FROM sqlite_master WHERE type='table';");
+          print("434534$result");
       List<String> tables =
           result!.map((row) => row['name'] as String).toList();
       return tables;
@@ -150,6 +159,21 @@ class SQLService {
       print("Error in getAllTables: $e");
       return [];
     }
+      } else {
+        print("asiudyuiwqd1");
+         var results = await SQL.connectToSqlServerDirectlyPlugin.
+         getRowsOfQueryResult("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';");
+print("asiudyuiwqd${results}");
+      // Process the results
+     List<String> tables = [];
+      for (var row in results) {
+        tables.add(row['TABLE_NAME']);
+      }
+
+
+      return tables;
+      }
+     
   }
 
   static Future<List<Map<String, dynamic>>?> get(String query) async {

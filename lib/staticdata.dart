@@ -16,7 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StaticData {
-  static bool localdatabase = true;
+  static bool localdatabase = false;
   static Future<String> assetToF(String assetPath) async {
     String directory = (await getTemporaryDirectory()).path;
     List<String> pathParts = assetPath.split('/');
@@ -79,7 +79,33 @@ class StaticData {
         print("get data");
         try {
           var model = await PatientModel.fromMap(value[0]);
+          
+           var query =
+          "SELECT * FROM VisterUser where doctorid='${model.id}' OR patientid='${model.id}'"; List<VisterUser> listofuser=[];
+      await SQLQuery.getdata(query).then((value) async {
+        print("snaaaaaap    ${value}");
+       
+         List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        listofuser.add(VisterUser.fromMap(element));
+      }
+      });
+        if (listofuser.isNotEmpty) {
+        print("shjs");
+    if (model != null) {
+      model.doctorList ??= [];
+      model.doctorList!.addAll(listofuser);
+    } else {
+      print("users is null");
+    }
+ 
+      print("shjsq11");
+        
+      }
+     
           patientmodel = model;
+          
         } catch (e) {
           return;
         }
@@ -107,7 +133,32 @@ class StaticData {
         print("get data");
         try {
           var model = DoctorModel.fromMap(value[0]);
-          doctorModel = model;
+        
+          
+           var query =
+          "SELECT * FROM VisterUser where doctorid='${model.id}' OR patientid='${model.id}'"; List<VisterUser> listofuser=[];
+      await SQLQuery.getdata(query).then((value) async {
+        print("snaaaaaap    ${value}");
+       
+         List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        listofuser.add(VisterUser.fromMap(element));
+      }
+      });
+       if (listofuser.isNotEmpty) {
+        print("shjs");
+    if (model != null) {
+      model.patientList ??= [];
+      model.patientList!.addAll(listofuser);
+    } else {
+      print("users is null");
+    }
+ 
+      print("shjsq11");
+        
+      }
+       doctorModel = model;
         } catch (e) {
           return;
         }

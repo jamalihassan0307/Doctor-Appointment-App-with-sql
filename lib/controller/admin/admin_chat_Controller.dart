@@ -17,7 +17,7 @@ class AdminChatController extends GetxController {
     patientList.clear();
     if (StaticData.doctorModel!.patientList!.isNotEmpty) {
       for (var element in StaticData.doctorModel!.patientList!) {
-        var query = "select * from PatientModel where id='${element}'";
+        var query = "select * from PatientModel where id='${element.doctorid}'";
         await SQLQuery.getdata(query).then((value) {
           try {
             patientList.add(PatientModel.fromMap(value[0]));

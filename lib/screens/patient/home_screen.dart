@@ -2,8 +2,11 @@
 import 'dart:io';
 
 // import 'package:doctor_appointment_app/SQL/Sql_query.dart';
+import 'package:doctor_appointment_app/SQL/Sql_query.dart';
 import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
+import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
+import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 // import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/screens/patient/appointment_screen.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
@@ -11,6 +14,7 @@ import 'package:doctor_appointment_app/util/appthem.dart';
 import 'package:doctor_appointment_app/util/customwidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,7 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
   var height, width;
   @override
   void initState() {
-    gettable();
+    if (LoginController.to.tables.isEmpty) {
+      gettable();
+    }
+    
     super.initState();
   }
 
@@ -59,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget build(BuildContext context) {
+    // gettable();
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
@@ -84,16 +92,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     Spacer(),
                     InkWell(
                       onTap: () {
-                        if (StaticData.localdatabase) {
+                        // if (StaticData.localdatabase) {
                           obj.updatetable(!obj.showtable);
-                        }
+                        // }
                       },
                       child: CircleAvatar(
                           radius: 30,
                           backgroundImage:
                               FileImage(File(StaticData.patientmodel!.image))),
                     ),
-                    if (StaticData.localdatabase)
+                    // if (StaticData.localdatabase)
                       IconButton(
                         icon: Icon(Icons.more_vert_outlined),
                         onPressed: () => _showTablePopup(context),
@@ -224,16 +232,21 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 15),
-                child: Text(
-                  !obj.showtable
-                      ? "Popular Doctors"
-                      : obj.selectedTable +
-                          " " +
-                          obj.tableData!.length.toString(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 23,
-                    color: Colors.black54,
+                child: InkWell(
+                  onTap: () {
+                    print("DATA${obj.tableData}");
+                  },
+                  child: Text(
+                    !obj.showtable
+                        ? "Popular Doctors"
+                        : obj.selectedTable +
+                            " " +
+                            obj.tableData!.length.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 23,
+                      color: Colors.black54,
+                    ),
                   ),
                 ),
               ),
@@ -247,7 +260,37 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ListTile(
-                                  onTap: () {
+                                  onTap: () async {
+                                    // SQLQuery.delecttable("VisterUser");
+                                    // var qurery =
+                                    //     'CREATE TABLE VisterUser (id VARCHAR(255)  PRIMARY KEY,patientid VARCHAR(255),doctorid VARCHAR(255));';
+                                    // SQLQuery.createTabledata(qurery);
+
+                                    // obj.tableData!.forEach((element) {
+                                    //   PatientModel modelda6ta =
+                                    //       PatientModel.fromMap(element);
+                                    //   modelda6ta.doctorList!.forEach((element) {
+                                    //     var id = StaticData.chatRoomId(
+                                    //       modelda6ta.id,
+                                    //       element,
+                                    //     ).replaceAll(RegExp(r'[^a-zA-Z]'), '');
+                                    //     VisterUser user = VisterUser(
+                                    //         id: id,
+                                    //         patientid:
+                                    //             //  element,
+                                    //             modelda6ta.id,
+                                    //         doctorid:
+                                    //             // modelda6ta.id
+                                    //             element);
+                                    //     print("VisterUser=$user");
+                                    //     try {
+                                    //       SQLQuery.postdata(
+                                    //           "INSERT INTO VisterUser VALUES (${user.toMap()})");
+                                    //     } catch (e) {}
+                                    //   });
+                                    // });
+                                    gettable();
+
                                     print("DATA${obj.tableData![index]}");
                                   },
                                   tileColor: Colors.white,

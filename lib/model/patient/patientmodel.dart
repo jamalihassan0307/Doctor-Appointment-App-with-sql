@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
+
 // import 'package:flutter/foundation.dart';
 
 class PatientModel {
@@ -10,7 +12,7 @@ class PatientModel {
   String password;
   String email;
   String image;
-  List<String> doctorList;
+  List<VisterUser>? doctorList=[];
 
   PatientModel({
     required this.id,
@@ -20,12 +22,12 @@ class PatientModel {
     required this.email,
     
     required this.image,
-    required this.doctorList,
+     this.doctorList,
   });
  
   
   String toMap() {
-    return "'$id','$fullname','$phonenumber','$password','$email','$image','${json.encode(doctorList)}'";
+    return "'$id','$fullname','$phonenumber','$password','$email','$image'";
   }
 
   factory PatientModel.fromMap(map) {
@@ -36,7 +38,6 @@ class PatientModel {
       password: map['password'],
       email: map['email'],
       image: map['image'],
-      doctorList: List<String>.from(json.decode(map['doctorList'])),
     );
   }
 

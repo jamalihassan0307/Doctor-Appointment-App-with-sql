@@ -119,6 +119,31 @@ class _SplashScreenState extends State<SplashScreen> {
           //  }
           else {
             users = DoctorModel.fromMap(value[0]);
+            
+           var query =
+          "SELECT * FROM VisterUser where doctorid='${users!.id}' OR patientid='${users!.id}'"; List<VisterUser> listofuser=[];
+      await SQLQuery.getdata(query).then((value) async {
+        print("snaaaaaap    ${value}");
+       
+         List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        listofuser.add(VisterUser.fromMap(element));
+        print("92347${listofuser}");
+      }
+      });
+        if (listofuser.isNotEmpty) {
+        print("shjs");
+    if (users != null) {
+      users!.patientList ??= [];
+      users!.patientList!.addAll(listofuser);
+    } else {
+      print("users is null");
+    }
+ 
+      print("shjsq11");
+        
+      }
           }
         } catch (e) {
           print('Document with UUID $uuid does not exist.$e');
@@ -190,6 +215,31 @@ class _SplashScreenState extends State<SplashScreen> {
           //  }
           else {
             users = PatientModel.fromMap(value[0]);
+            
+           var query =
+          "SELECT * FROM VisterUser where doctorid='${users!.id}' OR patientid='${users!.id}'"; List<VisterUser>? listofuser=[];
+      await SQLQuery.getdata(query).then((value) async {
+        print("snaaaaaap    ${value}");
+       
+         List<Map<String, dynamic>> tempResult =
+          value.cast<Map<String, dynamic>>();
+      for (var element in tempResult) {
+        listofuser.add(VisterUser.fromMap(element));
+        //  print("92347${listofuser}");
+      }
+      if (listofuser.isNotEmpty) {
+        print("shjs");
+    if (users != null) {
+      users!.doctorList ??= [];
+      users!.doctorList!.addAll(listofuser);
+    } else {
+      print("users is null");
+    }
+ 
+      print("shjsq11");
+        
+      }
+      });
             LoginController.to.getAllDoctor();
           }
         } catch (e) {
