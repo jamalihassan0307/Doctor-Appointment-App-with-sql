@@ -66,7 +66,7 @@ class _AdminCompletedScheduleState extends State<AdminCompletedSchedule> {
                                     trailing: CircleAvatar(
                                       radius: 25,
                                       backgroundImage:
-                                          FileImage(File(model.patientimage)),
+                                          FileImage(File(model.patientimage!)),
                                     )),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 15),

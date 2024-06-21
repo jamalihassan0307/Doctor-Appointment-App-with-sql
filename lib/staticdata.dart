@@ -16,7 +16,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StaticData {
-  static bool localdatabase = false;
+  static bool localdatabase = true;
   static Future<String> assetToF(String assetPath) async {
     String directory = (await getTemporaryDirectory()).path;
     List<String> pathParts = assetPath.split('/');

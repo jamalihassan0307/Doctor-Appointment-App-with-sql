@@ -94,7 +94,7 @@ class _ShowScheduleAdminState extends State<ShowScheduleAdmin> {
                                             trailing: CircleAvatar(
                                                 radius: 25,
                                                 backgroundImage: FileImage(
-                                                    File(model.patientimage))),
+                                                    File(model.patientimage!))),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.symmetric(

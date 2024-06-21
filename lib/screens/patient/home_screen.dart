@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:doctor_appointment_app/SQL/Sql_query.dart';
 import 'package:doctor_appointment_app/SQL/sqflite.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
+import 'package:doctor_appointment_app/controller/patient/patientController.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
 import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 // import 'package:doctor_appointment_app/controller/patient/patientController.dart';
@@ -66,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget build(BuildContext context) {
-    // gettable();
+    // SQLService.dropDoctorListColumn();
+    // PatientController.to.getAllAppointment();
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 

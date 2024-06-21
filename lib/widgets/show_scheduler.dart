@@ -92,7 +92,7 @@ class _ShowScheduleState extends State<ShowSchedule> {
                                         trailing: CircleAvatar(
                                             radius: 25,
                                             backgroundImage: FileImage(
-                                                File(model.docimage))),
+                                                File(model.docimage!))),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.symmetric(

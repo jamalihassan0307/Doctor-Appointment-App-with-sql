@@ -60,10 +60,7 @@ class SQLService {
           id NVARCHAR(255) NOT NULL PRIMARY KEY,
           patientid NVARCHAR(255) NOT NULL,
           doctorid NVARCHAR(255) NOT NULL,
-          doctorname NVARCHAR(255) NOT NULL,
-          docimage TEXT NOT NULL,
-          patientname NVARCHAR(255) NOT NULL,
-          patientimage TEXT NOT NULL,
+          
           slotsid NVARCHAR(255) NOT NULL,
           time NVARCHAR(255) NOT NULL,
           createdtime BIGINT NOT NULL,
@@ -134,8 +131,43 @@ class SQLService {
       throw Exception("Failed to create tables: $e");
     }
   }
+  static Future<void> dropDoctorListColumn() async {
+   await _db?.transaction((txn) async {
+      // Rename the original table
+      await txn.execute("ALTER TABLE AppointmentModel RENAME TO temp_AppointmentModel");
 
-  static Future<void> randomCreateTable(String query) async {
+      // Create the new table without the specified columns
+      await txn.execute('''
+        CREATE TABLE IF NOT EXISTS AppointmentModel (
+          id NVARCHAR(255) NOT NULL PRIMARY KEY,
+          patientid NVARCHAR(255) NOT NULL,
+          doctorid NVARCHAR(255) NOT NULL,
+          slotsid NVARCHAR(255) NOT NULL,
+          time NVARCHAR(255) NOT NULL,
+          createdtime BIGINT NOT NULL,
+          status INT NOT NULL,
+          bio TEXT NOT NULL,
+          rating FLOAT NULL
+        );
+      ''');
+
+      // Copy data from the old table to the new table
+      await txn.execute('''
+        INSERT INTO AppointmentModel (
+          id, patientid, doctorid, slotsid, time, createdtime, status, bio, rating
+        )
+        SELECT 
+          id, patientid, doctorid, slotsid, time, createdtime, status, bio, rating
+        FROM temp_AppointmentModel
+      ''');
+
+      // Drop the old table
+      await txn.execute("DROP TABLE temp_AppointmentModel");
+    });
+
+    print("Specified columns dropped and AppointmentModel table recreated successfully");
+  
+  } static Future<void> randomCreateTable(String query) async {
     try {
       await _db?.execute(query);
       print("Table created with query: $query");

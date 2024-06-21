@@ -3,6 +3,7 @@ import 'package:doctor_appointment_app/SQL/Sql_query.dart';
 import 'package:doctor_appointment_app/controller/admin/login_controller.dart';
 import 'package:doctor_appointment_app/model/admin/AppointmentModel.dart';
 import 'package:doctor_appointment_app/model/admin/DoctorModel.dart';
+import 'package:doctor_appointment_app/model/patient/patientmodel.dart';
 import 'package:doctor_appointment_app/staticdata.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -105,11 +106,29 @@ class PatientController extends GetxController {
     var query =
         "select * from AppointmentModel where patientid='${StaticData.patientmodel!.id}'";
     SQLQuery.getdata(query).then((value) {
-      print("valueeeeeeeeeeeeeeee${value}");
+
+      print("valueeeeeeeeeeeeeeee${value[0]}");
       List<Map<String, dynamic>> tempResult =
           value.cast<Map<String, dynamic>>();
       for (var element in tempResult) {
-        allAppointment.add(AppointmentModel.fromMap(element));
+        var model=AppointmentModel.fromMap(element);
+        print("sfjdfnj${model}");
+ var query =
+        "select image, fullname from DoctorModel where id='${model.doctorid}'";
+    SQLQuery.getdata(query).then((value){
+      print("value$value");
+      model.docimage=value[0]['image'];
+      model.doctorname=value[0]['fullname'];
+    });
+ var query1 =
+        "select image, fullname from PatientModel where id='${model.patientid}'";
+    SQLQuery.getdata(query1).then((value){
+       print("value$value");
+      model.patientimage=value[0]['image'];
+      model.patientname=value[0]['fullname'];
+    });
+
+        allAppointment.add(model);
       }
       print("alldoctor${allAppointment}");
       print("alldoctor${allAppointment.length}");

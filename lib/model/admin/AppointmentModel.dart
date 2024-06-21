@@ -5,10 +5,10 @@ class AppointmentModel {
   String id;
   String patientid;
   String doctorid;
-  String doctorname;
-  String docimage;
-  String patientname;
-  String patientimage;
+  String? doctorname;
+  String? docimage;
+  String? patientname;
+  String? patientimage;
   String slotsid;
   String time;
   int createdtime;
@@ -19,10 +19,10 @@ class AppointmentModel {
     required this.id,
     required this.patientid,
     required this.doctorid,
-    required this.doctorname,
-    required this.docimage,
-    required this.patientname,
-    required this.patientimage,
+     this.doctorname,
+     this.docimage,
+     this.patientname,
+     this.patientimage,
     required this.slotsid,
     required this.time,
     required this.createdtime,
@@ -32,7 +32,7 @@ class AppointmentModel {
   });
 
   String toMap() {
-    return "'$id','$patientid','$doctorid','$doctorname','$docimage','$patientname','$patientimage','$slotsid','$time',$createdtime,$status,'$bio',$rating";
+    return "'$id','$patientid','$doctorid','$slotsid','$time',$createdtime,$status,'$bio',$rating";
   }
 
   factory AppointmentModel.fromMap(Map<String, dynamic> map) {
@@ -40,10 +40,6 @@ class AppointmentModel {
         id: map['id'],
         patientid: map['patientid'],
         doctorid: map['doctorid'],
-        doctorname: map['doctorname'],
-        docimage: map['docimage'],
-        patientname: map['patientname'],
-        patientimage: map['patientimage'],
         slotsid: map['slotsid'],
         time: map['time'],
         createdtime: map['createdtime'],

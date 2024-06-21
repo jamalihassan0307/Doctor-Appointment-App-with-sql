@@ -67,7 +67,7 @@ class _AdminUpcomingScheduleState extends State<AdminUpcomingSchedule> {
                                           trailing: CircleAvatar(
                                             radius: 25,
                                             backgroundImage: FileImage(
-                                                File(model.patientimage)),
+                                                File(model.patientimage!)),
                                           )),
                                       Padding(
                                         padding: EdgeInsets.symmetric(

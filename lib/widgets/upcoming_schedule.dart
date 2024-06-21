@@ -66,7 +66,7 @@ class _UpcomingScheduleState extends State<UpcomingSchedule> {
                                     trailing: CircleAvatar(
                                         radius: 25,
                                         backgroundImage:
-                                            FileImage(File(model.docimage))),
+                                            FileImage(File(model.docimage!))),
                                   ),
                                   Padding(
                                     padding:
