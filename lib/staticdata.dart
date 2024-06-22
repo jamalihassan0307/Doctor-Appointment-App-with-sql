@@ -14,7 +14,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 class StaticData {
   static bool localdatabase = true;
   static Future<String> assetToF(String assetPath) async {

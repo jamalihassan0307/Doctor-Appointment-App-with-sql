@@ -147,7 +147,7 @@ class AdminHomeController extends GetxController {
   getAllPatient() {
     loading = true;
     allPatients.clear();
-    if (StaticData.doctorModel!.patientList!.isNotEmpty) {
+    if (StaticData.doctorModel!.patientList!=null) {
       for (var element in StaticData.doctorModel!.patientList!) {
         var query = "select * from PatientModel where id='${StaticData.localdatabase? element.doctorid: element.patientid}'";
         SQLQuery.getdata(query).then((value) {

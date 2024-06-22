@@ -14,7 +14,7 @@ class PatientChatController extends GetxController {
   Future<void> getdoctor() async {
     loading = true;
     doctorlist.clear();
-    if (StaticData.patientmodel!.doctorList!.isNotEmpty) {
+    if (StaticData.patientmodel!.doctorList!=null) {
       for (var element in StaticData.patientmodel!.doctorList!) {
         var query = "select * from DoctorModel where id='${!StaticData.localdatabase? element.doctorid: element.patientid}'";
         await SQLQuery.getdata(query).then((value) {

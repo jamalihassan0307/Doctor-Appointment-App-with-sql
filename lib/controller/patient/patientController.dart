@@ -106,8 +106,8 @@ class PatientController extends GetxController {
     var query =
         "select * from AppointmentModel where patientid='${StaticData.patientmodel!.id}'";
     SQLQuery.getdata(query).then((value) {
-
-      print("valueeeeeeeeeeeeeeee${value[0]}");
+if (value!=null&&value.isNotEmpty) {
+   print("valueeeeeeeeeeeeeeee${value[0]}");
       List<Map<String, dynamic>> tempResult =
           value.cast<Map<String, dynamic>>();
       for (var element in tempResult) {
@@ -134,8 +134,10 @@ class PatientController extends GetxController {
       print("alldoctor${allAppointment.length}");
       loading = false;
       seperatedata();
-      update();
+      update();}
     });
+
+     
   }
 
   Future<bool> updateRating(String id, double fullrating) async {

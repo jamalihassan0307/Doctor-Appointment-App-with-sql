@@ -5,8 +5,10 @@ class SQL {
   static var database = "DOASQL";
   // static var ip = "192.168.117.235";
   static var ip = "192.168.100.7";
+  // static var ip = "192.168.88.235";
   // static var ip = "127.0.0.1";
   // static var ip = "192.168.188.235";
+  
   // static var ip = "192.168.137.205";
   static final connectToSqlServerDirectlyPlugin = ConnectToSqlServerDirectly();
   static Future<void> connection() {

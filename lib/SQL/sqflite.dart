@@ -76,17 +76,16 @@ class SQLService {
         doctorid VARCHAR(255));
       ''');
 
-      await db.execute('''
-        CREATE TABLE IF NOT EXISTS PatientModel (
-          id VARCHAR(255) PRIMARY KEY,
-          fullname VARCHAR(225),
-          phonenumber VARCHAR(100),
-          password VARCHAR(100),
-          email VARCHAR(100) UNIQUE,
-          image NVARCHAR(225),
-          doctorList TEXT
-        );
-      ''');
+     await db.execute('''
+  CREATE TABLE IF NOT EXISTS PatientModel (
+    id VARCHAR(255) PRIMARY KEY,
+    fullname VARCHAR(225),
+    phonenumber VARCHAR(100),
+    password VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    image NVARCHAR(225)
+  );
+''');
 
       await db.execute('''
         CREATE TABLE IF NOT EXISTS DoctorSlot (
@@ -120,7 +119,6 @@ class SQLService {
           maxAppointmentDuration INT NOT NULL,
           totalrating FLOAT NOT NULL,
           ratingperson INT NOT NULL,
-          patientList TEXT ksNULL,
           fee FLOAT NOT NULL
         );
       ''');
